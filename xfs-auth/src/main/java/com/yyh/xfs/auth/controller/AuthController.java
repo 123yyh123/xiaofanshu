@@ -1,8 +1,10 @@
 package com.yyh.xfs.auth.controller;
 
 import com.yyh.xfs.common.domain.Result;
+import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.utils.FieldValidationUtil;
 import com.yyh.xfs.common.utils.ResultUtil;
+import com.yyh.xfs.common.web.exception.BusinessException;
 import com.yyh.xfs.user.service.UserService;
 import com.yyh.xfs.user.vo.RegisterInfoVO;
 import com.yyh.xfs.user.vo.UserVO;
@@ -38,11 +40,11 @@ public class AuthController {
 
     @PostMapping("/otherLogin")
     public Result<UserVO> otherLogin(Integer type,String code) {
-        if(type==null){
-            return ResultUtil.errorPost("登录类型不能为空");
+        if(!(type==1||type==2||type==3)){
+            throw new BusinessException(ExceptionMsgEnum.LOGIN_TYPE_ERROR);
         }
-        if(code==null){
-            return ResultUtil.errorPost("code不能为空");
+        if(!StringUtils.hasText(code)){
+            throw new BusinessException(ExceptionMsgEnum.OPEN_ID_NULL);
         }
         return userService.otherLogin(type, code);
     }
@@ -57,10 +59,10 @@ public class AuthController {
         if(!(registerInfoVO.getRegisterType()==1
                 ||registerInfoVO.getRegisterType()==2
                 ||registerInfoVO.getRegisterType()==3)){
-            return ResultUtil.errorPost("注册类型不正确");
+            throw new BusinessException(ExceptionMsgEnum.LOGIN_TYPE_ERROR);
         }
         if(!StringUtils.hasText(registerInfoVO.getOpenId())){
-            return ResultUtil.errorPost("openId不能为空");
+            throw new BusinessException(ExceptionMsgEnum.OPEN_ID_NULL);
         }
         return userService.bindPhone(registerInfoVO);
     }

@@ -3,11 +3,14 @@ package com.yyh.xfs.third.sevice.impl;
 import com.aliyun.dysmsapi20170525.Client;
 import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
 import com.yyh.xfs.common.domain.Result;
+import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
 import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.common.redis.utils.RedisKey;
 import com.yyh.xfs.common.utils.CodeUtil;
 import com.yyh.xfs.common.utils.ResultUtil;
+import com.yyh.xfs.common.web.exception.BusinessException;
+import com.yyh.xfs.common.web.exception.SystemException;
 import com.yyh.xfs.third.sevice.AliyunSmsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,14 +65,13 @@ public class AliyunSmsServiceImpl implements AliyunSmsService {
         try {
             long expire = redisCache.getExpire(RedisKey.build(prefix, phoneNumber));
             if(expire>60*4){
-                return ResultUtil.errorGet("请勿频繁发送短信");
+                throw new BusinessException(ExceptionMsgEnum.SMS_CODE_SEND_FREQUENTLY);
             }
             smsClient.sendSms(sendSmsRequest);
             redisCache.set(RedisKey.build(prefix, phoneNumber), smsCode, 60 * 5);
             return ResultUtil.successGet("发送短信成功", null);
         } catch (Exception e) {
-            log.error("发送短信失败", e);
-            return ResultUtil.errorGet("发送短信失败");
+            throw new SystemException(ExceptionMsgEnum.ALIYUN_SMS_SEND_ERROR, e);
         }
     }
 

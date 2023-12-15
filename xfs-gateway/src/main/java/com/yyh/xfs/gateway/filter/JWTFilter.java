@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yyh.xfs.common.constant.ReleasePath;
 import com.yyh.xfs.common.constant.StatusCode;
+import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
 import com.yyh.xfs.common.redis.utils.RedisCache;
+import com.yyh.xfs.common.redis.utils.RedisKey;
 import com.yyh.xfs.gateway.properties.JwtProperties;
 import com.yyh.xfs.gateway.utils.JWTUtil;
 import io.jsonwebtoken.Jwts;
@@ -57,37 +59,41 @@ public class JWTFilter implements GlobalFilter {
         ServerHttpResponse response = exchange.getResponse();
         if (!StringUtils.hasText(token)) {
             // token为空
-            return tokenFailure(response,StatusCode.NOT_LOGIN,StatusCode.NOT_LOGIN_MSG);
+            return tokenFailure(response,ExceptionMsgEnum.NOT_LOGIN);
         }
         try {
             Map<String, Object> map = JWTUtil.parseToken(token);
-            if (map == null || !StringUtils.hasText((String) map.get("userId"))) {
+            if (map == null ||!StringUtils.hasText(String.valueOf(map.get("userId")))) {
                 // token不合法
-                return tokenFailure(response,StatusCode.TOKEN_INVALID,StatusCode.TOKEN_INVALID_MSG);
+                return tokenFailure(response,ExceptionMsgEnum.TOKEN_INVALID);
             }
             // 判断token是否过期
-            Long expire = (Long) redisCache.get(RedisConstant.REDIS_KEY_USER_LOGIN_EXPIRE + map.get("userId"));
+            Long expire = (Long) redisCache.get(
+                    RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_EXPIRE,
+                            String.valueOf(map.get("userId"))));
             if (expire == null || expire < System.currentTimeMillis()) {
                 // token过期
-                return tokenFailure(response,StatusCode.TOKEN_EXPIRED,StatusCode.TOKEN_EXPIRED_MSG);
+                return tokenFailure(response,ExceptionMsgEnum.TOKEN_EXPIRED);
             }
             // 刷新token的过期时间
             if(expire - System.currentTimeMillis() < jwtProperties.getRefreshTime()){
-                redisCache.set(RedisConstant.REDIS_KEY_USER_LOGIN_EXPIRE + map.get("userId"),System.currentTimeMillis() + jwtProperties.getExpireTime());
+                redisCache.set(
+                        RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_EXPIRE, String.valueOf(map.get("userId"))),
+                        System.currentTimeMillis() + jwtProperties.getExpireTime());
             }
         } catch (Exception e) {
             // token不合法
-            return tokenFailure(response,StatusCode.TOKEN_INVALID,StatusCode.TOKEN_INVALID_MSG);
+            return tokenFailure(response,ExceptionMsgEnum.TOKEN_INVALID);
         }
         //TODO:这里可以做权限校验
         return chain.filter(exchange);
     }
 
-    private Mono<Void> tokenFailure(ServerHttpResponse response,Integer code,String msg) {
+    private Mono<Void> tokenFailure(ServerHttpResponse response, ExceptionMsgEnum exceptionMsgEnum) {
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> map = new HashMap<>();
-        map.put("code", code);
-        map.put("msg", msg);
+        map.put("code", exceptionMsgEnum.getCode());
+        map.put("msg", exceptionMsgEnum.getMsg());
         try {
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             response.getHeaders().setContentType(MediaType.APPLICATION_JSON);

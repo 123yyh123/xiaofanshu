@@ -20,11 +20,24 @@ public class StatusCode {
 
     //未登录
     public static final Integer NOT_LOGIN = 40310;
-    public static final String NOT_LOGIN_MSG = "未登录";
     //token过期
     public static final Integer TOKEN_EXPIRED = 40320;
-    public static final String TOKEN_EXPIRED_MSG = "token过期";
     //token无效
     public static final Integer TOKEN_INVALID = 40330;
-    public static final String TOKEN_INVALID_MSG = "token不合法";
+    //密码错误
+    public static final Integer PASSWORD_ERROR=40340;
+    //手机号已存在
+    public static final Integer PHONE_NUMBER_EXIST=10010;
+    //短信验证码错误
+    public static final Integer SMS_CODE_ERROR=10020;
+    //登录类型错误
+    public static final Integer LOGIN_TYPE_ERROR = 10030;
+    //第三方账号openId为空
+    public static final Integer OPEN_ID_NULL = 10040;
+    //短信发送频繁
+    public static final Integer SMS_CODE_SEND_FREQUENTLY = 10050;
+    //数据库操作异常
+    public static final Integer DB_ERROR=50010;
+    //aliyun短信服务异常
+    public static final Integer ALIYUN_SMS_SEND_ERROR=50020;
 }

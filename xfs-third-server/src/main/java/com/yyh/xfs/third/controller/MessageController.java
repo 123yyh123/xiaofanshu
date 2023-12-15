@@ -1,15 +1,8 @@
 package com.yyh.xfs.third.controller;
 
-import com.aliyun.dysmsapi20170525.Client;
-import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
 import com.yyh.xfs.common.domain.Result;
-import com.yyh.xfs.common.redis.constant.RedisConstant;
-import com.yyh.xfs.common.redis.utils.RedisCache;
-import com.yyh.xfs.common.utils.CodeUtil;
 import com.yyh.xfs.common.utils.ResultUtil;
 import com.yyh.xfs.third.sevice.AliyunSmsService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

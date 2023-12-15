@@ -4,12 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yyh.xfs.common.domain.Result;
+import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
 import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.common.redis.utils.RedisKey;
 import com.yyh.xfs.common.utils.CodeUtil;
 import com.yyh.xfs.common.utils.Md5Util;
 import com.yyh.xfs.common.utils.ResultUtil;
+import com.yyh.xfs.common.web.exception.BusinessException;
+import com.yyh.xfs.common.web.exception.SystemException;
 import com.yyh.xfs.common.web.properties.JwtProperties;
 import com.yyh.xfs.common.web.utils.JWTUtil;
 import com.yyh.xfs.user.domain.UserDO;
@@ -18,14 +21,12 @@ import com.yyh.xfs.user.mapper.UserMapper;
 import com.yyh.xfs.user.vo.RegisterInfoVO;
 import com.yyh.xfs.user.vo.UserVO;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 
 /**
 * @author 86131
@@ -42,16 +43,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         this.redisCache = redisCache;
         this.jwtProperties = jwtProperties;
     }
-
-//    private static final Map<Integer, String> LOGIN_TYPE_MAP =new HashMap<>();
-
-//    static {
-//        LOGIN_TYPE_MAP.put(1, "wx_open_id");
-//        LOGIN_TYPE_MAP.put(2, "qq_open_id");
-//        LOGIN_TYPE_MAP.put(3, "facebook_open_id");
-//    }
+    /**
+     * 登录类型和数据库字段的映射
+     */
     private static final Map<Integer, SFunction<UserDO, String>> LOGIN_TYPE_MAP = new HashMap<>();
 
+    /**
+     * 初始化
+     */
     @PostConstruct
     public void postConstruct() {
         LOGIN_TYPE_MAP.put(1, UserDO::getWxOpenId);
@@ -66,7 +65,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         queryWrapper.lambda().eq(UserDO::getPhoneNumber, phoneNumber).eq(UserDO::getPassword, md5Password);
         UserDO userDO = this.getOne(queryWrapper);
         if (Objects.isNull(userDO)) {
-            return ResultUtil.errorPost("用户名或密码错误");
+            throw new BusinessException(ExceptionMsgEnum.PASSWORD_ERROR);
         }
         return generateUserVO(userDO);
     }
@@ -89,51 +88,31 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 RedisKey.build(RedisConstant.REDIS_KEY_SMS_BIND_PHONE_CODE,registerInfoVO.getPhoneNumber()),
                 registerInfoVO.getSmsCode());
         if(!b){
-            return ResultUtil.errorPost("验证码错误");
+            throw new BusinessException(ExceptionMsgEnum.SMS_CODE_ERROR);
         }
         QueryWrapper<UserDO> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(UserDO::getPhoneNumber, registerInfoVO.getPhoneNumber());
         UserDO userDO = this.getOne(queryWrapper);
         if (Objects.nonNull(userDO)){
-            return ResultUtil.errorPost("该手机号已经注册过");
+            throw new BusinessException(ExceptionMsgEnum.PHONE_NUMBER_EXIST);
         }
         // 注册
-        UserDO newUserDO = new UserDO();
-        BeanUtils.copyProperties(registerInfoVO, newUserDO);
-        if(registerInfoVO.getRegisterType()==1) {
-            newUserDO.setWxOpenId(registerInfoVO.getOpenId());
-        }else if(registerInfoVO.getRegisterType()==2){
-            newUserDO.setQqOpenId(registerInfoVO.getOpenId());
-        }else if(registerInfoVO.getRegisterType()==3){
-            newUserDO.setFacebookOpenId(registerInfoVO.getOpenId());
-        }
-        String uid = CodeUtil.createUid(registerInfoVO.getPhoneNumber());
-        newUserDO.setUid(uid);
-        newUserDO.setPassword(null);
-        newUserDO.setHomePageBackground("https://pmall-yyh.oss-cn-chengdu.aliyuncs.com/IMG_20231212_011126.jpg");
-        newUserDO.setAccountStatus(0);
-        try {
-            this.save(newUserDO);
-        } catch (Exception e) {
-            log.error("数据库插入失败", e);
-            throw new RuntimeException(e);
-        }
+        UserDO newUserDO=registerAccount(registerInfoVO);
         return generateUserVO(newUserDO);
     }
-
     @Override
     public Result<?> resetPassword(String phoneNumber, String password, String smsCode) {
         boolean b = checkSmsCode(
                 RedisKey.build(RedisConstant.REDIS_KEY_SMS_RESET_PASSWORD_PHONE_CODE,phoneNumber),
                 smsCode);
         if(!b){
-            return ResultUtil.errorPost("验证码错误");
+            throw new BusinessException(ExceptionMsgEnum.SMS_CODE_ERROR);
         }
         QueryWrapper<UserDO> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(UserDO::getPhoneNumber, phoneNumber);
         UserDO userDO = this.getOne(queryWrapper);
         if (Objects.isNull(userDO)){
-            return ResultUtil.errorPost("该手机号未注册");
+            throw new BusinessException(ExceptionMsgEnum.PHONE_NUMBER_EXIST);
         }
         // 利用MD5加密密码，并且通过手机号给密码加盐
         String md5 = Md5Util.getMd5(phoneNumber + password);
@@ -141,8 +120,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         try {
             this.updateById(userDO);
         } catch (Exception e) {
-            log.error("数据库更新失败", e);
-            throw new RuntimeException(e);
+            throw new SystemException(ExceptionMsgEnum.DB_ERROR, e);
         }
         return ResultUtil.successPost("重置密码成功", null);
     }
@@ -177,6 +155,34 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 System.currentTimeMillis() + jwtProperties.getExpireTime()) ;
         return ResultUtil.successPost(token, userVO);
     }
+    /**
+     * 注册账号
+     * @param registerInfoVO 注册信息
+     * @return UserDO
+     */
+    private UserDO registerAccount(RegisterInfoVO registerInfoVO) {
+        UserDO newUserDO = new UserDO();
+        BeanUtils.copyProperties(registerInfoVO, newUserDO);
+        if(registerInfoVO.getRegisterType()==1) {
+            newUserDO.setWxOpenId(registerInfoVO.getOpenId());
+        }else if(registerInfoVO.getRegisterType()==2){
+            newUserDO.setQqOpenId(registerInfoVO.getOpenId());
+        }else if(registerInfoVO.getRegisterType()==3){
+            newUserDO.setFacebookOpenId(registerInfoVO.getOpenId());
+        }
+        String uid = CodeUtil.createUid(registerInfoVO.getPhoneNumber());
+        newUserDO.setUid(uid);
+        newUserDO.setPassword(null);
+        newUserDO.setHomePageBackground("https://pmall-yyh.oss-cn-chengdu.aliyuncs.com/IMG_20231212_011126.jpg");
+        newUserDO.setAccountStatus(0);
+        try {
+            this.save(newUserDO);
+        } catch (Exception e) {
+            throw new SystemException(ExceptionMsgEnum.DB_ERROR, e);
+        }
+        return newUserDO;
+    }
+
 }
 
 
