@@ -1,0 +1,500 @@
+[2023-12-11 15:15:52.125] [background-preinit] INFO  o.h.validator.internal.util.Version : HV000001: Hibernate Validator 6.2.0.Final
+[2023-12-11 15:15:52.892] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway] & group[DEFAULT_GROUP]
+[2023-12-11 15:15:52.897] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 15:15:52.909] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-gateway-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}]
+[2023-12-11 15:15:52.912] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : The following profiles are active: dev
+[2023-12-11 15:15:53.360] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=43dc553d-af14-3d29-837c-cf6cccc5ff38
+[2023-12-11 15:15:53.401] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 15:15:53.402] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 15:15:53.402] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 15:15:53.528] [main] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.yyh.xfs.gateway.utils.JWTUtil.secret
+[2023-12-11 15:15:54.637] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [After]
+[2023-12-11 15:15:54.637] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Before]
+[2023-12-11 15:15:54.637] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Between]
+[2023-12-11 15:15:54.637] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Cookie]
+[2023-12-11 15:15:54.637] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Header]
+[2023-12-11 15:15:54.637] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Host]
+[2023-12-11 15:15:54.639] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Method]
+[2023-12-11 15:15:54.639] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Path]
+[2023-12-11 15:15:54.639] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Query]
+[2023-12-11 15:15:54.639] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [ReadBody]
+[2023-12-11 15:15:54.639] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [RemoteAddr]
+[2023-12-11 15:15:54.639] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+[2023-12-11 15:15:54.639] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Weight]
+[2023-12-11 15:15:54.639] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+[2023-12-11 15:15:55.209] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 15:15:55.925] [main] INFO  o.s.b.w.e.netty.NettyWebServer : Netty started on port 9000
+[2023-12-11 15:15:56.634] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-gateway 192.168.229.1:9000 register finished
+[2023-12-11 15:15:56.644] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : Started GatewayApplication in 5.374 seconds (JVM running for 6.424)
+[2023-12-11 15:15:56.647] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway, group=DEFAULT_GROUP
+[2023-12-11 15:15:56.648] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway.yaml, group=DEFAULT_GROUP
+[2023-12-11 15:15:56.649] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 16:54:59.248] [com.alibaba.nacos.client.Worker.longPolling.fixed-192.168.124.100_8848-54c5b22b-7b63-4073-9a77-f07142769f1f] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway] & group[DEFAULT_GROUP]
+[2023-12-11 16:54:59.253] [com.alibaba.nacos.client.Worker.longPolling.fixed-192.168.124.100_8848-54c5b22b-7b63-4073-9a77-f07142769f1f] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 16:54:59.261] [com.alibaba.nacos.client.Worker.longPolling.fixed-192.168.124.100_8848-54c5b22b-7b63-4073-9a77-f07142769f1f] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-gateway-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}]
+[2023-12-11 16:54:59.264] [com.alibaba.nacos.client.Worker.longPolling.fixed-192.168.124.100_8848-54c5b22b-7b63-4073-9a77-f07142769f1f] INFO  o.s.boot.SpringApplication : The following profiles are active: dev
+[2023-12-11 16:54:59.282] [com.alibaba.nacos.client.Worker.longPolling.fixed-192.168.124.100_8848-54c5b22b-7b63-4073-9a77-f07142769f1f] INFO  o.s.boot.SpringApplication : Started application in 0.603 seconds (JVM running for 5949.062)
+[2023-12-11 16:54:59.380] [com.alibaba.nacos.client.Worker.longPolling.fixed-192.168.124.100_8848-54c5b22b-7b63-4073-9a77-f07142769f1f] INFO  o.s.c.e.event.RefreshEventListener : Refresh keys changed: [spring.cloud.gateway.routes[1].uri, spring.cloud.gateway.routes[1].id, spring.cloud.gateway.routes[1].predicates[0]]
+[2023-12-11 16:59:32.340] [Thread-20] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 16:59:32.340] [Thread-3] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 16:59:32.340] [Thread-20] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 16:59:32.340] [Thread-3] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 16:59:32.374] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 16:59:32.380] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 16:59:46.814] [background-preinit] INFO  o.h.validator.internal.util.Version : HV000001: Hibernate Validator 6.2.0.Final
+[2023-12-11 16:59:47.524] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway] & group[DEFAULT_GROUP]
+[2023-12-11 16:59:47.528] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 16:59:47.538] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-gateway-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}]
+[2023-12-11 16:59:47.542] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : The following profiles are active: dev
+[2023-12-11 16:59:47.919] [main] WARN  o.s.b.w.r.c.AnnotationConfigReactiveWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'redisTemplate' defined in class path resource [com/yyh/xfs/common/redis/config/RedisConfig.class]: Cannot register bean definition [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=com.yyh.xfs.common.redis.config.CustomRedisConfig; factoryMethodName=redisTemplate; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [com/yyh/xfs/common/redis/config/RedisConfig.class]] for bean 'redisTemplate': There is already [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration; factoryMethodName=redisTemplate; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/data/redis/RedisAutoConfiguration.class]] bound.
+[2023-12-11 16:59:47.925] [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-12-11 16:59:47.940] [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The bean 'redisTemplate', defined in class path resource [com/yyh/xfs/common/redis/config/RedisConfig.class], could not be registered. A bean with that name has already been defined in class path resource [org/springframework/boot/autoconfigure/data/redis/RedisAutoConfiguration.class] and overriding is disabled.
+
+Action:
+
+Consider renaming one of the beans or enabling overriding by setting spring.main.allow-bean-definition-overriding=true
+
+[2023-12-11 16:59:47.942] [Thread-3] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 16:59:47.943] [Thread-3] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 17:04:12.129] [background-preinit] INFO  o.h.validator.internal.util.Version : HV000001: Hibernate Validator 6.2.0.Final
+[2023-12-11 17:04:12.841] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway] & group[DEFAULT_GROUP]
+[2023-12-11 17:04:12.845] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 17:04:12.857] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-gateway-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}]
+[2023-12-11 17:04:12.862] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : The following profiles are active: dev
+[2023-12-11 17:04:13.257] [main] WARN  o.s.b.w.r.c.AnnotationConfigReactiveWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'redisTemplate' defined in class path resource [com/yyh/xfs/common/redis/config/RedisConfig.class]: Cannot register bean definition [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=com.yyh.xfs.common.redis.config.CustomRedisConfig; factoryMethodName=redisTemplate; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [com/yyh/xfs/common/redis/config/RedisConfig.class]] for bean 'redisTemplate': There is already [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration; factoryMethodName=redisTemplate; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/data/redis/RedisAutoConfiguration.class]] bound.
+[2023-12-11 17:04:13.264] [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-12-11 17:04:13.278] [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The bean 'redisTemplate', defined in class path resource [com/yyh/xfs/common/redis/config/RedisConfig.class], could not be registered. A bean with that name has already been defined in class path resource [org/springframework/boot/autoconfigure/data/redis/RedisAutoConfiguration.class] and overriding is disabled.
+
+Action:
+
+Consider renaming one of the beans or enabling overriding by setting spring.main.allow-bean-definition-overriding=true
+
+[2023-12-11 17:04:13.279] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 17:04:13.279] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 17:04:45.362] [background-preinit] INFO  o.h.validator.internal.util.Version : HV000001: Hibernate Validator 6.2.0.Final
+[2023-12-11 17:04:46.064] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway] & group[DEFAULT_GROUP]
+[2023-12-11 17:04:46.068] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 17:04:46.077] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-gateway-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}]
+[2023-12-11 17:04:46.082] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : The following profiles are active: dev
+[2023-12-11 17:04:46.479] [main] WARN  o.s.b.w.r.c.AnnotationConfigReactiveWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'redisTemplate' defined in class path resource [com/yyh/xfs/common/redis/config/RedisConfig.class]: Cannot register bean definition [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=com.yyh.xfs.common.redis.config.CustomRedisConfig; factoryMethodName=redisTemplate; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [com/yyh/xfs/common/redis/config/RedisConfig.class]] for bean 'redisTemplate': There is already [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration; factoryMethodName=redisTemplate; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/data/redis/RedisAutoConfiguration.class]] bound.
+[2023-12-11 17:04:46.485] [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-12-11 17:04:46.498] [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The bean 'redisTemplate', defined in class path resource [com/yyh/xfs/common/redis/config/RedisConfig.class], could not be registered. A bean with that name has already been defined in class path resource [org/springframework/boot/autoconfigure/data/redis/RedisAutoConfiguration.class] and overriding is disabled.
+
+Action:
+
+Consider renaming one of the beans or enabling overriding by setting spring.main.allow-bean-definition-overriding=true
+
+[2023-12-11 17:04:46.500] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 17:04:46.500] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 17:04:53.454] [background-preinit] INFO  o.h.validator.internal.util.Version : HV000001: Hibernate Validator 6.2.0.Final
+[2023-12-11 17:04:54.164] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway] & group[DEFAULT_GROUP]
+[2023-12-11 17:04:54.167] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 17:04:54.176] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-gateway-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}]
+[2023-12-11 17:04:54.181] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : The following profiles are active: dev
+[2023-12-11 17:04:54.516] [main] WARN  o.s.b.w.r.c.AnnotationConfigReactiveWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'redisTemplate' defined in class path resource [com/yyh/xfs/common/redis/config/RedisConfig.class]: Cannot register bean definition [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=com.yyh.xfs.common.redis.config.CustomRedisConfig; factoryMethodName=redisTemplate; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [com/yyh/xfs/common/redis/config/RedisConfig.class]] for bean 'redisTemplate': There is already [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration; factoryMethodName=redisTemplate; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/data/redis/RedisAutoConfiguration.class]] bound.
+[2023-12-11 17:04:54.523] [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-12-11 17:04:54.537] [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The bean 'redisTemplate', defined in class path resource [com/yyh/xfs/common/redis/config/RedisConfig.class], could not be registered. A bean with that name has already been defined in class path resource [org/springframework/boot/autoconfigure/data/redis/RedisAutoConfiguration.class] and overriding is disabled.
+
+Action:
+
+Consider renaming one of the beans or enabling overriding by setting spring.main.allow-bean-definition-overriding=true
+
+[2023-12-11 17:04:54.539] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 17:04:54.539] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 17:10:56.303] [background-preinit] INFO  o.h.validator.internal.util.Version : HV000001: Hibernate Validator 6.2.0.Final
+[2023-12-11 17:10:56.970] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway] & group[DEFAULT_GROUP]
+[2023-12-11 17:10:56.981] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 17:10:56.990] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-gateway-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}]
+[2023-12-11 17:10:56.993] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : The following profiles are active: dev
+[2023-12-11 17:10:57.342] [main] WARN  o.s.b.w.r.c.AnnotationConfigReactiveWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'redisTemplate' defined in class path resource [com/yyh/xfs/common/redis/config/CustomRedisConfig.class]: Cannot register bean definition [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=com.yyh.xfs.common.redis.config.CustomRedisConfig; factoryMethodName=redisTemplate; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [com/yyh/xfs/common/redis/config/CustomRedisConfig.class]] for bean 'redisTemplate': There is already [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration; factoryMethodName=redisTemplate; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/data/redis/RedisAutoConfiguration.class]] bound.
+[2023-12-11 17:10:57.348] [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-12-11 17:10:57.361] [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The bean 'redisTemplate', defined in class path resource [com/yyh/xfs/common/redis/config/CustomRedisConfig.class], could not be registered. A bean with that name has already been defined in class path resource [org/springframework/boot/autoconfigure/data/redis/RedisAutoConfiguration.class] and overriding is disabled.
+
+Action:
+
+Consider renaming one of the beans or enabling overriding by setting spring.main.allow-bean-definition-overriding=true
+
+[2023-12-11 17:10:57.363] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 17:10:57.363] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 17:12:59.842] [background-preinit] INFO  o.h.validator.internal.util.Version : HV000001: Hibernate Validator 6.2.0.Final
+[2023-12-11 17:13:00.590] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway] & group[DEFAULT_GROUP]
+[2023-12-11 17:13:00.594] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 17:13:00.605] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-gateway-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}]
+[2023-12-11 17:13:00.609] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : The following profiles are active: dev
+[2023-12-11 17:13:01.010] [main] WARN  o.s.b.w.r.c.AnnotationConfigReactiveWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'redisTemplate' defined in class path resource [com/yyh/xfs/common/redis/config/CustomRedisConfig.class]: Cannot register bean definition [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=com.yyh.xfs.common.redis.config.CustomRedisConfig; factoryMethodName=redisTemplate; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [com/yyh/xfs/common/redis/config/CustomRedisConfig.class]] for bean 'redisTemplate': There is already [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration; factoryMethodName=redisTemplate; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/data/redis/RedisAutoConfiguration.class]] bound.
+[2023-12-11 17:13:01.016] [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-12-11 17:13:01.033] [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The bean 'redisTemplate', defined in class path resource [com/yyh/xfs/common/redis/config/CustomRedisConfig.class], could not be registered. A bean with that name has already been defined in class path resource [org/springframework/boot/autoconfigure/data/redis/RedisAutoConfiguration.class] and overriding is disabled.
+
+Action:
+
+Consider renaming one of the beans or enabling overriding by setting spring.main.allow-bean-definition-overriding=true
+
+[2023-12-11 17:13:01.034] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 17:13:01.035] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 17:16:45.081] [background-preinit] INFO  o.h.validator.internal.util.Version : HV000001: Hibernate Validator 6.2.0.Final
+[2023-12-11 17:16:45.746] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway] & group[DEFAULT_GROUP]
+[2023-12-11 17:16:45.750] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 17:16:45.759] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-gateway-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}]
+[2023-12-11 17:16:45.762] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : The following profiles are active: dev
+[2023-12-11 17:16:46.130] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 17:16:46.132] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 17:16:46.150] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 5 ms. Found 0 Redis repository interfaces.
+[2023-12-11 17:16:46.292] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=966dd930-df19-315e-ac36-376231c2b6db
+[2023-12-11 17:16:46.333] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 17:16:46.334] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 17:16:46.335] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 17:16:47.152] [main] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.yyh.xfs.gateway.utils.JWTUtil.secret
+[2023-12-11 17:16:48.092] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [After]
+[2023-12-11 17:16:48.092] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Before]
+[2023-12-11 17:16:48.092] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Between]
+[2023-12-11 17:16:48.092] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Cookie]
+[2023-12-11 17:16:48.092] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Header]
+[2023-12-11 17:16:48.092] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Host]
+[2023-12-11 17:16:48.092] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Method]
+[2023-12-11 17:16:48.092] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Path]
+[2023-12-11 17:16:48.092] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Query]
+[2023-12-11 17:16:48.092] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [ReadBody]
+[2023-12-11 17:16:48.093] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [RemoteAddr]
+[2023-12-11 17:16:48.093] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+[2023-12-11 17:16:48.093] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Weight]
+[2023-12-11 17:16:48.093] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+[2023-12-11 17:16:48.597] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 17:16:49.012] [main] INFO  o.s.b.w.e.netty.NettyWebServer : Netty started on port 9000
+[2023-12-11 17:16:49.647] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-gateway 192.168.229.1:9000 register finished
+[2023-12-11 17:16:49.658] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : Started GatewayApplication in 5.334 seconds (JVM running for 6.262)
+[2023-12-11 17:16:49.663] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway, group=DEFAULT_GROUP
+[2023-12-11 17:16:49.663] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway.yaml, group=DEFAULT_GROUP
+[2023-12-11 17:16:49.664] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 17:48:14.775] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 17:48:14.775] [Thread-22] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 17:48:14.776] [Thread-22] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 17:48:14.776] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 17:48:14.781] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 17:48:14.785] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 18:27:08.730] [background-preinit] INFO  o.h.validator.internal.util.Version : HV000001: Hibernate Validator 6.2.0.Final
+[2023-12-11 18:27:10.566] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway] & group[DEFAULT_GROUP]
+[2023-12-11 18:27:10.573] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 18:27:10.596] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-gateway-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}]
+[2023-12-11 18:27:10.602] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : The following profiles are active: dev
+[2023-12-11 18:27:12.165] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 18:27:12.170] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 18:27:12.207] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+[2023-12-11 18:27:13.033] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=966dd930-df19-315e-ac36-376231c2b6db
+[2023-12-11 18:27:13.332] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 18:27:13.334] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 18:27:13.339] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 18:27:15.666] [main] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.yyh.xfs.gateway.utils.JWTUtil.secret
+[2023-12-11 18:27:17.248] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [After]
+[2023-12-11 18:27:17.248] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Before]
+[2023-12-11 18:27:17.248] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Between]
+[2023-12-11 18:27:17.249] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Cookie]
+[2023-12-11 18:27:17.249] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Header]
+[2023-12-11 18:27:17.250] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Host]
+[2023-12-11 18:27:17.251] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Method]
+[2023-12-11 18:27:17.251] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Path]
+[2023-12-11 18:27:17.251] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Query]
+[2023-12-11 18:27:17.253] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [ReadBody]
+[2023-12-11 18:27:17.253] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [RemoteAddr]
+[2023-12-11 18:27:17.253] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+[2023-12-11 18:27:17.253] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Weight]
+[2023-12-11 18:27:17.253] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+[2023-12-11 18:27:18.765] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 18:27:19.594] [main] INFO  o.s.b.w.e.netty.NettyWebServer : Netty started on port 9000
+[2023-12-11 18:27:20.670] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-gateway 192.168.229.1:9000 register finished
+[2023-12-11 18:27:20.687] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : Started GatewayApplication in 14.197 seconds (JVM running for 16.284)
+[2023-12-11 18:27:20.692] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway, group=DEFAULT_GROUP
+[2023-12-11 18:27:20.692] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway.yaml, group=DEFAULT_GROUP
+[2023-12-11 18:27:20.695] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 19:20:41.406] [Thread-7] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 19:20:41.405] [Thread-34] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 19:20:41.413] [Thread-34] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 19:20:41.414] [Thread-7] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 19:20:41.442] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 19:20:41.462] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 19:20:48.455] [background-preinit] INFO  o.h.validator.internal.util.Version : HV000001: Hibernate Validator 6.2.0.Final
+[2023-12-11 19:20:49.386] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway] & group[DEFAULT_GROUP]
+[2023-12-11 19:20:49.391] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 19:20:49.403] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-gateway-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}]
+[2023-12-11 19:20:49.409] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : The following profiles are active: dev
+[2023-12-11 19:20:49.901] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 19:20:49.902] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 19:20:49.921] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6 ms. Found 0 Redis repository interfaces.
+[2023-12-11 19:20:50.075] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=966dd930-df19-315e-ac36-376231c2b6db
+[2023-12-11 19:20:50.135] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 19:20:50.136] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 19:20:50.137] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 19:20:51.161] [main] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.yyh.xfs.gateway.utils.JWTUtil.secret
+[2023-12-11 19:20:52.362] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [After]
+[2023-12-11 19:20:52.363] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Before]
+[2023-12-11 19:20:52.363] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Between]
+[2023-12-11 19:20:52.363] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Cookie]
+[2023-12-11 19:20:52.363] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Header]
+[2023-12-11 19:20:52.363] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Host]
+[2023-12-11 19:20:52.363] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Method]
+[2023-12-11 19:20:52.363] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Path]
+[2023-12-11 19:20:52.363] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Query]
+[2023-12-11 19:20:52.363] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [ReadBody]
+[2023-12-11 19:20:52.363] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [RemoteAddr]
+[2023-12-11 19:20:52.363] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+[2023-12-11 19:20:52.364] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Weight]
+[2023-12-11 19:20:52.364] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+[2023-12-11 19:20:53.143] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 19:20:53.834] [main] INFO  o.s.b.w.e.netty.NettyWebServer : Netty started on port 9000
+[2023-12-11 19:20:54.857] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-gateway 192.168.229.1:9000 register finished
+[2023-12-11 19:20:54.877] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : Started GatewayApplication in 7.511 seconds (JVM running for 8.685)
+[2023-12-11 19:20:54.884] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway, group=DEFAULT_GROUP
+[2023-12-11 19:20:54.884] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway.yaml, group=DEFAULT_GROUP
+[2023-12-11 19:20:54.887] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 19:21:44.699] [Thread-26] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 19:21:44.699] [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 19:21:44.699] [Thread-26] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 19:21:44.700] [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 19:21:44.707] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 19:21:44.723] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 19:21:58.052] [background-preinit] INFO  o.h.validator.internal.util.Version : HV000001: Hibernate Validator 6.2.0.Final
+[2023-12-11 19:21:58.775] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway] & group[DEFAULT_GROUP]
+[2023-12-11 19:21:58.778] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 19:21:58.786] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-gateway-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}]
+[2023-12-11 19:21:58.791] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : The following profiles are active: dev
+[2023-12-11 19:21:59.239] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 19:21:59.241] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 19:21:59.258] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 0 Redis repository interfaces.
+[2023-12-11 19:21:59.408] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=966dd930-df19-315e-ac36-376231c2b6db
+[2023-12-11 19:21:59.451] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 19:21:59.452] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 19:21:59.453] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 19:22:00.316] [main] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.yyh.xfs.gateway.utils.JWTUtil.secret
+[2023-12-11 19:22:01.379] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [After]
+[2023-12-11 19:22:01.379] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Before]
+[2023-12-11 19:22:01.379] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Between]
+[2023-12-11 19:22:01.379] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Cookie]
+[2023-12-11 19:22:01.379] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Header]
+[2023-12-11 19:22:01.379] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Host]
+[2023-12-11 19:22:01.379] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Method]
+[2023-12-11 19:22:01.380] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Path]
+[2023-12-11 19:22:01.380] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Query]
+[2023-12-11 19:22:01.380] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [ReadBody]
+[2023-12-11 19:22:01.380] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [RemoteAddr]
+[2023-12-11 19:22:01.380] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+[2023-12-11 19:22:01.380] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Weight]
+[2023-12-11 19:22:01.380] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+[2023-12-11 19:22:01.929] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 19:22:02.401] [main] INFO  o.s.b.w.e.netty.NettyWebServer : Netty started on port 9000
+[2023-12-11 19:22:03.172] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-gateway 192.168.229.1:9000 register finished
+[2023-12-11 19:22:03.187] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : Started GatewayApplication in 5.974 seconds (JVM running for 6.967)
+[2023-12-11 19:22:03.191] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway, group=DEFAULT_GROUP
+[2023-12-11 19:22:03.191] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway.yaml, group=DEFAULT_GROUP
+[2023-12-11 19:22:03.193] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 20:21:05.630] [Thread-23] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 20:21:05.630] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 20:21:05.636] [Thread-23] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 20:21:05.638] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 20:21:05.735] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 20:21:05.747] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 20:21:31.765] [background-preinit] INFO  o.h.validator.internal.util.Version : HV000001: Hibernate Validator 6.2.0.Final
+[2023-12-11 20:21:32.792] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway] & group[DEFAULT_GROUP]
+[2023-12-11 20:21:32.795] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 20:21:32.808] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-gateway-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}]
+[2023-12-11 20:21:32.814] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : The following profiles are active: dev
+[2023-12-11 20:21:33.225] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 20:21:33.227] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 20:21:33.241] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 5 ms. Found 0 Redis repository interfaces.
+[2023-12-11 20:21:33.361] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=75676e79-8f1d-33b4-bb3c-493b322b265d
+[2023-12-11 20:21:33.401] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 20:21:33.402] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 20:21:33.403] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 20:21:35.312] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [After]
+[2023-12-11 20:21:35.312] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Before]
+[2023-12-11 20:21:35.312] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Between]
+[2023-12-11 20:21:35.312] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Cookie]
+[2023-12-11 20:21:35.312] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Header]
+[2023-12-11 20:21:35.312] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Host]
+[2023-12-11 20:21:35.313] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Method]
+[2023-12-11 20:21:35.313] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Path]
+[2023-12-11 20:21:35.313] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Query]
+[2023-12-11 20:21:35.313] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [ReadBody]
+[2023-12-11 20:21:35.313] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [RemoteAddr]
+[2023-12-11 20:21:35.313] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+[2023-12-11 20:21:35.313] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Weight]
+[2023-12-11 20:21:35.313] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+[2023-12-11 20:21:36.038] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 20:21:36.607] [main] INFO  o.s.b.w.e.netty.NettyWebServer : Netty started on port 9000
+[2023-12-11 20:21:37.483] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-gateway 192.168.229.1:9000 register finished
+[2023-12-11 20:21:37.495] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : Started GatewayApplication in 6.659 seconds (JVM running for 7.994)
+[2023-12-11 20:21:37.500] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway, group=DEFAULT_GROUP
+[2023-12-11 20:21:37.500] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway.yaml, group=DEFAULT_GROUP
+[2023-12-11 20:21:37.500] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 20:25:17.611] [Thread-24] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 20:25:17.611] [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 20:25:17.612] [Thread-24] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 20:25:17.612] [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 20:25:17.619] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 20:25:17.630] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 20:25:25.960] [background-preinit] INFO  o.h.validator.internal.util.Version : HV000001: Hibernate Validator 6.2.0.Final
+[2023-12-11 20:25:27.050] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway] & group[DEFAULT_GROUP]
+[2023-12-11 20:25:27.057] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 20:25:27.072] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-gateway-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}]
+[2023-12-11 20:25:27.081] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : The following profiles are active: dev
+[2023-12-11 20:25:27.615] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 20:25:27.619] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 20:25:27.638] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6 ms. Found 0 Redis repository interfaces.
+[2023-12-11 20:25:27.829] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=75676e79-8f1d-33b4-bb3c-493b322b265d
+[2023-12-11 20:25:27.886] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 20:25:27.887] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 20:25:27.888] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 20:25:29.057] [main] WARN  o.s.b.w.r.c.AnnotationConfigReactiveWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'JWTFilter' defined in file [D:\ideaproject\xiaofanshu\xfs-gateway\target\classes\com\yyh\xfs\gateway\filter\JWTFilter.class]: Unsatisfied dependency expressed through constructor parameter 1; nested exception is org.springframework.boot.context.properties.ConfigurationPropertiesBindException: Error creating bean with name 'jwtProperties': Could not bind properties to 'JwtProperties' : prefix=jwt, ignoreInvalidFields=false, ignoreUnknownFields=true; nested exception is org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'jwt.expire-time' to long
+[2023-12-11 20:25:29.086] [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-12-11 20:25:29.107] [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to bind properties under 'jwt.expire-time' to long:
+
+    Property: jwt.expire-time
+    Value: ${24 * 60 * 60 * 1000}
+    Origin: "jwt.expire-time" from property source "bootstrapProperties-jwt.yaml,DEFAULT_GROUP"
+    Reason: failed to convert java.lang.String to long (caused by java.lang.NumberFormatException: For input string: "${24*60*60*1000}")
+
+Action:
+
+Update your application's configuration
+
+[2023-12-11 20:25:30.070] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 20:28:10.850] [background-preinit] INFO  o.h.validator.internal.util.Version : HV000001: Hibernate Validator 6.2.0.Final
+[2023-12-11 20:28:11.859] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway] & group[DEFAULT_GROUP]
+[2023-12-11 20:28:11.865] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 20:28:11.877] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-gateway-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}]
+[2023-12-11 20:28:11.886] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : The following profiles are active: dev
+[2023-12-11 20:28:12.506] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 20:28:12.509] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 20:28:12.536] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
+[2023-12-11 20:28:12.777] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=75676e79-8f1d-33b4-bb3c-493b322b265d
+[2023-12-11 20:28:12.852] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 20:28:12.854] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 20:28:12.856] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 20:28:15.349] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [After]
+[2023-12-11 20:28:15.349] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Before]
+[2023-12-11 20:28:15.350] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Between]
+[2023-12-11 20:28:15.350] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Cookie]
+[2023-12-11 20:28:15.350] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Header]
+[2023-12-11 20:28:15.350] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Host]
+[2023-12-11 20:28:15.350] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Method]
+[2023-12-11 20:28:15.350] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Path]
+[2023-12-11 20:28:15.350] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Query]
+[2023-12-11 20:28:15.350] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [ReadBody]
+[2023-12-11 20:28:15.351] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [RemoteAddr]
+[2023-12-11 20:28:15.351] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+[2023-12-11 20:28:15.351] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Weight]
+[2023-12-11 20:28:15.351] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+[2023-12-11 20:28:16.019] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 20:28:16.566] [main] INFO  o.s.b.w.e.netty.NettyWebServer : Netty started on port 9000
+[2023-12-11 20:28:17.404] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-gateway 192.168.229.1:9000 register finished
+[2023-12-11 20:28:17.421] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : Started GatewayApplication in 7.61 seconds (JVM running for 8.684)
+[2023-12-11 20:28:17.428] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway, group=DEFAULT_GROUP
+[2023-12-11 20:28:17.429] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway.yaml, group=DEFAULT_GROUP
+[2023-12-11 20:28:17.430] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 20:31:02.202] [Thread-26] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 20:31:02.203] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 20:31:02.203] [Thread-26] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 20:31:02.204] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 20:31:02.210] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 20:31:02.216] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 23:09:00.989] [background-preinit] INFO  o.h.validator.internal.util.Version : HV000001: Hibernate Validator 6.2.0.Final
+[2023-12-11 23:09:02.299] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway] & group[DEFAULT_GROUP]
+[2023-12-11 23:09:02.308] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 23:09:02.321] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-gateway-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}]
+[2023-12-11 23:09:02.327] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : The following profiles are active: dev
+[2023-12-11 23:09:03.008] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 23:09:03.012] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 23:09:03.041] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+[2023-12-11 23:09:03.247] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=75676e79-8f1d-33b4-bb3c-493b322b265d
+[2023-12-11 23:09:03.313] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 23:09:03.314] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 23:09:03.316] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-11 23:09:06.224] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [After]
+[2023-12-11 23:09:06.224] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Before]
+[2023-12-11 23:09:06.224] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Between]
+[2023-12-11 23:09:06.224] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Cookie]
+[2023-12-11 23:09:06.224] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Header]
+[2023-12-11 23:09:06.225] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Host]
+[2023-12-11 23:09:06.225] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Method]
+[2023-12-11 23:09:06.225] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Path]
+[2023-12-11 23:09:06.225] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Query]
+[2023-12-11 23:09:06.225] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [ReadBody]
+[2023-12-11 23:09:06.225] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [RemoteAddr]
+[2023-12-11 23:09:06.226] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+[2023-12-11 23:09:06.226] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Weight]
+[2023-12-11 23:09:06.226] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+[2023-12-11 23:09:07.047] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 23:09:07.779] [main] INFO  o.s.b.w.e.netty.NettyWebServer : Netty started on port 9000
+[2023-12-11 23:09:08.978] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-gateway 192.168.229.1:9000 register finished
+[2023-12-11 23:09:08.997] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : Started GatewayApplication in 9.296 seconds (JVM running for 10.708)
+[2023-12-11 23:09:09.005] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway, group=DEFAULT_GROUP
+[2023-12-11 23:09:09.006] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway.yaml, group=DEFAULT_GROUP
+[2023-12-11 23:09:09.008] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway-dev.yaml, group=DEFAULT_GROUP

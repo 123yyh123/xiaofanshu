@@ -1,0 +1,645 @@
+[2023-12-11 15:15:50.689] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth] & group[DEFAULT_GROUP]
+[2023-12-11 15:15:50.701] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 15:15:50.716] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-auth-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-11 15:15:50.725] [main] INFO  com.yyh.xfs.auth.AuthApplication : The following profiles are active: dev
+[2023-12-11 15:15:51.517] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 15:15:51.519] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 15:15:51.541] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6 ms. Found 0 Redis repository interfaces.
+[2023-12-11 15:15:51.713] [main] WARN  o.m.s.mapper.ClassPathMapperScanner : No MyBatis mapper was found in '[com.yyh.xfs.auth]' package. Please check your configuration.
+[2023-12-11 15:15:51.810] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=3fa2bd07-116f-3c92-a340-c229f76eccf5
+[2023-12-11 15:15:52.123] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9100 (http)
+[2023-12-11 15:15:52.134] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9100"]
+[2023-12-11 15:15:52.136] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-11 15:15:52.136] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-11 15:15:52.302] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-11 15:15:52.302] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1563 ms
+[2023-12-11 15:15:54.032] [main] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.yyh.xfs.common.web.utils.JWTUtil.secret
+[2023-12-11 15:15:54.554] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 15:15:54.741] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Starting ProtocolHandler ["http-nio-9100"]
+[2023-12-11 15:15:54.763] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 9100 (http) with context path ''
+[2023-12-11 15:15:54.776] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-auth 192.168.229.1:9100 register finished
+[2023-12-11 15:15:55.222] [main] INFO  com.yyh.xfs.auth.AuthApplication : Started AuthApplication in 6.992 seconds (JVM running for 8.227)
+[2023-12-11 15:15:55.227] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 15:15:55.228] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth, group=DEFAULT_GROUP
+[2023-12-11 15:15:55.228] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth.yaml, group=DEFAULT_GROUP
+[2023-12-11 16:59:34.468] [Thread-20] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 16:59:34.468] [Thread-2] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 16:59:34.483] [Thread-20] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 16:59:34.489] [Thread-2] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 16:59:34.974] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 16:59:34.981] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 16:59:51.538] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth] & group[DEFAULT_GROUP]
+[2023-12-11 16:59:51.540] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 16:59:51.546] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-auth-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-11 16:59:51.550] [main] INFO  com.yyh.xfs.auth.AuthApplication : The following profiles are active: dev
+[2023-12-11 16:59:52.123] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 16:59:52.125] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 16:59:52.142] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 0 Redis repository interfaces.
+[2023-12-11 16:59:52.334] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=7b060b5a-375e-3b89-84c2-1ee28acf3966
+[2023-12-11 16:59:52.571] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9100 (http)
+[2023-12-11 16:59:52.608] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9100"]
+[2023-12-11 16:59:52.609] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-11 16:59:52.609] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-11 16:59:52.720] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-11 16:59:52.720] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1162 ms
+[2023-12-11 16:59:53.595] [main] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.yyh.xfs.common.web.utils.JWTUtil.secret
+[2023-12-11 16:59:54.745] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 16:59:54.876] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Starting ProtocolHandler ["http-nio-9100"]
+[2023-12-11 16:59:54.888] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 9100 (http) with context path ''
+[2023-12-11 16:59:54.896] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-auth 192.168.229.1:9100 register finished
+[2023-12-11 16:59:55.253] [main] INFO  com.yyh.xfs.auth.AuthApplication : Started AuthApplication in 5.176 seconds (JVM running for 6.087)
+[2023-12-11 16:59:55.257] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 16:59:55.258] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth, group=DEFAULT_GROUP
+[2023-12-11 16:59:55.259] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth.yaml, group=DEFAULT_GROUP
+[2023-12-11 17:08:37.209] [Thread-23] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 17:08:37.209] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 17:08:37.209] [Thread-23] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 17:08:37.209] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 17:08:37.453] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 17:08:37.459] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 17:08:51.441] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth] & group[DEFAULT_GROUP]
+[2023-12-11 17:08:51.446] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 17:08:51.455] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-auth-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-11 17:08:51.460] [main] INFO  com.yyh.xfs.auth.AuthApplication : The following profiles are active: dev
+[2023-12-11 17:08:52.104] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 17:08:52.105] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 17:08:52.126] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 8 ms. Found 0 Redis repository interfaces.
+[2023-12-11 17:08:52.342] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=7b060b5a-375e-3b89-84c2-1ee28acf3966
+[2023-12-11 17:08:52.598] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9100 (http)
+[2023-12-11 17:08:52.606] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9100"]
+[2023-12-11 17:08:52.607] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-11 17:08:52.607] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-11 17:08:52.759] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-11 17:08:52.759] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1288 ms
+[2023-12-11 17:08:53.711] [main] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.yyh.xfs.common.web.utils.JWTUtil.secret
+[2023-12-11 17:08:55.001] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 17:08:55.158] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Starting ProtocolHandler ["http-nio-9100"]
+[2023-12-11 17:08:55.176] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 9100 (http) with context path ''
+[2023-12-11 17:08:55.185] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-auth 192.168.229.1:9100 register finished
+[2023-12-11 17:08:55.564] [main] INFO  com.yyh.xfs.auth.AuthApplication : Started AuthApplication in 5.873 seconds (JVM running for 6.816)
+[2023-12-11 17:08:55.570] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 17:08:55.570] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth, group=DEFAULT_GROUP
+[2023-12-11 17:08:55.571] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth.yaml, group=DEFAULT_GROUP
+[2023-12-11 17:10:47.933] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 17:10:47.934] [Thread-24] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 17:10:47.934] [Thread-24] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 17:10:47.934] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 17:10:48.154] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 17:10:48.157] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 17:11:01.724] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth] & group[DEFAULT_GROUP]
+[2023-12-11 17:11:01.728] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 17:11:01.734] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-auth-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-11 17:11:01.740] [main] INFO  com.yyh.xfs.auth.AuthApplication : The following profiles are active: dev
+[2023-12-11 17:11:02.384] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 17:11:02.386] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 17:11:02.408] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 8 ms. Found 0 Redis repository interfaces.
+[2023-12-11 17:11:02.633] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=c9de25ca-a3d2-3ec3-a5fe-b5af29f6b5b5
+[2023-12-11 17:11:02.891] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9100 (http)
+[2023-12-11 17:11:02.899] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9100"]
+[2023-12-11 17:11:02.900] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-11 17:11:02.900] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-11 17:11:03.038] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-11 17:11:03.038] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1288 ms
+[2023-12-11 17:11:03.960] [main] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.yyh.xfs.common.web.utils.JWTUtil.secret
+[2023-12-11 17:11:05.251] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 17:11:05.397] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Starting ProtocolHandler ["http-nio-9100"]
+[2023-12-11 17:11:05.410] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 9100 (http) with context path ''
+[2023-12-11 17:11:05.419] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-auth 192.168.229.1:9100 register finished
+[2023-12-11 17:11:05.810] [main] INFO  com.yyh.xfs.auth.AuthApplication : Started AuthApplication in 5.963 seconds (JVM running for 6.866)
+[2023-12-11 17:11:05.817] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 17:11:05.817] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth, group=DEFAULT_GROUP
+[2023-12-11 17:11:05.818] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth.yaml, group=DEFAULT_GROUP
+[2023-12-11 17:20:03.349] [http-nio-9100-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2023-12-11 17:20:03.349] [http-nio-9100-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+[2023-12-11 17:20:03.354] [http-nio-9100-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 5 ms
+[2023-12-11 17:20:03.427] [http-nio-9100-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "13711111111"]
+[2023-12-11 17:20:45.103] [http-nio-9100-exec-2] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "13711111111"]
+[2023-12-11 17:20:48.010] [http-nio-9100-exec-3] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "13711111111"]
+[2023-12-11 17:22:11.812] [http-nio-9100-exec-4] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "13711111111"]
+[2023-12-11 17:22:16.600] [http-nio-9100-exec-5] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "13711111111"]
+[2023-12-11 17:22:20.348] [http-nio-9100-exec-6] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Starting...
+[2023-12-11 17:22:20.503] [http-nio-9100-exec-6] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Start completed.
+[2023-12-11 17:22:20.608] [http-nio-9100-exec-6] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.jdbc.BadSqlGrammarException: 
+### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: Unknown column 'create_time' in 'field list'
+### The error may exist in com/yyh/xfs/user/mapper/UserMapper.java (best guess)
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: SELECT  id,uid,nickname,avatar_url,age,sex,area,self_introduction,birthday,home_page_background,occupation,phone_number,password,wx_open_id,qq_open_id,facebook_open_id,account_status,create_time,update_time  FROM user     WHERE (phone_number = ? AND password = ?)
+### Cause: java.sql.SQLSyntaxErrorException: Unknown column 'create_time' in 'field list'
+; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: Unknown column 'create_time' in 'field list'] with root cause
+java.sql.SQLSyntaxErrorException: Unknown column 'create_time' in 'field list'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:120)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:953)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.execute(ClientPreparedStatement.java:371)
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.execute(HikariProxyPreparedStatement.java)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.ibatis.logging.jdbc.PreparedStatementLogger.invoke(PreparedStatementLogger.java:59)
+	at com.sun.proxy.$Proxy118.execute(Unknown Source)
+	at org.apache.ibatis.executor.statement.PreparedStatementHandler.query(PreparedStatementHandler.java:64)
+	at org.apache.ibatis.executor.statement.RoutingStatementHandler.query(RoutingStatementHandler.java:79)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.ibatis.plugin.Plugin.invoke(Plugin.java:63)
+	at com.sun.proxy.$Proxy116.query(Unknown Source)
+	at com.baomidou.mybatisplus.core.executor.MybatisSimpleExecutor.doQuery(MybatisSimpleExecutor.java:69)
+	at org.apache.ibatis.executor.BaseExecutor.queryFromDatabase(BaseExecutor.java:325)
+	at org.apache.ibatis.executor.BaseExecutor.query(BaseExecutor.java:156)
+	at com.baomidou.mybatisplus.core.executor.MybatisCachingExecutor.query(MybatisCachingExecutor.java:165)
+	at com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor.intercept(MybatisPlusInterceptor.java:81)
+	at org.apache.ibatis.plugin.Plugin.invoke(Plugin.java:61)
+	at com.sun.proxy.$Proxy115.query(Unknown Source)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:147)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:140)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectOne(DefaultSqlSession.java:76)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:426)
+	at com.sun.proxy.$Proxy94.selectOne(Unknown Source)
+	at org.mybatis.spring.SqlSessionTemplate.selectOne(SqlSessionTemplate.java:159)
+	at com.baomidou.mybatisplus.core.override.MybatisMapperMethod.execute(MybatisMapperMethod.java:90)
+	at com.baomidou.mybatisplus.core.override.MybatisMapperProxy$PlainMethodInvoker.invoke(MybatisMapperProxy.java:148)
+	at com.baomidou.mybatisplus.core.override.MybatisMapperProxy.invoke(MybatisMapperProxy.java:89)
+	at com.sun.proxy.$Proxy95.selectOne(Unknown Source)
+	at com.baomidou.mybatisplus.extension.service.impl.ServiceImpl.getOne(ServiceImpl.java:201)
+	at com.baomidou.mybatisplus.extension.service.IService.getOne(IService.java:229)
+	at com.yyh.xfs.user.service.impl.UserServiceImpl.login(UserServiceImpl.java:42)
+	at com.yyh.xfs.user.service.impl.UserServiceImpl$$FastClassBySpringCGLIB$$437471dc.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:689)
+	at com.yyh.xfs.user.service.impl.UserServiceImpl$$EnhancerBySpringCGLIB$$1bd4cc54.login(<generated>)
+	at com.yyh.xfs.auth.controller.AuthController.login(AuthController.java:25)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1067)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:963)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:681)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:764)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:227)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:94)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:197)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:540)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:357)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:382)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:895)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1732)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:750)
+[2023-12-11 17:24:37.771] [Thread-3] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 17:24:37.771] [Thread-23] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 17:24:37.771] [Thread-23] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 17:24:37.771] [Thread-3] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 17:24:38.009] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 17:24:38.012] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 17:24:47.051] [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Shutdown initiated...
+[2023-12-11 17:24:47.065] [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Shutdown completed.
+[2023-12-11 17:24:51.827] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth] & group[DEFAULT_GROUP]
+[2023-12-11 17:24:51.831] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 17:24:51.839] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-auth-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-11 17:24:51.847] [main] INFO  com.yyh.xfs.auth.AuthApplication : The following profiles are active: dev
+[2023-12-11 17:24:52.650] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 17:24:52.652] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 17:24:52.675] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 8 ms. Found 0 Redis repository interfaces.
+[2023-12-11 17:24:52.904] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=c9de25ca-a3d2-3ec3-a5fe-b5af29f6b5b5
+[2023-12-11 17:24:53.164] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9100 (http)
+[2023-12-11 17:24:53.207] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9100"]
+[2023-12-11 17:24:53.208] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-11 17:24:53.208] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-11 17:24:53.324] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-11 17:24:53.324] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1462 ms
+[2023-12-11 17:24:54.356] [main] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.yyh.xfs.common.web.utils.JWTUtil.secret
+[2023-12-11 17:24:55.691] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 17:24:55.857] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Starting ProtocolHandler ["http-nio-9100"]
+[2023-12-11 17:24:55.893] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 9100 (http) with context path ''
+[2023-12-11 17:24:55.907] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-auth 192.168.229.1:9100 register finished
+[2023-12-11 17:24:56.415] [main] INFO  com.yyh.xfs.auth.AuthApplication : Started AuthApplication in 6.336 seconds (JVM running for 7.315)
+[2023-12-11 17:24:56.422] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 17:24:56.422] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth, group=DEFAULT_GROUP
+[2023-12-11 17:24:56.422] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth.yaml, group=DEFAULT_GROUP
+[2023-12-11 17:25:08.336] [http-nio-9100-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2023-12-11 17:25:08.336] [http-nio-9100-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+[2023-12-11 17:25:08.338] [http-nio-9100-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 2 ms
+[2023-12-11 17:25:08.442] [http-nio-9100-exec-1] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Starting...
+[2023-12-11 17:25:08.530] [http-nio-9100-exec-1] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Start completed.
+[2023-12-11 17:25:21.587] [http-nio-9100-exec-2] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "13711111111"]
+[2023-12-11 17:25:38.041] [http-nio-9100-exec-4] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "13711111111"]
+[2023-12-11 17:28:07.304] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 17:28:07.304] [Thread-25] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 17:28:07.304] [Thread-25] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 17:28:07.304] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 17:28:07.526] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 17:28:07.530] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 17:28:16.603] [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Shutdown initiated...
+[2023-12-11 17:28:16.609] [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Shutdown completed.
+[2023-12-11 17:28:25.383] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth] & group[DEFAULT_GROUP]
+[2023-12-11 17:28:25.390] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 17:28:25.402] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-auth-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-11 17:28:25.409] [main] INFO  com.yyh.xfs.auth.AuthApplication : The following profiles are active: dev
+[2023-12-11 17:28:26.093] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 17:28:26.095] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 17:28:26.118] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+[2023-12-11 17:28:26.381] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=c9de25ca-a3d2-3ec3-a5fe-b5af29f6b5b5
+[2023-12-11 17:28:26.669] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9100 (http)
+[2023-12-11 17:28:26.707] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9100"]
+[2023-12-11 17:28:26.708] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-11 17:28:26.708] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-11 17:28:26.819] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-11 17:28:26.819] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1395 ms
+[2023-12-11 17:28:27.763] [main] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.yyh.xfs.common.web.utils.JWTUtil.secret
+[2023-12-11 17:28:29.439] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 17:28:29.593] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Starting ProtocolHandler ["http-nio-9100"]
+[2023-12-11 17:28:29.605] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 9100 (http) with context path ''
+[2023-12-11 17:28:29.615] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-auth 192.168.229.1:9100 register finished
+[2023-12-11 17:28:30.043] [main] INFO  com.yyh.xfs.auth.AuthApplication : Started AuthApplication in 6.711 seconds (JVM running for 7.735)
+[2023-12-11 17:28:30.049] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 17:28:30.049] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth, group=DEFAULT_GROUP
+[2023-12-11 17:28:30.051] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth.yaml, group=DEFAULT_GROUP
+[2023-12-11 17:33:16.576] [Thread-24] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 17:33:16.576] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 17:33:16.577] [Thread-24] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 17:33:16.577] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 17:33:16.848] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 17:33:16.852] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 17:33:32.635] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth] & group[DEFAULT_GROUP]
+[2023-12-11 17:33:32.640] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 17:33:32.648] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-auth-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-11 17:33:32.653] [main] INFO  com.yyh.xfs.auth.AuthApplication : The following profiles are active: dev
+[2023-12-11 17:33:33.361] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 17:33:33.363] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 17:33:33.384] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+[2023-12-11 17:33:33.650] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=c9de25ca-a3d2-3ec3-a5fe-b5af29f6b5b5
+[2023-12-11 17:33:33.931] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9100 (http)
+[2023-12-11 17:33:33.970] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9100"]
+[2023-12-11 17:33:33.971] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-11 17:33:33.971] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-11 17:33:34.082] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-11 17:33:34.082] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1415 ms
+[2023-12-11 17:33:35.380] [main] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.yyh.xfs.common.web.utils.JWTUtil.secret
+[2023-12-11 17:33:37.534] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 17:33:37.717] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Starting ProtocolHandler ["http-nio-9100"]
+[2023-12-11 17:33:37.734] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 9100 (http) with context path ''
+[2023-12-11 17:33:37.745] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-auth 192.168.229.1:9100 register finished
+[2023-12-11 17:33:38.140] [main] INFO  com.yyh.xfs.auth.AuthApplication : Started AuthApplication in 7.435 seconds (JVM running for 8.386)
+[2023-12-11 17:33:38.147] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 17:33:38.147] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth, group=DEFAULT_GROUP
+[2023-12-11 17:33:38.148] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth.yaml, group=DEFAULT_GROUP
+[2023-12-11 17:33:47.892] [http-nio-9100-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2023-12-11 17:33:47.892] [http-nio-9100-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+[2023-12-11 17:33:47.895] [http-nio-9100-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 2 ms
+[2023-12-11 17:34:04.497] [http-nio-9100-exec-4] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Starting...
+[2023-12-11 17:34:04.613] [http-nio-9100-exec-4] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Start completed.
+[2023-12-11 17:35:05.601] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 17:35:05.601] [Thread-22] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 17:35:05.601] [Thread-22] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 17:35:05.603] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 17:35:05.834] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 17:35:05.838] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 17:35:11.931] [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Shutdown initiated...
+[2023-12-11 17:35:11.945] [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Shutdown completed.
+[2023-12-11 17:35:18.088] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth] & group[DEFAULT_GROUP]
+[2023-12-11 17:35:18.092] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 17:35:18.099] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-auth-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-11 17:35:18.103] [main] INFO  com.yyh.xfs.auth.AuthApplication : The following profiles are active: dev
+[2023-12-11 17:35:18.710] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 17:35:18.712] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 17:35:18.730] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 0 Redis repository interfaces.
+[2023-12-11 17:35:18.932] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=c9de25ca-a3d2-3ec3-a5fe-b5af29f6b5b5
+[2023-12-11 17:35:19.173] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9100 (http)
+[2023-12-11 17:35:19.180] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9100"]
+[2023-12-11 17:35:19.181] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-11 17:35:19.181] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-11 17:35:19.318] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-11 17:35:19.319] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1207 ms
+[2023-12-11 17:35:20.218] [main] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.yyh.xfs.common.web.utils.JWTUtil.secret
+[2023-12-11 17:35:21.432] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 17:35:21.569] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Starting ProtocolHandler ["http-nio-9100"]
+[2023-12-11 17:35:21.583] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 9100 (http) with context path ''
+[2023-12-11 17:35:21.591] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-auth 192.168.229.1:9100 register finished
+[2023-12-11 17:35:21.985] [main] INFO  com.yyh.xfs.auth.AuthApplication : Started AuthApplication in 5.348 seconds (JVM running for 6.23)
+[2023-12-11 17:35:21.990] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 17:35:21.991] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth, group=DEFAULT_GROUP
+[2023-12-11 17:35:21.991] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth.yaml, group=DEFAULT_GROUP
+[2023-12-11 17:35:30.092] [http-nio-9100-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2023-12-11 17:35:30.092] [http-nio-9100-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+[2023-12-11 17:35:30.093] [http-nio-9100-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 1 ms
+[2023-12-11 17:35:30.197] [http-nio-9100-exec-1] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Starting...
+[2023-12-11 17:35:30.286] [http-nio-9100-exec-1] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Start completed.
+[2023-12-11 17:48:04.847] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 17:48:04.848] [Thread-23] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 17:48:04.848] [Thread-23] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 17:48:04.848] [Thread-4] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 17:48:05.083] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 17:48:05.087] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 17:48:14.158] [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Shutdown initiated...
+[2023-12-11 17:48:14.188] [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Shutdown completed.
+[2023-12-11 18:27:14.397] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth] & group[DEFAULT_GROUP]
+[2023-12-11 18:27:14.407] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 18:27:14.418] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-auth-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-11 18:27:14.427] [main] INFO  com.yyh.xfs.auth.AuthApplication : The following profiles are active: dev
+[2023-12-11 18:27:16.116] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 18:27:16.119] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 18:27:16.145] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
+[2023-12-11 18:27:16.443] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=c9de25ca-a3d2-3ec3-a5fe-b5af29f6b5b5
+[2023-12-11 18:27:16.855] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9100 (http)
+[2023-12-11 18:27:16.926] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9100"]
+[2023-12-11 18:27:16.927] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-11 18:27:16.928] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-11 18:27:17.183] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-11 18:27:17.183] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2735 ms
+[2023-12-11 18:27:19.556] [main] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.yyh.xfs.common.web.utils.JWTUtil.secret
+[2023-12-11 18:27:21.381] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 18:27:21.630] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Starting ProtocolHandler ["http-nio-9100"]
+[2023-12-11 18:27:21.662] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 9100 (http) with context path ''
+[2023-12-11 18:27:21.679] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-auth 192.168.229.1:9100 register finished
+[2023-12-11 18:27:22.306] [main] INFO  com.yyh.xfs.auth.AuthApplication : Started AuthApplication in 12.74 seconds (JVM running for 14.48)
+[2023-12-11 18:27:22.312] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 18:27:22.313] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth, group=DEFAULT_GROUP
+[2023-12-11 18:27:22.314] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth.yaml, group=DEFAULT_GROUP
+[2023-12-11 18:41:54.696] [http-nio-9100-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2023-12-11 18:41:54.698] [http-nio-9100-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+[2023-12-11 18:41:54.709] [http-nio-9100-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 11 ms
+[2023-12-11 18:41:54.877] [http-nio-9100-exec-1] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Starting...
+[2023-12-11 18:41:55.040] [http-nio-9100-exec-1] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Start completed.
+[2023-12-11 19:20:41.433] [Thread-33] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 19:20:41.433] [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 19:20:41.436] [Thread-33] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 19:20:41.437] [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 19:20:41.768] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 19:20:41.773] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 19:20:55.288] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth] & group[DEFAULT_GROUP]
+[2023-12-11 19:20:55.293] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 19:20:55.300] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-auth-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-11 19:20:55.304] [main] INFO  com.yyh.xfs.auth.AuthApplication : The following profiles are active: dev
+[2023-12-11 19:20:56.071] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 19:20:56.073] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 19:20:56.095] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+[2023-12-11 19:20:56.347] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=c9de25ca-a3d2-3ec3-a5fe-b5af29f6b5b5
+[2023-12-11 19:20:56.641] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9100 (http)
+[2023-12-11 19:20:56.697] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9100"]
+[2023-12-11 19:20:56.698] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-11 19:20:56.698] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-11 19:20:56.864] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-11 19:20:56.864] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1549 ms
+[2023-12-11 19:20:58.041] [main] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.yyh.xfs.common.web.utils.JWTUtil.secret
+[2023-12-11 19:20:59.530] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 19:20:59.728] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Starting ProtocolHandler ["http-nio-9100"]
+[2023-12-11 19:20:59.748] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 9100 (http) with context path ''
+[2023-12-11 19:20:59.759] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-auth 192.168.229.1:9100 register finished
+[2023-12-11 19:21:00.258] [main] INFO  com.yyh.xfs.auth.AuthApplication : Started AuthApplication in 7.045 seconds (JVM running for 8.172)
+[2023-12-11 19:21:00.264] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 19:21:00.265] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth, group=DEFAULT_GROUP
+[2023-12-11 19:21:00.265] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth.yaml, group=DEFAULT_GROUP
+[2023-12-11 19:23:03.195] [http-nio-9100-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2023-12-11 19:23:03.195] [http-nio-9100-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+[2023-12-11 19:23:03.197] [http-nio-9100-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 1 ms
+[2023-12-11 19:23:03.329] [http-nio-9100-exec-1] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Starting...
+[2023-12-11 19:23:03.458] [http-nio-9100-exec-1] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Start completed.
+[2023-12-11 19:25:32.154] [http-nio-9100-exec-4] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.IllegalArgumentException: base64-encoded secret key cannot be null or empty.] with root cause
+java.lang.IllegalArgumentException: base64-encoded secret key cannot be null or empty.
+	at io.jsonwebtoken.lang.Assert.hasText(Assert.java:135)
+	at io.jsonwebtoken.impl.DefaultJwtBuilder.signWith(DefaultJwtBuilder.java:97)
+	at com.yyh.xfs.common.web.utils.JWTUtil.createToken(JWTUtil.java:23)
+	at com.yyh.xfs.user.service.impl.UserServiceImpl.generateUserVO(UserServiceImpl.java:89)
+	at com.yyh.xfs.user.service.impl.UserServiceImpl.otherLogin(UserServiceImpl.java:75)
+	at com.yyh.xfs.user.service.impl.UserServiceImpl$$FastClassBySpringCGLIB$$437471dc.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:689)
+	at com.yyh.xfs.user.service.impl.UserServiceImpl$$EnhancerBySpringCGLIB$$1bd4cc54.otherLogin(<generated>)
+	at com.yyh.xfs.auth.controller.AuthController.otherLogin(AuthController.java:44)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1067)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:963)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:681)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:764)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:227)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:94)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:197)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:540)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:357)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:382)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:895)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1732)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:750)
+[2023-12-11 20:21:05.664] [Thread-27] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 20:21:05.664] [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 20:21:05.672] [Thread-27] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 20:21:05.676] [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 20:21:06.103] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 20:21:06.106] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 20:21:14.002] [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Shutdown initiated...
+[2023-12-11 20:21:14.007] [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Shutdown completed.
+[2023-12-11 20:21:25.562] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth] & group[DEFAULT_GROUP]
+[2023-12-11 20:21:25.568] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 20:21:25.577] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-auth-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-11 20:21:25.582] [main] INFO  com.yyh.xfs.auth.AuthApplication : The following profiles are active: dev
+[2023-12-11 20:21:26.380] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 20:21:26.382] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 20:21:26.410] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
+[2023-12-11 20:21:26.669] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=559bb708-36ce-349b-8825-73803b83ede2
+[2023-12-11 20:21:26.972] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9100 (http)
+[2023-12-11 20:21:26.981] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9100"]
+[2023-12-11 20:21:27.014] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-11 20:21:27.015] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-11 20:21:27.151] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-11 20:21:27.151] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1554 ms
+[2023-12-11 20:21:30.558] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 20:21:30.780] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Starting ProtocolHandler ["http-nio-9100"]
+[2023-12-11 20:21:30.796] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 9100 (http) with context path ''
+[2023-12-11 20:21:30.808] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-auth 192.168.229.1:9100 register finished
+[2023-12-11 20:21:31.346] [main] INFO  com.yyh.xfs.auth.AuthApplication : Started AuthApplication in 7.908 seconds (JVM running for 9.068)
+[2023-12-11 20:21:31.353] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 20:21:31.354] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth, group=DEFAULT_GROUP
+[2023-12-11 20:21:31.354] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth.yaml, group=DEFAULT_GROUP
+[2023-12-11 20:25:17.638] [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 20:25:17.638] [Thread-28] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 20:25:17.638] [Thread-28] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 20:25:17.638] [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 20:25:17.952] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 20:25:17.957] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 20:25:29.076] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth] & group[DEFAULT_GROUP]
+[2023-12-11 20:25:29.080] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 20:25:29.087] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-auth-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-11 20:25:29.092] [main] INFO  com.yyh.xfs.auth.AuthApplication : The following profiles are active: dev
+[2023-12-11 20:25:29.767] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 20:25:29.769] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 20:25:29.792] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+[2023-12-11 20:25:30.029] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=559bb708-36ce-349b-8825-73803b83ede2
+[2023-12-11 20:25:30.296] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9100 (http)
+[2023-12-11 20:25:30.305] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9100"]
+[2023-12-11 20:25:30.340] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-11 20:25:30.340] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-11 20:25:30.466] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-11 20:25:30.466] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1363 ms
+[2023-12-11 20:25:30.720] [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'authController' defined in file [D:\ideaproject\xiaofanshu\xfs-auth\target\classes\com\yyh\xfs\auth\controller\AuthController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userServiceImpl' defined in file [D:\ideaproject\xiaofanshu\xfs-modules-server\xfs-user-server\target\classes\com\yyh\xfs\user\service\impl\UserServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 1; nested exception is org.springframework.boot.context.properties.ConfigurationPropertiesBindException: Error creating bean with name 'jwtProperties': Could not bind properties to 'JwtProperties' : prefix=jwt, ignoreInvalidFields=false, ignoreUnknownFields=true; nested exception is org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'jwt.expire-time' to long
+[2023-12-11 20:25:30.732] [main] INFO  o.a.catalina.core.StandardService : Stopping service [Tomcat]
+[2023-12-11 20:25:30.745] [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-12-11 20:25:30.770] [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to bind properties under 'jwt.expire-time' to long:
+
+    Property: jwt.expire-time
+    Value: ${24 * 60 * 60 * 1000}
+    Origin: "jwt.expire-time" from property source "bootstrapProperties-jwt.yaml,DEFAULT_GROUP"
+    Reason: failed to convert java.lang.String to long (caused by java.lang.NumberFormatException: For input string: "${24*60*60*1000}")
+
+Action:
+
+Update your application's configuration
+
+[2023-12-11 20:25:31.559] [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 20:28:13.932] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth] & group[DEFAULT_GROUP]
+[2023-12-11 20:28:13.937] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 20:28:13.945] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-auth-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-11 20:28:13.950] [main] INFO  com.yyh.xfs.auth.AuthApplication : The following profiles are active: dev
+[2023-12-11 20:28:14.756] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 20:28:14.760] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 20:28:14.784] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+[2023-12-11 20:28:15.087] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=559bb708-36ce-349b-8825-73803b83ede2
+[2023-12-11 20:28:15.423] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9100 (http)
+[2023-12-11 20:28:15.431] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9100"]
+[2023-12-11 20:28:15.432] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-11 20:28:15.432] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-11 20:28:15.601] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-11 20:28:15.601] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1638 ms
+[2023-12-11 20:28:18.264] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 20:28:18.438] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Starting ProtocolHandler ["http-nio-9100"]
+[2023-12-11 20:28:18.453] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 9100 (http) with context path ''
+[2023-12-11 20:28:18.465] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-auth 192.168.229.1:9100 register finished
+[2023-12-11 20:28:18.878] [main] INFO  com.yyh.xfs.auth.AuthApplication : Started AuthApplication in 7.125 seconds (JVM running for 8.275)
+[2023-12-11 20:28:18.883] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 20:28:18.884] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth, group=DEFAULT_GROUP
+[2023-12-11 20:28:18.885] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth.yaml, group=DEFAULT_GROUP
+[2023-12-11 20:28:38.397] [http-nio-9100-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2023-12-11 20:28:38.399] [http-nio-9100-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+[2023-12-11 20:28:38.399] [http-nio-9100-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 0 ms
+[2023-12-11 20:28:38.503] [http-nio-9100-exec-1] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Starting...
+[2023-12-11 20:28:38.606] [http-nio-9100-exec-1] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Start completed.
+[2023-12-11 20:31:11.050] [Thread-27] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-11 20:31:11.050] [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-11 20:31:11.050] [Thread-27] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-11 20:31:11.051] [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-11 20:31:11.394] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-11 20:31:11.398] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-11 20:31:19.637] [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Shutdown initiated...
+[2023-12-11 20:31:19.646] [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Shutdown completed.
+[2023-12-11 23:09:12.850] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth] & group[DEFAULT_GROUP]
+[2023-12-11 23:09:12.859] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-auth.yaml] & group[DEFAULT_GROUP]
+[2023-12-11 23:09:12.870] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-auth-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-auth,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-11 23:09:12.878] [main] INFO  com.yyh.xfs.auth.AuthApplication : The following profiles are active: dev
+[2023-12-11 23:09:13.787] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-11 23:09:13.789] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-11 23:09:13.816] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+[2023-12-11 23:09:14.116] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=559bb708-36ce-349b-8825-73803b83ede2
+[2023-12-11 23:09:14.490] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9100 (http)
+[2023-12-11 23:09:14.545] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9100"]
+[2023-12-11 23:09:14.545] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-11 23:09:14.546] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-11 23:09:14.711] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-11 23:09:14.712] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1817 ms
+[2023-12-11 23:09:17.851] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-11 23:09:18.064] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Starting ProtocolHandler ["http-nio-9100"]
+[2023-12-11 23:09:18.090] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 9100 (http) with context path ''
+[2023-12-11 23:09:18.108] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-auth 192.168.229.1:9100 register finished
+[2023-12-11 23:09:18.692] [main] INFO  com.yyh.xfs.auth.AuthApplication : Started AuthApplication in 8.189 seconds (JVM running for 9.588)
+[2023-12-11 23:09:18.699] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth-dev.yaml, group=DEFAULT_GROUP
+[2023-12-11 23:09:18.699] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth, group=DEFAULT_GROUP
+[2023-12-11 23:09:18.700] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-auth.yaml, group=DEFAULT_GROUP
+[2023-12-11 23:10:05.135] [http-nio-9100-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2023-12-11 23:10:05.136] [http-nio-9100-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+[2023-12-11 23:10:05.138] [http-nio-9100-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 2 ms
+[2023-12-11 23:10:05.297] [http-nio-9100-exec-1] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Starting...
+[2023-12-11 23:10:05.493] [http-nio-9100-exec-1] INFO  com.zaxxer.hikari.HikariDataSource : HikariPool-1 - Start completed.

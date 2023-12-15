@@ -1,0 +1,85 @@
+[2023-12-11 20:25:31.920] [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to bind properties under 'jwt.expire-time' to long:
+
+    Property: jwt.expire-time
+    Value: ${24 * 60 * 60 * 1000}
+    Origin: "jwt.expire-time" from property source "bootstrapProperties-jwt.yaml,DEFAULT_GROUP"
+    Reason: failed to convert java.lang.String to long (caused by java.lang.NumberFormatException: For input string: "${24*60*60*1000}")
+
+Action:
+
+Update your application's configuration
+
+[2023-12-11 20:28:19.747] [main] ERROR c.a.cloud.nacos.discovery.NacosWatch : namingService unsubscribe failed, properties:NacosDiscoveryProperties{serverAddr='192.168.124.100:8848', username='', password='', endpoint='', namespace='54c5b22b-7b63-4073-9a77-f07142769f1f', watchDelay=30000, logName='', service='xfs-user', weight=1.0, clusterName='DEFAULT', group='DEFAULT_GROUP', namingLoadCacheAtStart='false', metadata={preserved.register.source=SPRING_CLOUD}, registerEnabled=true, ip='192.168.229.1', networkInterface='', port=-1, secure=false, accessKey='', secretKey='', heartBeatInterval=null, heartBeatTimeout=null, ipDeleteTimeout=null, instanceEnabled=true, ephemeral=true, failureToleranceEnabled=false}, ipDeleteTimeout=null, failFast=true}
+java.lang.RuntimeException: ErrCode:-400, ErrMsg:Exception java.lang.IllegalStateException: Shutdown in progress [in thread "main"]
+	at com.alibaba.cloud.nacos.NacosServiceManager.createNewNamingService(NacosServiceManager.java:101)
+	at com.alibaba.cloud.nacos.NacosServiceManager.buildNamingService(NacosServiceManager.java:89)
+	at com.alibaba.cloud.nacos.NacosServiceManager.getNamingService(NacosServiceManager.java:52)
+	at com.alibaba.cloud.nacos.discovery.NacosWatch.stop(NacosWatch.java:175)
+	at com.alibaba.cloud.nacos.discovery.NacosWatch.destroy(NacosWatch.java:206)
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:212)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:587)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:559)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1161)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:520)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1154)
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1106)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:596)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:732)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:414)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:302)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292)
+	at com.yyh.xfs.user.UserApplication.main(UserApplication.java:13)
+Caused by: com.alibaba.nacos.api.exception.NacosException: java.lang.reflect.InvocationTargetException
+	at com.alibaba.nacos.api.naming.NamingFactory.createNamingService(NamingFactory.java:63)
+	at com.alibaba.nacos.api.NacosFactory.createNamingService(NacosFactory.java:77)
+	at com.alibaba.cloud.nacos.NacosServiceManager.createNewNamingService(NacosServiceManager.java:98)
+	... 19 common frames omitted
+Caused by: java.lang.reflect.InvocationTargetException: null
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.alibaba.nacos.api.naming.NamingFactory.createNamingService(NamingFactory.java:60)
+	... 21 common frames omitted
+Caused by: java.lang.NoClassDefFoundError: Could not initialize class com.alibaba.nacos.common.notify.NotifyCenter
+	at com.alibaba.nacos.client.naming.core.HostReactor.<init>(HostReactor.java:118)
+	at com.alibaba.nacos.client.naming.NacosNamingService.init(NacosNamingService.java:96)
+	at com.alibaba.nacos.client.naming.NacosNamingService.<init>(NacosNamingService.java:81)
+	... 26 common frames omitted
+Caused by: java.lang.ExceptionInInitializerError: Exception java.lang.IllegalStateException: Shutdown in progress [in thread "main"]
+	at java.lang.ApplicationShutdownHooks.add(ApplicationShutdownHooks.java:66)
+	at java.lang.Runtime.addShutdownHook(Runtime.java:203)
+	at com.alibaba.nacos.common.utils.ThreadUtils.addShutdownHook(ThreadUtils.java:147)
+	at com.alibaba.nacos.common.notify.NotifyCenter.<clinit>(NotifyCenter.java:112)
+	at com.alibaba.nacos.client.naming.core.HostReactor.<init>(HostReactor.java:118)
+	at com.alibaba.nacos.client.naming.NacosNamingService.init(NacosNamingService.java:96)
+	at com.alibaba.nacos.client.naming.NacosNamingService.<init>(NacosNamingService.java:81)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.alibaba.nacos.api.naming.NamingFactory.createNamingService(NamingFactory.java:60)
+	at com.alibaba.nacos.api.NacosFactory.createNamingService(NacosFactory.java:77)
+	at com.alibaba.cloud.nacos.NacosServiceManager.createNewNamingService(NacosServiceManager.java:98)
+	at com.alibaba.cloud.nacos.NacosServiceManager.buildNamingService(NacosServiceManager.java:89)
+	at com.alibaba.cloud.nacos.NacosServiceManager.getNamingService(NacosServiceManager.java:52)
+	at com.alibaba.cloud.nacos.discovery.NacosWatch.start(NacosWatch.java:131)
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:178)
+	at org.springframework.context.support.DefaultLifecycleProcessor.access$200(DefaultLifecycleProcessor.java:54)
+	at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.start(DefaultLifecycleProcessor.java:356)
+	at java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.context.support.DefaultLifecycleProcessor.startBeans(DefaultLifecycleProcessor.java:155)
+	at org.springframework.context.support.DefaultLifecycleProcessor.onRefresh(DefaultLifecycleProcessor.java:123)
+	at org.springframework.context.support.AbstractApplicationContext.finishRefresh(AbstractApplicationContext.java:935)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:586)
+	... 7 common frames omitted

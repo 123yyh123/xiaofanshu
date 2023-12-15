@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyh.xfs.user.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.yyh.xfs.user.domain.UserDO">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="uid" column="uid" jdbcType="VARCHAR"/>
+            <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+            <result property="avatarUrl" column="avatar_url" jdbcType="VARCHAR"/>
+            <result property="age" column="age" jdbcType="TINYINT"/>
+            <result property="sex" column="sex" jdbcType="TINYINT"/>
+            <result property="area" column="area" jdbcType="VARCHAR"/>
+            <result property="selfIntroduction" column="self_introduction" jdbcType="VARCHAR"/>
+            <result property="birthday" column="birthday" jdbcType="DATE"/>
+            <result property="homePageBackground" column="home_page_background" jdbcType="VARCHAR"/>
+            <result property="occupation" column="occupation" jdbcType="VARCHAR"/>
+            <result property="phoneNumber" column="phone_number" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="wxOpenId" column="wx_open_id" jdbcType="VARCHAR"/>
+            <result property="qqOpenId" column="qq_open_id" jdbcType="VARCHAR"/>
+            <result property="facebookOpenId" column="facebook_open_id" jdbcType="VARCHAR"/>
+            <result property="accountStatus" column="account_status" jdbcType="TINYINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,uid,nickname,
+        avatar_url,age,sex,
+        area,self_introduction,birthday,
+        home_page_background,occupation,phone_number,
+        password,wx_open_id,qq_open_id,
+        facebook_open_id,account_status,create__time,
+        update_time
+    </sql>
+</mapper>

@@ -1,0 +1,42 @@
+[2023-12-09 22:30:54.893] [background-preinit] INFO  o.h.validator.internal.util.Version : HV000001: Hibernate Validator 6.2.0.Final
+[2023-12-09 22:30:56.494] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway] & group[DEFAULT_GROUP]
+[2023-12-09 22:30:56.498] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-gateway.yaml] & group[DEFAULT_GROUP]
+[2023-12-09 22:30:56.508] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-gateway-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-gateway,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}]
+[2023-12-09 22:30:56.512] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : The following profiles are active: dev
+[2023-12-09 22:30:56.903] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=43dc553d-af14-3d29-837c-cf6cccc5ff38
+[2023-12-09 22:30:56.939] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-09 22:30:56.940] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-09 22:30:56.941] [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker : Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2023-12-09 22:30:57.045] [main] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.yyh.xfs.gateway.utils.JWTUtil.secret
+[2023-12-09 22:30:58.378] [main] INFO  o.s.cloud.commons.util.InetUtils : Cannot determine local hostname
+[2023-12-09 22:30:59.646] [main] INFO  o.s.cloud.commons.util.InetUtils : Cannot determine local hostname
+[2023-12-09 22:30:59.923] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [After]
+[2023-12-09 22:30:59.923] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Before]
+[2023-12-09 22:30:59.923] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Between]
+[2023-12-09 22:30:59.923] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Cookie]
+[2023-12-09 22:30:59.923] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Header]
+[2023-12-09 22:30:59.924] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Host]
+[2023-12-09 22:30:59.924] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Method]
+[2023-12-09 22:30:59.924] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Path]
+[2023-12-09 22:30:59.924] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Query]
+[2023-12-09 22:30:59.924] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [ReadBody]
+[2023-12-09 22:30:59.924] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [RemoteAddr]
+[2023-12-09 22:30:59.924] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+[2023-12-09 22:30:59.924] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [Weight]
+[2023-12-09 22:30:59.924] [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+[2023-12-09 22:31:01.269] [main] INFO  o.s.cloud.commons.util.InetUtils : Cannot determine local hostname
+[2023-12-09 22:31:01.328] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-09 22:31:01.874] [main] INFO  o.s.b.w.e.netty.NettyWebServer : Netty started on port 9000
+[2023-12-09 22:31:03.141] [main] INFO  o.s.cloud.commons.util.InetUtils : Cannot determine local hostname
+[2023-12-09 22:31:04.421] [main] INFO  o.s.cloud.commons.util.InetUtils : Cannot determine local hostname
+[2023-12-09 22:31:04.443] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-gateway 192.168.229.1:9000 register finished
+[2023-12-09 22:31:04.455] [main] INFO  c.yyh.xfs.gateway.GatewayApplication : Started GatewayApplication in 11.274 seconds (JVM running for 12.253)
+[2023-12-09 22:31:04.461] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway, group=DEFAULT_GROUP
+[2023-12-09 22:31:04.461] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway.yaml, group=DEFAULT_GROUP
+[2023-12-09 22:31:04.462] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-gateway-dev.yaml, group=DEFAULT_GROUP
+[2023-12-09 22:34:29.390] [Thread-28] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-09 22:34:29.390] [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-09 22:34:29.390] [Thread-28] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-09 22:34:29.391] [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-09 22:34:29.395] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-09 22:34:29.401] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.

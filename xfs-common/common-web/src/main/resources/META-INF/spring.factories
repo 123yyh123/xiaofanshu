@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.yyh.xfs.common.web.config.FeignConfig,\
+  com.yyh.xfs.common.web.config.WebMvcConfig,\
+  com.yyh.xfs.common.web.config.SwaggerConfig,\
+  com.yyh.xfs.common.web.utils.JWTUtil,\
+  com.yyh.xfs.common.web.properties.JwtProperties

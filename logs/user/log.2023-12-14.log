@@ -1,0 +1,190 @@
+[2023-12-14 20:27:07.612] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-user] & group[DEFAULT_GROUP]
+[2023-12-14 20:27:10.637] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-user.yaml] & group[DEFAULT_GROUP]
+[2023-12-14 20:27:13.682] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-user-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-user.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-user,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-14 20:27:13.687] [main] INFO  com.yyh.xfs.user.UserApplication : The following profiles are active: dev
+[2023-12-14 20:27:14.541] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-14 20:27:14.544] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-14 20:27:14.570] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+[2023-12-14 20:27:14.878] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=0bc058c5-48d1-393b-8ebf-eec9f6b119a9
+[2023-12-14 20:27:15.273] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9200 (http)
+[2023-12-14 20:27:15.330] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9200"]
+[2023-12-14 20:27:15.330] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-14 20:27:15.330] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-14 20:27:15.503] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-14 20:27:15.503] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1802 ms
+[2023-12-14 20:27:18.799] [main] INFO  o.s.cloud.commons.util.InetUtils : Cannot determine local hostname
+[2023-12-14 20:27:20.433] [main] INFO  o.s.cloud.commons.util.InetUtils : Cannot determine local hostname
+[2023-12-14 20:27:20.489] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-14 20:27:29.737] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Starting ProtocolHandler ["http-nio-9200"]
+[2023-12-14 20:27:29.760] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 9200 (http) with context path ''
+[2023-12-14 20:27:36.867] [main] ERROR c.a.c.n.r.NacosServiceRegistry : nacos registry, xfs-user register failed...NacosRegistration{nacosDiscoveryProperties=NacosDiscoveryProperties{serverAddr='192.168.124.100:8848', username='', password='', endpoint='', namespace='54c5b22b-7b63-4073-9a77-f07142769f1f', watchDelay=30000, logName='', service='xfs-user', weight=1.0, clusterName='DEFAULT', group='DEFAULT_GROUP', namingLoadCacheAtStart='false', metadata={preserved.register.source=SPRING_CLOUD}, registerEnabled=true, ip='192.168.229.1', networkInterface='', port=9200, secure=false, accessKey='', secretKey='', heartBeatInterval=null, heartBeatTimeout=null, ipDeleteTimeout=null, instanceEnabled=true, ephemeral=true, failureToleranceEnabled=false}, ipDeleteTimeout=null, failFast=true}},
+com.alibaba.nacos.api.exception.NacosException: failed to req API:/nacos/v1/ns/instance after all servers([192.168.124.100:8848]) tried: java.net.ConnectException: Connection refused: connect
+	at com.alibaba.nacos.client.naming.net.NamingProxy.reqApi(NamingProxy.java:556)
+	at com.alibaba.nacos.client.naming.net.NamingProxy.reqApi(NamingProxy.java:498)
+	at com.alibaba.nacos.client.naming.net.NamingProxy.reqApi(NamingProxy.java:493)
+	at com.alibaba.nacos.client.naming.net.NamingProxy.registerService(NamingProxy.java:246)
+	at com.alibaba.nacos.client.naming.NacosNamingService.registerInstance(NacosNamingService.java:212)
+	at com.alibaba.cloud.nacos.registry.NacosServiceRegistry.register(NacosServiceRegistry.java:74)
+	at org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegistration.register(AbstractAutoServiceRegistration.java:232)
+	at com.alibaba.cloud.nacos.registry.NacosAutoServiceRegistration.register(NacosAutoServiceRegistration.java:78)
+	at org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegistration.start(AbstractAutoServiceRegistration.java:133)
+	at org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegistration.bind(AbstractAutoServiceRegistration.java:98)
+	at org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegistration.onApplicationEvent(AbstractAutoServiceRegistration.java:86)
+	at org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegistration.onApplicationEvent(AbstractAutoServiceRegistration.java:47)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.doInvokeListener(SimpleApplicationEventMulticaster.java:176)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.invokeListener(SimpleApplicationEventMulticaster.java:169)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.multicastEvent(SimpleApplicationEventMulticaster.java:143)
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:421)
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:378)
+	at org.springframework.boot.web.servlet.context.WebServerStartStopLifecycle.start(WebServerStartStopLifecycle.java:46)
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:178)
+	at org.springframework.context.support.DefaultLifecycleProcessor.access$200(DefaultLifecycleProcessor.java:54)
+	at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.start(DefaultLifecycleProcessor.java:356)
+	at java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.context.support.DefaultLifecycleProcessor.startBeans(DefaultLifecycleProcessor.java:155)
+	at org.springframework.context.support.DefaultLifecycleProcessor.onRefresh(DefaultLifecycleProcessor.java:123)
+	at org.springframework.context.support.AbstractApplicationContext.finishRefresh(AbstractApplicationContext.java:935)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:586)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:732)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:414)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:302)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292)
+	at com.yyh.xfs.user.UserApplication.main(UserApplication.java:13)
+[2023-12-14 20:27:36.867] [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'; nested exception is java.lang.reflect.UndeclaredThrowableException
+[2023-12-14 20:27:46.395] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Pausing ProtocolHandler ["http-nio-9200"]
+[2023-12-14 20:27:46.395] [main] INFO  o.a.catalina.core.StandardService : Stopping service [Tomcat]
+[2023-12-14 20:27:46.402] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Stopping ProtocolHandler ["http-nio-9200"]
+[2023-12-14 20:27:46.404] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Destroying ProtocolHandler ["http-nio-9200"]
+[2023-12-14 20:27:46.415] [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-12-14 20:27:46.459] [main] ERROR o.s.boot.SpringApplication : Application run failed
+org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'; nested exception is java.lang.reflect.UndeclaredThrowableException
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:181)
+	at org.springframework.context.support.DefaultLifecycleProcessor.access$200(DefaultLifecycleProcessor.java:54)
+	at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.start(DefaultLifecycleProcessor.java:356)
+	at java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.context.support.DefaultLifecycleProcessor.startBeans(DefaultLifecycleProcessor.java:155)
+	at org.springframework.context.support.DefaultLifecycleProcessor.onRefresh(DefaultLifecycleProcessor.java:123)
+	at org.springframework.context.support.AbstractApplicationContext.finishRefresh(AbstractApplicationContext.java:935)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:586)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:732)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:414)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:302)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292)
+	at com.yyh.xfs.user.UserApplication.main(UserApplication.java:13)
+Caused by: java.lang.reflect.UndeclaredThrowableException: null
+	at org.springframework.util.ReflectionUtils.rethrowRuntimeException(ReflectionUtils.java:147)
+	at com.alibaba.cloud.nacos.registry.NacosServiceRegistry.register(NacosServiceRegistry.java:82)
+	at org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegistration.register(AbstractAutoServiceRegistration.java:232)
+	at com.alibaba.cloud.nacos.registry.NacosAutoServiceRegistration.register(NacosAutoServiceRegistration.java:78)
+	at org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegistration.start(AbstractAutoServiceRegistration.java:133)
+	at org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegistration.bind(AbstractAutoServiceRegistration.java:98)
+	at org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegistration.onApplicationEvent(AbstractAutoServiceRegistration.java:86)
+	at org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegistration.onApplicationEvent(AbstractAutoServiceRegistration.java:47)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.doInvokeListener(SimpleApplicationEventMulticaster.java:176)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.invokeListener(SimpleApplicationEventMulticaster.java:169)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.multicastEvent(SimpleApplicationEventMulticaster.java:143)
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:421)
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:378)
+	at org.springframework.boot.web.servlet.context.WebServerStartStopLifecycle.start(WebServerStartStopLifecycle.java:46)
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:178)
+	... 14 common frames omitted
+Caused by: com.alibaba.nacos.api.exception.NacosException: failed to req API:/nacos/v1/ns/instance after all servers([192.168.124.100:8848]) tried: java.net.ConnectException: Connection refused: connect
+	at com.alibaba.nacos.client.naming.net.NamingProxy.reqApi(NamingProxy.java:556)
+	at com.alibaba.nacos.client.naming.net.NamingProxy.reqApi(NamingProxy.java:498)
+	at com.alibaba.nacos.client.naming.net.NamingProxy.reqApi(NamingProxy.java:493)
+	at com.alibaba.nacos.client.naming.net.NamingProxy.registerService(NamingProxy.java:246)
+	at com.alibaba.nacos.client.naming.NacosNamingService.registerInstance(NacosNamingService.java:212)
+	at com.alibaba.cloud.nacos.registry.NacosServiceRegistry.register(NacosServiceRegistry.java:74)
+	... 27 common frames omitted
+[2023-12-14 20:27:46.988] [Thread-7] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-14 20:27:46.989] [Thread-70] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-14 20:33:54.063] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-user] & group[DEFAULT_GROUP]
+[2023-12-14 20:33:54.075] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-user.yaml] & group[DEFAULT_GROUP]
+[2023-12-14 20:33:54.095] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-user-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-user.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-user,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-14 20:33:54.104] [main] INFO  com.yyh.xfs.user.UserApplication : The following profiles are active: dev
+[2023-12-14 20:33:55.677] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-14 20:33:55.680] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-14 20:33:55.729] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 19 ms. Found 0 Redis repository interfaces.
+[2023-12-14 20:33:56.351] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=0bc058c5-48d1-393b-8ebf-eec9f6b119a9
+[2023-12-14 20:33:57.009] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9200 (http)
+[2023-12-14 20:33:57.100] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9200"]
+[2023-12-14 20:33:57.101] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-14 20:33:57.102] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-14 20:33:57.387] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-14 20:33:57.388] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3261 ms
+[2023-12-14 20:34:03.114] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-14 20:34:03.550] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Starting ProtocolHandler ["http-nio-9200"]
+[2023-12-14 20:34:03.582] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 9200 (http) with context path ''
+[2023-12-14 20:34:03.616] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-user 192.168.229.1:9200 register finished
+[2023-12-14 20:34:05.722] [main] INFO  o.s.cloud.commons.util.InetUtils : Cannot determine local hostname
+[2023-12-14 20:34:05.794] [main] INFO  com.yyh.xfs.user.UserApplication : Started UserApplication in 16.693 seconds (JVM running for 18.976)
+[2023-12-14 20:34:05.812] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-user, group=DEFAULT_GROUP
+[2023-12-14 20:34:05.813] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-user.yaml, group=DEFAULT_GROUP
+[2023-12-14 20:34:05.834] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-user-dev.yaml, group=DEFAULT_GROUP
+[2023-12-14 21:14:14.057] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-user] & group[DEFAULT_GROUP]
+[2023-12-14 21:14:14.068] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-user.yaml] & group[DEFAULT_GROUP]
+[2023-12-14 21:14:14.082] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-user-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-user.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-user,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-14 21:14:14.091] [main] INFO  com.yyh.xfs.user.UserApplication : The following profiles are active: dev
+[2023-12-14 21:14:14.843] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-14 21:14:14.845] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-14 21:14:14.867] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 8 ms. Found 0 Redis repository interfaces.
+[2023-12-14 21:14:15.141] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=0bc058c5-48d1-393b-8ebf-eec9f6b119a9
+[2023-12-14 21:14:15.512] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9200 (http)
+[2023-12-14 21:14:15.557] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9200"]
+[2023-12-14 21:14:15.558] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-14 21:14:15.558] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-14 21:14:15.682] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-14 21:14:15.683] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1574 ms
+[2023-12-14 21:14:19.208] [main] INFO  o.s.cloud.commons.util.InetUtils : Cannot determine local hostname
+[2023-12-14 21:14:20.977] [main] INFO  o.s.cloud.commons.util.InetUtils : Cannot determine local hostname
+[2023-12-14 21:14:21.011] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-14 21:14:21.243] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Starting ProtocolHandler ["http-nio-9200"]
+[2023-12-14 21:14:21.259] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 9200 (http) with context path ''
+[2023-12-14 21:14:21.276] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-user 192.168.229.1:9200 register finished
+[2023-12-14 21:14:22.574] [main] INFO  com.yyh.xfs.user.UserApplication : Started UserApplication in 12.424 seconds (JVM running for 13.771)
+[2023-12-14 21:14:22.579] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-user, group=DEFAULT_GROUP
+[2023-12-14 21:14:22.580] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-user.yaml, group=DEFAULT_GROUP
+[2023-12-14 21:14:22.581] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-user-dev.yaml, group=DEFAULT_GROUP
+[2023-12-14 21:43:10.778] [Thread-6] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-14 21:43:10.778] [Thread-31] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-14 21:43:10.780] [Thread-31] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-14 21:43:10.781] [Thread-6] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-14 21:43:11.074] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-14 21:43:11.087] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.
+[2023-12-14 21:43:27.546] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-user] & group[DEFAULT_GROUP]
+[2023-12-14 21:43:27.550] [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder : Ignore the empty nacos configuration and get it based on dataId[xfs-user.yaml] & group[DEFAULT_GROUP]
+[2023-12-14 21:43:27.556] [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-xfs-user-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-user.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-xfs-user,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-jwt.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-redis.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-mybatis-plus.yaml,DEFAULT_GROUP'}]
+[2023-12-14 21:43:27.560] [main] INFO  com.yyh.xfs.user.UserApplication : The following profiles are active: dev
+[2023-12-14 21:43:28.099] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+[2023-12-14 21:43:28.100] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-12-14 21:43:28.119] [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 0 Redis repository interfaces.
+[2023-12-14 21:43:28.338] [main] INFO  o.s.cloud.context.scope.GenericScope : BeanFactory id=0bc058c5-48d1-393b-8ebf-eec9f6b119a9
+[2023-12-14 21:43:28.604] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 9200 (http)
+[2023-12-14 21:43:28.642] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-9200"]
+[2023-12-14 21:43:28.643] [main] INFO  o.a.catalina.core.StandardService : Starting service [Tomcat]
+[2023-12-14 21:43:28.643] [main] INFO  o.a.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.56]
+[2023-12-14 21:43:28.753] [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+[2023-12-14 21:43:28.753] [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1184 ms
+[2023-12-14 21:43:31.237] [main] INFO  o.s.cloud.commons.util.InetUtils : Cannot determine local hostname
+[2023-12-14 21:43:32.661] [main] INFO  o.s.cloud.commons.util.InetUtils : Cannot determine local hostname
+[2023-12-14 21:43:32.696] [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+[2023-12-14 21:43:32.852] [main] INFO  o.a.coyote.http11.Http11NioProtocol : Starting ProtocolHandler ["http-nio-9200"]
+[2023-12-14 21:43:32.866] [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 9200 (http) with context path ''
+[2023-12-14 21:43:32.877] [main] INFO  c.a.c.n.r.NacosServiceRegistry : nacos registry, DEFAULT_GROUP xfs-user 192.168.229.1:9200 register finished
+[2023-12-14 21:43:34.196] [main] INFO  o.s.cloud.commons.util.InetUtils : Cannot determine local hostname
+[2023-12-14 21:43:34.225] [main] INFO  com.yyh.xfs.user.UserApplication : Started UserApplication in 10.385 seconds (JVM running for 11.263)
+[2023-12-14 21:43:34.229] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-user, group=DEFAULT_GROUP
+[2023-12-14 21:43:34.229] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-user.yaml, group=DEFAULT_GROUP
+[2023-12-14 21:43:34.231] [main] INFO  c.a.c.n.r.NacosContextRefresher : listening config: dataId=xfs-user-dev.yaml, group=DEFAULT_GROUP
+[2023-12-14 22:04:31.672] [Thread-6] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Start destroying common HttpClient
+[2023-12-14 22:04:31.672] [Thread-30] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Start destroying Publisher
+[2023-12-14 22:04:31.672] [Thread-30] WARN  c.a.nacos.common.notify.NotifyCenter : [NotifyCenter] Destruction of the end
+[2023-12-14 22:04:31.674] [Thread-6] WARN  c.a.n.c.http.HttpClientBeanHolder : [HttpClientBeanHolder] Destruction of the end
+[2023-12-14 22:04:31.897] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registering from Nacos Server now...
+[2023-12-14 22:04:31.903] [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry : De-registration finished.

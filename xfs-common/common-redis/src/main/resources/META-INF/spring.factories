@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.yyh.xfs.common.redis.config.CustomRedisConfig,\
+  com.yyh.xfs.common.redis.utils.RedisCache
