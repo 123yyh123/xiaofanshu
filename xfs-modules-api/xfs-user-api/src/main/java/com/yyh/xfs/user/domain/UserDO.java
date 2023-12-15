@@ -80,7 +80,7 @@ public class UserDO implements Serializable {
     /**
      * 性别，0为女，1为男，默认为0
      */
-    @ApiModelProperty(value = "性别，0为女，1为男，默认为0")
+    @ApiModelProperty(value = "性别，0为女，1为男，2为保密，默认为2")
     private Integer sex;
 
     /**

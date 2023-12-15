@@ -10,4 +10,6 @@ public interface AliyunSmsService {
     Result<?> sendBindPhoneSms(String phoneNumber);
 
     Result<?> sendResetPhoneSms(String phoneNumber);
+
+    Result<?> sendRegisterPhoneSms(String phoneNumber);
 }

@@ -28,6 +28,8 @@ public class StatusCode {
     public static final Integer PASSWORD_ERROR=40340;
     //手机号已存在
     public static final Integer PHONE_NUMBER_EXIST=10010;
+    //手机号未注册
+    public static final Integer PHONE_NUMBER_NOT_REGISTER = 10011;
     //短信验证码错误
     public static final Integer SMS_CODE_ERROR=10020;
     //登录类型错误

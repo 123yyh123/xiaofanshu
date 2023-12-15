@@ -38,4 +38,17 @@ public class CodeUtil {
         String substring2 = currentTimeMillisStr.substring(6);
         return substring1 + i2Str + substring2;
     }
+    /**
+     * 生成用户昵称，8位随机数，由数字,英文字母组成，用户昵称是可以重复的，不需要唯一
+     */
+    public static String createNickname(){
+        String str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random=new Random();
+        StringBuilder sb=new StringBuilder();
+        for(int i=0;i<8;i++){
+            int number=random.nextInt(62);
+            sb.append(str.charAt(number));
+        }
+        return sb.toString();
+    }
 }

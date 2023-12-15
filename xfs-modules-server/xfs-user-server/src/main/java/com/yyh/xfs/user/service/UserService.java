@@ -19,4 +19,6 @@ public interface UserService extends IService<UserDO> {
     Result<UserVO> bindPhone(RegisterInfoVO registerInfoVO);
 
     Result<?> resetPassword(String phoneNumber, String password, String smsCode);
+
+    Result<?> register(RegisterInfoVO registerInfoVO);
 }

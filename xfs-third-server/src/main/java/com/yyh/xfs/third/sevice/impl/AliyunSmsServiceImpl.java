@@ -52,6 +52,19 @@ public class AliyunSmsServiceImpl implements AliyunSmsService {
                 .setTemplateParam("{\"code\":\"" + smsCode + "\"}");
         return sendSms(sendSmsRequest, phoneNumber, smsCode,RedisConstant.REDIS_KEY_SMS_RESET_PASSWORD_PHONE_CODE);
     }
+
+    @Override
+    public Result<?> sendRegisterPhoneSms(String phoneNumber) {
+        String smsCode = CodeUtil.createSmsCode();
+        // TODO:暂时使用一样的短信模板
+        SendSmsRequest sendSmsRequest = new SendSmsRequest()
+                .setSignName("阿里云短信测试")
+                .setTemplateCode("SMS_154950909")
+                .setPhoneNumbers(phoneNumber)
+                .setTemplateParam("{\"code\":\"" + smsCode + "\"}");
+        return sendSms(sendSmsRequest, phoneNumber, smsCode,RedisConstant.REDIS_KEY_SMS_REGISTER_PHONE_CODE);
+    }
+
     /**
      * 发送短信
      * @param sendSmsRequest 短信请求

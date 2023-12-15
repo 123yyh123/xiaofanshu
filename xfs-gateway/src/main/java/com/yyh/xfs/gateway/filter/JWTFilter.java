@@ -10,7 +10,6 @@ import com.yyh.xfs.common.redis.utils.RedisKey;
 import com.yyh.xfs.gateway.properties.JwtProperties;
 import com.yyh.xfs.gateway.utils.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.http.HttpStatus;
@@ -42,7 +41,6 @@ public class JWTFilter implements GlobalFilter {
         this.jwtProperties = jwtProperties;
         this.releasePath = releasePath;
     }
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
@@ -56,12 +54,14 @@ public class JWTFilter implements GlobalFilter {
         ServerHttpResponse response = exchange.getResponse();
         if (!StringUtils.hasText(token)) {
             // token为空
+            log.warn("token为空");
             return tokenFailure(response,ExceptionMsgEnum.NOT_LOGIN);
         }
         try {
             Map<String, Object> map = JWTUtil.parseToken(token);
             if (map == null ||!StringUtils.hasText(String.valueOf(map.get("userId")))) {
                 // token不合法
+                log.error("token不合法");
                 return tokenFailure(response,ExceptionMsgEnum.TOKEN_INVALID);
             }
             // 判断token是否过期
@@ -70,6 +70,7 @@ public class JWTFilter implements GlobalFilter {
                             String.valueOf(map.get("userId"))));
             if (expire == null || expire < System.currentTimeMillis()) {
                 // token过期
+                log.warn("token过期");
                 return tokenFailure(response,ExceptionMsgEnum.TOKEN_EXPIRED);
             }
             // 刷新token的过期时间
@@ -80,6 +81,7 @@ public class JWTFilter implements GlobalFilter {
             }
         } catch (Exception e) {
             // token不合法
+            log.error("token不合法", e);
             return tokenFailure(response,ExceptionMsgEnum.TOKEN_INVALID);
         }
         //TODO:这里可以做权限校验
