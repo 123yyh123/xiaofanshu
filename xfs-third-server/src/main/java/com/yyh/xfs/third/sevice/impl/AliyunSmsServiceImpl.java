@@ -50,6 +50,14 @@ public class AliyunSmsServiceImpl implements AliyunSmsService {
                 .setTemplateParam("{\"code\":\"" + smsCode + "\"}");
         return sendSms(sendSmsRequest, phoneNumber, smsCode,RedisConstant.REDIS_KEY_SMS_RESET_PASSWORD_PHONE_CODE);
     }
+    /**
+     * 发送短信
+     * @param sendSmsRequest
+     * @param phoneNumber
+     * @param smsCode
+     * @param prefix
+     * @return Result<?> 返回类型
+     */
     private Result<?> sendSms(SendSmsRequest sendSmsRequest, String phoneNumber, String smsCode, String prefix) {
         try {
             long expire = redisCache.getExpire(RedisKey.build(prefix, phoneNumber));
