@@ -13,7 +13,6 @@ import com.yyh.xfs.common.web.exception.BusinessException;
 import com.yyh.xfs.common.web.exception.SystemException;
 import com.yyh.xfs.third.sevice.AliyunSmsService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -55,10 +54,10 @@ public class AliyunSmsServiceImpl implements AliyunSmsService {
     }
     /**
      * 发送短信
-     * @param sendSmsRequest
-     * @param phoneNumber
-     * @param smsCode
-     * @param prefix
+     * @param sendSmsRequest 短信请求
+     * @param phoneNumber 手机号
+     * @param smsCode 短信验证码
+     * @param prefix redis前缀
      * @return Result<?> 返回类型
      */
     private Result<?> sendSms(SendSmsRequest sendSmsRequest, String phoneNumber, String smsCode, String prefix) {

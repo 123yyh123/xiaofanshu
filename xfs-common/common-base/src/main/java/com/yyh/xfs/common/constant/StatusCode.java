@@ -38,6 +38,8 @@ public class StatusCode {
     public static final Integer SMS_CODE_SEND_FREQUENTLY = 10050;
     //数据库操作异常
     public static final Integer DB_ERROR=50010;
+    //aliyun短信服务初始化异常
+    public static final Integer ALIYUN_SMS_INIT_ERROR=50020;
     //aliyun短信服务异常
-    public static final Integer ALIYUN_SMS_SEND_ERROR=50020;
+    public static final Integer ALIYUN_SMS_SEND_ERROR=50021;
 }

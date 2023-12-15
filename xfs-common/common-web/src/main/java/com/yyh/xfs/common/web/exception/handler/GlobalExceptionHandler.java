@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(SystemException.class)
     public Result<?> handleAuthException(SystemException systemException){
-        log.error("系统异常:", systemException);
+        log.error("系统异常状态:{};系统异常:",systemException.getExceptionMsgEnum(),systemException);
         return new Result<>(
                 systemException.getExceptionMsgEnum().getCode(),
                 systemException.getExceptionMsgEnum().getMsg(),

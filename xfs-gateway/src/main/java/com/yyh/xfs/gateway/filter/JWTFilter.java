@@ -2,16 +2,15 @@ package com.yyh.xfs.gateway.filter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yyh.xfs.common.constant.ReleasePath;
-import com.yyh.xfs.common.constant.StatusCode;
+import com.yyh.xfs.gateway.properties.ReleasePath;
 import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
 import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.common.redis.utils.RedisKey;
 import com.yyh.xfs.gateway.properties.JwtProperties;
 import com.yyh.xfs.gateway.utils.JWTUtil;
-import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.http.HttpStatus;
@@ -23,6 +22,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,26 +35,23 @@ public class JWTFilter implements GlobalFilter {
 
     private final JwtProperties jwtProperties;
     private final RedisCache redisCache;
+    private final ReleasePath releasePath;
 
-    public JWTFilter(RedisCache redisCache, JwtProperties jwtProperties) {
+    public JWTFilter(RedisCache redisCache, JwtProperties jwtProperties, ReleasePath releasePath) {
         this.redisCache = redisCache;
         this.jwtProperties = jwtProperties;
+        this.releasePath = releasePath;
     }
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        //放行登录请求，退出登录请求
         String path = exchange.getRequest().getURI().getPath();
-        if (path.contains(ReleasePath.LOGIN)
-                || path.contains(ReleasePath.LOGOUT)
-                || path.contains(ReleasePath.REGISTER)
-                || path.contains(ReleasePath.SEND_BIND_PHONE_CODE)
-                || path.contains(ReleasePath.OTHER_LOGIN)
-                || path.contains(ReleasePath.BIND_PHONE)
-                || path.contains(ReleasePath.SEND_RESET_PASSWORD_PHONE_CODE)
-                || path.contains(ReleasePath.RESET_PASSWORD)) {
+        // 判断是否是放行的路径
+        Boolean isRelease=checkPath(path);
+        if(isRelease){
             return chain.filter(exchange);
         }
+        // 获取token
         String token = exchange.getRequest().getHeaders().getFirst("token");
         ServerHttpResponse response = exchange.getResponse();
         if (!StringUtils.hasText(token)) {
@@ -87,6 +84,14 @@ public class JWTFilter implements GlobalFilter {
         }
         //TODO:这里可以做权限校验
         return chain.filter(exchange);
+    }
+
+    private Boolean checkPath(String path) {
+        List<String> paths= releasePath.getPath();
+        if(paths==null|| paths.isEmpty()){
+            return false;
+        }
+        return paths.contains(path);
     }
 
     private Mono<Void> tokenFailure(ServerHttpResponse response, ExceptionMsgEnum exceptionMsgEnum) {

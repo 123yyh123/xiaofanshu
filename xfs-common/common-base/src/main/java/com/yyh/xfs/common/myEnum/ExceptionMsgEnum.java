@@ -23,7 +23,8 @@ public enum ExceptionMsgEnum {
     SMS_CODE_SEND_FREQUENTLY(StatusCode.SMS_CODE_SEND_FREQUENTLY,"短信发送频繁,请稍后再试"),
 
 
-    ALIYUN_SMS_SEND_ERROR(StatusCode.ALIYUN_SMS_SEND_ERROR,"短信服务异常"),
+    ALIYUN_SMS_SEND_ERROR(StatusCode.ALIYUN_SMS_SEND_ERROR,"短信发送失败"),
+    ALIYUN_SMS_INIT_ERROR(StatusCode.ALIYUN_SMS_INIT_ERROR,"短信服务初始化异常"),
     DB_ERROR(StatusCode.DB_ERROR,"数据库操作异常");
     private Integer code;
     private String msg;

@@ -1,4 +1,6 @@
 package com.yyh.xfs.auth.utils;
+import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
+import com.yyh.xfs.common.web.exception.BusinessException;
 import com.yyh.xfs.common.web.properties.JwtProperties;
 import com.yyh.xfs.common.web.utils.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +20,17 @@ public class UserInfoUtil {
         try {
             token = request.getHeader("token");
         } catch (Exception e) {
-            return null;
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN, e);
         }
         if(token == null){
-            return null;
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
         }
         Long userId=null;
         try {
             Map<String, Object> map = JWTUtil.parseToken(token);
             userId = (Long) map.get("userId");
-
         } catch (Exception e) {
-            return null;
+            throw new BusinessException(ExceptionMsgEnum.TOKEN_INVALID, e);
         }
         return userId;
     }

@@ -2,6 +2,8 @@ package com.yyh.xfs.third.config;
 
 import com.aliyun.dysmsapi20170525.Client;
 import com.aliyun.teaopenapi.models.Config;
+import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
+import com.yyh.xfs.common.web.exception.SystemException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -28,8 +30,7 @@ public class AliyunSms {
         try {
             return new Client(config);
         } catch (Exception e) {
-            log.error("初始化短信服务失败", e);
-            return null;
+            throw new SystemException(ExceptionMsgEnum.ALIYUN_SMS_INIT_ERROR, e);
         }
     }
 }
