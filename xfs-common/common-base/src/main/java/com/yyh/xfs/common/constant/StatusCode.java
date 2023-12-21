@@ -44,4 +44,6 @@ public class StatusCode {
     public static final Integer ALIYUN_SMS_INIT_ERROR=50020;
     //aliyun短信服务异常
     public static final Integer ALIYUN_SMS_SEND_ERROR=50021;
+    //aliyun oss服务异常
+    public static final Integer ALIYUN_OSS_INIT_ERROR = 50030;
 }

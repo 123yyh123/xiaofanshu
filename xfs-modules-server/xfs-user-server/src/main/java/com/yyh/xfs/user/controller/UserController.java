@@ -4,6 +4,8 @@ import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.utils.FieldValidationUtil;
 import com.yyh.xfs.common.utils.ResultUtil;
 import com.yyh.xfs.user.service.UserService;
+import com.yyh.xfs.user.vo.UserVO;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +22,13 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+    /**
+     * 重置密码
+     * @param phoneNumber 手机号
+     * @param password 密码
+     * @param smsCode 短信验证码
+     * @return 重置结果
+     */
     @PostMapping("/resetPassword")
     public Result<?> resetPassword(String phoneNumber, String password, String smsCode) {
         if(!FieldValidationUtil.isPhoneNumber(phoneNumber)){
@@ -32,5 +41,14 @@ public class UserController {
             return ResultUtil.errorPost("验证码格式不正确");
         }
         return userService.resetPassword(phoneNumber, password, smsCode);
+    }
+    /**
+     * 获取用户信息
+     * @param userId 用户id
+     * @return 用户信息
+     */
+    @GetMapping("/getUserInfo")
+    public Result<UserVO> getUserInfo(Long userId) {
+        return userService.getUserInfo(userId);
     }
 }

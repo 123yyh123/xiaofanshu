@@ -26,6 +26,7 @@ public enum ExceptionMsgEnum {
 
     ALIYUN_SMS_SEND_ERROR(StatusCode.ALIYUN_SMS_SEND_ERROR,"短信发送失败"),
     ALIYUN_SMS_INIT_ERROR(StatusCode.ALIYUN_SMS_INIT_ERROR,"短信服务初始化异常"),
+    ALIYUN_OSS_INIT_ERROR(StatusCode.ALIYUN_OSS_INIT_ERROR,"OSS服务初始化异常"),
     DB_ERROR(StatusCode.DB_ERROR,"数据库操作异常");
     private Integer code;
     private String msg;

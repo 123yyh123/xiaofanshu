@@ -8,6 +8,7 @@ import lombok.ToString;
 /**
  * @author yyh
  * @date 2023-12-15
+ * @desc 系统异常
  */
 @Getter
 @Setter

@@ -187,6 +187,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         return ResultUtil.successPost("注册成功", null);
     }
 
+    @Override
+    public Result<UserVO> getUserInfo(Long userId) {
+        if(Objects.isNull(userId)){
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+        }
+        UserDO userDO = this.getById(userId);
+        if(Objects.isNull(userDO)){
+            throw new BusinessException(ExceptionMsgEnum.TOKEN_INVALID);
+        }
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(userDO, userVO);
+        return ResultUtil.successGet("获取用户信息成功", userVO);
+    }
+
     /**
      * 检验验证码是否正确
      * @param key redis key

@@ -21,4 +21,6 @@ public interface UserService extends IService<UserDO> {
     Result<?> resetPassword(String phoneNumber, String password, String smsCode);
 
     Result<?> register(RegisterInfoVO registerInfoVO);
+
+    Result<UserVO> getUserInfo(Long userId);
 }
