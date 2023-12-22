@@ -20,6 +20,7 @@ public class UserVO implements Serializable {
     private Integer age;
     private Integer sex;
     private String area;
+    private String birthday;
     private String selfIntroduction;
     private String homePageBackground;
     private String phoneNumber;

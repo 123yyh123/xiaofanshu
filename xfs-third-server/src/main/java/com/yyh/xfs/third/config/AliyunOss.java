@@ -21,4 +21,6 @@ public class AliyunOss {
     private String accessKeySecret;
     @Value("${aliyun.oss.bucketName}")
     private String bucketName;
+    @Value("${spring.servlet.multipart.max-file-size}")
+    private String maxFileSize;
 }

@@ -11,6 +11,7 @@ import com.yyh.xfs.common.redis.utils.RedisKey;
 import com.yyh.xfs.common.utils.CodeUtil;
 import com.yyh.xfs.common.utils.Md5Util;
 import com.yyh.xfs.common.utils.ResultUtil;
+import com.yyh.xfs.common.utils.TimeUtil;
 import com.yyh.xfs.common.web.exception.BusinessException;
 import com.yyh.xfs.common.web.exception.SystemException;
 import com.yyh.xfs.common.web.properties.JwtProperties;
@@ -25,6 +26,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -198,7 +201,214 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         }
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(userDO, userVO);
+        if(Objects.nonNull(userDO.getBirthday())) {
+            userVO.setBirthday(userDO.getBirthday().toString());
+        }
         return ResultUtil.successGet("获取用户信息成功", userVO);
+    }
+
+    /**
+     * 修改用户头像
+     * @param userVO 用户信息
+     * @return Result<?>
+     */
+    @Override
+    public Result<?> updateAvatarUrl(UserVO userVO) {
+        if(!StringUtils.hasText(String.valueOf(userVO.getId()))){
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+        }
+        UserDO userDO = this.getById(userVO.getId());
+        if(Objects.isNull(userDO)){
+            throw new BusinessException(ExceptionMsgEnum.ACCOUNT_EXCEPTION);
+        }
+        if(!StringUtils.hasText(userVO.getAvatarUrl())){
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        userDO.setAvatarUrl(userVO.getAvatarUrl());
+        try {
+            this.updateById(userDO);
+            return ResultUtil.successPost("修改头像成功", null);
+        } catch (Exception e) {
+            throw new SystemException(ExceptionMsgEnum.DB_ERROR, e);
+        }
+    }
+    /**
+     * 修改用户背景图片
+     * @param userVO 用户信息
+     * @return Result<?>
+     */
+    @Override
+    public Result<?> updateBackgroundImage(UserVO userVO) {
+        if(!StringUtils.hasText(String.valueOf(userVO.getId()))){
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+        }
+        UserDO userDO = this.getById(userVO.getId());
+        if(Objects.isNull(userDO)){
+            throw new BusinessException(ExceptionMsgEnum.ACCOUNT_EXCEPTION);
+        }
+        if(!StringUtils.hasText(userVO.getHomePageBackground())){
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        userDO.setHomePageBackground(userVO.getHomePageBackground());
+        try {
+            this.updateById(userDO);
+            return ResultUtil.successPost("修改背景成功", null);
+        } catch (Exception e) {
+            throw new SystemException(ExceptionMsgEnum.DB_ERROR, e);
+        }
+    }
+    /**
+     * 修改用户昵称
+     * @param userVO 用户信息
+     * @return Result<?>
+     */
+    @Override
+    public Result<?> updateNickname(UserVO userVO) {
+        if(!StringUtils.hasText(String.valueOf(userVO.getId()))){
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+        }
+        UserDO userDO = this.getById(userVO.getId());
+        if(Objects.isNull(userDO)){
+            throw new BusinessException(ExceptionMsgEnum.ACCOUNT_EXCEPTION);
+        }
+        if (!StringUtils.hasText(userVO.getNickname())) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        if(userVO.getNickname().length()>12||userVO.getNickname().length()<2){
+            return ResultUtil.errorPost("昵称长度为2-12位");
+        }
+        userDO.setNickname(userVO.getNickname());
+        try {
+            this.updateById(userDO);
+            return ResultUtil.successPost("修改昵称成功", null);
+        } catch (Exception e) {
+            throw new SystemException(ExceptionMsgEnum.DB_ERROR, e);
+        }
+    }
+    /**
+     * 修改用户简介
+     * @param userVO 用户信息
+     * @return Result<?>
+     */
+    @Override
+    public Result<?> updateIntroduction(UserVO userVO) {
+        if(!StringUtils.hasText(String.valueOf(userVO.getId()))){
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+        }
+        UserDO userDO = this.getById(userVO.getId());
+        if(Objects.isNull(userDO)){
+            throw new BusinessException(ExceptionMsgEnum.ACCOUNT_EXCEPTION);
+        }
+        if (!StringUtils.hasText(userVO.getSelfIntroduction())) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        if(userVO.getSelfIntroduction().length()>100){
+            return ResultUtil.errorPost("简介长度不能超过100");
+        }
+        userDO.setSelfIntroduction(userVO.getSelfIntroduction());
+        try {
+            this.updateById(userDO);
+            return ResultUtil.successPost("修改简介成功", null);
+        } catch (Exception e) {
+            throw new SystemException(ExceptionMsgEnum.DB_ERROR, e);
+        }
+    }
+    /**
+     * 修改用户性别
+     * @param userVO 用户信息
+     * @return Result<?>
+     */
+    @Override
+    public Result<?> updateSex(UserVO userVO) {
+        if(!StringUtils.hasText(String.valueOf(userVO.getId()))){
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+        }
+        UserDO userDO = this.getById(userVO.getId());
+        if(Objects.isNull(userDO)){
+            throw new BusinessException(ExceptionMsgEnum.ACCOUNT_EXCEPTION);
+        }
+        if(Objects.isNull(userVO.getSex())||userVO.getSex()<0||userVO.getSex()>1){
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        userDO.setSex(userVO.getSex());
+        try {
+            this.updateById(userDO);
+            return ResultUtil.successPost("修改性别成功", null);
+        } catch (Exception e) {
+            throw new SystemException(ExceptionMsgEnum.DB_ERROR, e);
+        }
+    }
+    /**
+     * 修改用户生日
+     * @param userVO 用户信息
+     * @return Result<?>
+     */
+    @Override
+    public Result<?> updateBirthday(UserVO userVO) {
+        if(!StringUtils.hasText(String.valueOf(userVO.getId()))){
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+        }
+        UserDO userDO = this.getById(userVO.getId());
+        if(Objects.isNull(userDO)){
+            throw new BusinessException(ExceptionMsgEnum.ACCOUNT_EXCEPTION);
+        }
+        if(Objects.isNull(userVO.getBirthday())){
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        try {
+            Date date = Date.valueOf(userVO.getBirthday());
+            // 判断生日是否合法，不能大于当前时间
+            long currentTimeMillis = System.currentTimeMillis();
+            if (date.getTime() > currentTimeMillis) {
+                throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+            }
+            userDO.setBirthday(date);
+            // 更新年龄
+            int age = TimeUtil.calculateAge(date.toLocalDate());
+            userDO.setAge(age);
+        } catch (Exception e) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        try {
+            this.updateById(userDO);
+            return ResultUtil.successPost("修改生日成功", userDO.getAge());
+        } catch (Exception e) {
+            throw new SystemException(ExceptionMsgEnum.DB_ERROR, e);
+        }
+    }
+    /**
+     * 修改用户地区
+     * @param userVO 用户信息
+     * @return Result<?>
+     */
+    @Override
+    public Result<?> updateArea(UserVO userVO) {
+        if(!StringUtils.hasText(String.valueOf(userVO.getId()))){
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+        }
+        UserDO userDO = this.getById(userVO.getId());
+        if(Objects.isNull(userDO)){
+            throw new BusinessException(ExceptionMsgEnum.ACCOUNT_EXCEPTION);
+        }
+        if(!StringUtils.hasText(userVO.getArea())){
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        // 判断地区是否合法，如果不合法则抛出异常，格式为：省 市 区
+        String[] split = userVO.getArea().split(" ");
+        if(split.length!=3){
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        if(split[0].equals(split[1])){
+            userDO.setArea(split[0]+" "+split[2]);
+        }else {
+            userDO.setArea(userVO.getArea());
+        }
+        try {
+            this.updateById(userDO);
+            return ResultUtil.successPost("修改地区成功", null);
+        } catch (Exception e) {
+            throw new SystemException(ExceptionMsgEnum.DB_ERROR, e);
+        }
     }
 
     /**
@@ -219,6 +429,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     private Result<UserVO> generateUserVO(UserDO userDO) {
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(userDO, userVO);
+        if(Objects.nonNull(userDO.getBirthday())) {
+            userVO.setBirthday(userDO.getBirthday().toString());
+        }
         // 生成token
         Map<String,Object> claims = new HashMap<>();
         claims.put("userId", userDO.getId());

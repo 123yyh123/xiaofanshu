@@ -38,6 +38,12 @@ public class StatusCode {
     public static final Integer OPEN_ID_NULL = 10040;
     //短信发送频繁
     public static final Integer SMS_CODE_SEND_FREQUENTLY = 10050;
+    //账号异常
+    public static final Integer ACCOUNT_EXCEPTION = 10060;
+    //文件过大
+    public static final Integer FILE_SIZE_TOO_LARGE = 10070;
+    //参数错误
+    public static final Integer PARAMETER_ERROR = 40010;
     //数据库操作异常
     public static final Integer DB_ERROR=50010;
     //aliyun短信服务初始化异常
