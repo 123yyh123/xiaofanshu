@@ -72,5 +72,13 @@
       <option name="ADDITIONAL_TAGS" value="date,desc" />
     </inspection_tool>
     <inspection_tool class="MapOrSetKeyShouldOverrideHashCodeEquals" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="MavenPackageUpdate" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="excludeList">
+        <list>
+          <option value="com.xuxueli:xxl-job-core" />
+          <option value="com.xuxueli:xxl-job-core" />
+        </list>
+      </option>
+    </inspection_tool>
   </profile>
 </component>

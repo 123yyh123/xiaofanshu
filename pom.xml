@@ -15,6 +15,7 @@
         <module>xfs-modules-server</module>
         <module>xfs-modules-api</module>
         <module>xfs-third-server</module>
+        <module>xfs-job-server</module>
     </modules>
 
     <parent>

@@ -1,8 +1,13 @@
 package com.yyh.xfs.common.redis.utils;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.BoundListOperations;
+import org.springframework.data.redis.core.BoundZSetOperations;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -454,6 +459,64 @@ public class RedisCache {
     public long lRemove(String key, long count, Object value) {
         return redisTemplate.opsForList().remove(key, count, value);
     }
+    //===============================zSet=================================
+
+    /**
+     * 添加zSet
+     *
+     * @param key
+     * @param value
+     * @param score
+     * @return
+     */
+    public boolean addZSet(String key, Object value, double score) {
+        return Boolean.TRUE.equals(redisTemplate.opsForZSet().add(key, value, score));
+    }
+
+    /**
+     * 添加zSet
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public boolean addZSet(String key, Object value) {
+        return Boolean.TRUE.equals(redisTemplate.opsForZSet().add(key, value, 0));
+    }
+
+    /**
+     * 获取zSet
+     *
+     * @param key
+     * @param start
+     * @param end
+     * @return
+     */
+    public Set<Object> rangeZSet(String key, long start, long end) {
+        return redisTemplate.opsForZSet().range(key, start, end);
+    }
+
+    /**
+     * 获取zSet长度
+     *
+     * @param key 键
+     * @return 0 不存在
+     */
+    public long zSetSize(String key) {
+        return redisTemplate.opsForZSet().size(key);
+    }
+
+    /**
+     * 删除zSet
+     *
+     * @param key
+     * @param start
+     * @param end
+     * @return
+     */
+    public long zSetRemove(String key, long start, long end) {
+        return redisTemplate.opsForZSet().removeRange(key, start, end);
+    }
 
     /**
      * 模糊查询获取key值
@@ -519,5 +582,27 @@ public class RedisCache {
         return boundValueOperations.rightPop();
     }
 
+    public BoundZSetOperations<String, Object> boundZSetOps(String listKey) {
+        return redisTemplate.boundZSetOps(listKey);
+    }
+
     //=========BoundListOperations 用法 End============
+
+    //=========Pipeline 用法 start============
+
+    /**
+     * 使用pipeline批量获取hash
+     *
+     * @param keys key集合
+     * @return value集合
+     */
+    public List<Object> pipelineGet(List<String> keys) {
+        return redisTemplate.executePipelined((RedisCallback<Map<String, Object>>) connection -> {
+            RedisSerializer<String> serializer = redisTemplate.getStringSerializer();
+            for (String key : keys) {
+                connection.hGetAll(serializer.serialize(key));
+            }
+            return null;
+        });
+    }
 }

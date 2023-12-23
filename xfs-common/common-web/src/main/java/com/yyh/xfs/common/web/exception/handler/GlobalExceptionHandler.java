@@ -2,6 +2,7 @@ package com.yyh.xfs.common.web.exception.handler;
 
 import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.web.exception.BusinessException;
+import com.yyh.xfs.common.web.exception.OnlyWarnException;
 import com.yyh.xfs.common.web.exception.SystemException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,5 +31,9 @@ public class GlobalExceptionHandler {
                 systemException.getExceptionMsgEnum().getCode(),
                 systemException.getExceptionMsgEnum().getMsg(),
                 null);
+    }
+    @ExceptionHandler(OnlyWarnException.class)
+    public void handleAuthException(OnlyWarnException onlyWarnException){
+        log.warn("警告异常:{};异常信息:",onlyWarnException.getExceptionMsgEnum(),onlyWarnException);
     }
 }

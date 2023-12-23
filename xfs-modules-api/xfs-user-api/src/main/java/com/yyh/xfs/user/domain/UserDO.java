@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yyh.xfs.user.vo.UserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -163,4 +164,17 @@ public class UserDO implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private java.util.Date updateTime;
 
+    public static UserDO voToDO(UserDO userDO,UserVO userVO) {
+        userDO.setNickname(userVO.getNickname());
+        userDO.setAge(userVO.getAge());
+        userDO.setSex(userVO.getSex());
+        userDO.setArea(userVO.getArea());
+        userDO.setBirthday(Date.valueOf(userVO.getBirthday()));
+        userDO.setHomePageBackground(userVO.getHomePageBackground());
+        userDO.setSelfIntroduction(userVO.getSelfIntroduction());
+        userDO.setPhoneNumber(userVO.getPhoneNumber());
+        userDO.setAvatarUrl(userVO.getAvatarUrl());
+        userDO.setUid(userVO.getUid());
+        return userDO;
+    }
 }
