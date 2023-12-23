@@ -10,6 +10,10 @@ public class RedisConstant {
      * redis key 用户登录过期前缀
      */
     public static final String REDIS_KEY_USER_LOGIN_EXPIRE = "user:login:expire:";
+    /**
+     * redis key 用户登录信息前缀
+     */
+    public static final String REDIS_KEY_USER_LOGIN_INFO= "user:login:info:";
 
     /**
      * redis key 注册短信验证码前缀
