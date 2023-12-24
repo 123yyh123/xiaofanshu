@@ -229,16 +229,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
      */
     @Override
     public Result<?> updateAvatarUrl(UserVO userVO) {
-        if (!StringUtils.hasText(String.valueOf(userVO.getId()))) {
-            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
-        }
-        if (!StringUtils.hasText(userVO.getAvatarUrl())) {
-            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
-        }
-        boolean b = redisCache.hasKey(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userVO.getId())));
-        if (!b) {
-            throw new BusinessException(ExceptionMsgEnum.ACCOUNT_EXCEPTION);
-        }
+        checkField(userVO.getId(),userVO.getAvatarUrl());
         redisCache.hset(
                 RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userVO.getId())),
                 "avatarUrl",
@@ -256,16 +247,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
      */
     @Override
     public Result<?> updateBackgroundImage(UserVO userVO) {
-        if (!StringUtils.hasText(String.valueOf(userVO.getId()))) {
-            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
-        }
-        if (!StringUtils.hasText(userVO.getHomePageBackground())) {
-            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
-        }
-        boolean b = redisCache.hasKey(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userVO.getId())));
-        if (!b) {
-            throw new BusinessException(ExceptionMsgEnum.ACCOUNT_EXCEPTION);
-        }
+        checkField(userVO.getId(),userVO.getHomePageBackground());
         redisCache.hset(
                 RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userVO.getId())),
                 "homePageBackground",
@@ -282,18 +264,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
      */
     @Override
     public Result<?> updateNickname(UserVO userVO) {
-        if (!StringUtils.hasText(String.valueOf(userVO.getId()))) {
-            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
-        }
-        if (!StringUtils.hasText(userVO.getNickname())) {
-            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
-        }
+        checkField(userVO.getId(),userVO.getNickname());
         if (userVO.getNickname().length() > 12 || userVO.getNickname().length() < 2) {
             return ResultUtil.errorPost("昵称长度为2-12位");
-        }
-        boolean b = redisCache.hasKey(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userVO.getId())));
-        if (!b) {
-            throw new BusinessException(ExceptionMsgEnum.ACCOUNT_EXCEPTION);
         }
         redisCache.hset(
                 RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userVO.getId())),
@@ -312,18 +285,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
      */
     @Override
     public Result<?> updateIntroduction(UserVO userVO) {
-        if (!StringUtils.hasText(String.valueOf(userVO.getId()))) {
-            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
-        }
-        if (!StringUtils.hasText(userVO.getSelfIntroduction())) {
-            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
-        }
+        checkField(userVO.getId(),userVO.getSelfIntroduction());
         if (userVO.getSelfIntroduction().length() > 100) {
             return ResultUtil.errorPost("简介长度不能超过100字");
-        }
-        boolean b = redisCache.hasKey(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userVO.getId())));
-        if (!b) {
-            throw new BusinessException(ExceptionMsgEnum.ACCOUNT_EXCEPTION);
         }
         redisCache.hset(
                 RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userVO.getId())),
@@ -342,15 +306,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
      */
     @Override
     public Result<?> updateSex(UserVO userVO) {
-        if (!StringUtils.hasText(String.valueOf(userVO.getId()))) {
-            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
-        }
-        if (Objects.isNull(userVO.getSex()) || userVO.getSex() < 0 || userVO.getSex() > 1) {
+        checkField(userVO.getId(),String.valueOf(userVO.getSex()));
+        if (userVO.getSex() < 0 || userVO.getSex() > 1) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
-        }
-        boolean b = redisCache.hasKey(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userVO.getId())));
-        if (!b) {
-            throw new BusinessException(ExceptionMsgEnum.ACCOUNT_EXCEPTION);
         }
         redisCache.hset(
                 RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userVO.getId())),
@@ -368,22 +326,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
      * @return Result<?>
      */
     @Override
-    public Result<?> updateBirthday(UserVO userVO) {
-        if (!StringUtils.hasText(String.valueOf(userVO.getId()))) {
-            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
-        }
-        if (Objects.isNull(userVO.getBirthday())) {
-            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
-        }
+    public Result<Integer> updateBirthday(UserVO userVO) {
+        checkField(userVO.getId(),userVO.getBirthday());
         Date date = Date.valueOf(userVO.getBirthday());
         // 判断生日是否合法，不能大于当前时间
         long currentTimeMillis = System.currentTimeMillis();
         if (date.getTime() > currentTimeMillis) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
-        }
-        boolean b = redisCache.hasKey(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userVO.getId())));
-        if (!b) {
-            throw new BusinessException(ExceptionMsgEnum.ACCOUNT_EXCEPTION);
         }
         int age = TimeUtil.calculateAge(date.toLocalDate());
         redisCache.hset(
@@ -397,7 +346,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 age
         );
         redisCache.addZSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
-        return ResultUtil.successPost("修改生日成功", null);
+        return ResultUtil.successPost("修改生日成功", age);
     }
 
     /**
@@ -407,12 +356,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
      */
     @Override
     public Result<?> updateArea(UserVO userVO) {
-        if (!StringUtils.hasText(String.valueOf(userVO.getId()))) {
-            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
-        }
-        if (!StringUtils.hasText(userVO.getArea())) {
-            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
-        }
+        checkField(userVO.getId(),userVO.getArea());
         // 判断地区是否合法，如果不合法则抛出异常，格式为：省 市 区
         String[] split = userVO.getArea().split(" ");
         if (split.length != 3) {
@@ -423,10 +367,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             area = split[0] + " " + split[2];
         } else {
             area = userVO.getArea();
-        }
-        boolean b = redisCache.hasKey(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userVO.getId())));
-        if (!b) {
-            throw new BusinessException(ExceptionMsgEnum.ACCOUNT_EXCEPTION);
         }
         redisCache.hset(
                 RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userVO.getId())),
@@ -537,6 +477,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         newUserDO.setHomePageBackground("https://pmall-yyh.oss-cn-chengdu.aliyuncs.com/IMG_20231212_011126.jpg");
         newUserDO.setAccountStatus(0);
         return newUserDO;
+    }
+    /**
+     * 检查字段是否为空
+     * @param id 用户id
+     * @param field 字段
+     */
+    private void checkField(Long id, String field){
+        if (!StringUtils.hasText(String.valueOf(id))) {
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+        }
+        if (!StringUtils.hasText(field)) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        boolean b = redisCache.hasKey(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(id)));
+        if (!b) {
+            throw new BusinessException(ExceptionMsgEnum.ACCOUNT_EXCEPTION);
+        }
     }
 
 }

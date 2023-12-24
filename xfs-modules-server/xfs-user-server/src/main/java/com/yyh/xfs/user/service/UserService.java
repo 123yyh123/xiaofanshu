@@ -86,7 +86,7 @@ public interface UserService extends IService<UserDO> {
      * @param userVO 用户信息
      * @return 更新结果
      */
-    Result<?> updateBirthday(UserVO userVO);
+    Result<Integer> updateBirthday(UserVO userVO);
     /**
      * 更新地区
      * @param userVO 用户信息

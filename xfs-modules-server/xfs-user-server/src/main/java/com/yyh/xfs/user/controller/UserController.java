@@ -102,7 +102,7 @@ public class UserController {
      * @return 用户信息
      */
     @PostMapping("/updateBirthday")
-    public Result<?> updateBirthday(@RequestBody UserVO userVO) {
+    public Result<Integer> updateBirthday(@RequestBody UserVO userVO) {
         return userService.updateBirthday(userVO);
     }
     /**
