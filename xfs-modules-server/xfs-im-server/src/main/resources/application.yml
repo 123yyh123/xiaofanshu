@@ -1,2 +1,19 @@
 server:
   port: 8101
+#netty:
+#  port: 9432
+spring:
+  data:
+    mongodb:
+      username: "admin"
+      password: "123456"
+      host: 192.168.124.100
+      port: 27017
+      database: messagedb
+  redis:
+    host: localhost
+    port: 6379
+rocketmq:
+  name-server: 192.168.124.100:9876
+  producer:
+    group: xfs-find-user-producer-group

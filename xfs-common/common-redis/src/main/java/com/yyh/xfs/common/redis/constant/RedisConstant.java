@@ -15,9 +15,17 @@ public class RedisConstant {
      */
     public static final String REDIS_KEY_USER_LOGIN_INFO= "user:login:info:";
     /**
+     * redis key 在线用户set集合key
+     */
+    public static final String REDIS_KEY_USER_ONLINE = "user:online";
+    /**
      * redis key 需要更新用户信息的集合key
      */
     public static final String REDIS_KEY_USER_INFO_UPDATE_LIST = "user:info:update:list";
+    /**
+     * redis key 用户离线消息前缀
+     */
+    public static final String REDIS_KEY_USER_OFFLINE_MESSAGE = "user:offline:message:";
     /**
      * redis key 注册短信验证码前缀
      */

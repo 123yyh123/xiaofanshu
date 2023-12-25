@@ -6,15 +6,20 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
-import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author yyh
  * @date 2023-12-24
  */
+@Component
 public class IMServerInitialzer extends ChannelInitializer<SocketChannel> {
+    @Autowired
+    private IMServerHandler imServerHandler;
+
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         ChannelPipeline pipeline = socketChannel.pipeline();
@@ -22,6 +27,6 @@ public class IMServerInitialzer extends ChannelInitializer<SocketChannel> {
                 .addLast(new ChunkedWriteHandler())
                 .addLast(new HttpObjectAggregator(1024*64))
                 .addLast(new WebSocketServerProtocolHandler("/ws"))
-                .addLast(new IMServerHandler());
+                .addLast(imServerHandler);
     }
 }
