@@ -5,7 +5,6 @@ import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.im.vo.MessageVO;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import static com.yyh.xfs.im.handler.IMServerHandler.USER_CHANNEL_MAP;

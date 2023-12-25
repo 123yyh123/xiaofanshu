@@ -10,8 +10,6 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.annotation.Order;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -24,6 +22,8 @@ import javax.annotation.PreDestroy;
 @Component
 @Slf4j
 public class IMServer {
+    @Value("${netty.port}")
+    private Integer port;
     @Autowired
     private IMServerInitialzer imServerInitialzer;
     private static EventLoopGroup bossGroup;
@@ -39,7 +39,7 @@ public class IMServer {
             //使用NIO模式，初始化器等等
             serverBootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(imServerInitialzer);
             //绑定端口
-            ChannelFuture channelFuture = serverBootstrap.bind(4543).sync();
+            ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
             log.info("tcp服务器已经启动…………");
             new Thread(() -> {
                 try {

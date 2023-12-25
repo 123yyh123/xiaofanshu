@@ -39,11 +39,8 @@ public class IMServerHandler extends SimpleChannelInboundHandler<TextWebSocketFr
     @Autowired
     private ThreadPoolExecutor threadPoolExecutor;
 
-    //2.初始化构造方法一定要有
     public IMServerHandler() {
     }
-
-    //3.容器初始化的时候进行执行-这里是重点
     @PostConstruct
     public void init() {
         imServerHandler = this;
