@@ -20,5 +20,6 @@ public class IMApplicationTest {
 
     @Test
     void test2() {
+        System.out.println(Runtime.getRuntime().availableProcessors());
     }
 }

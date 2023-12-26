@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: xfs-im
+  ## 开发环境
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      ## Nacos服务注册中心地址
+      config:
+        ## 配置文件所在的命名空间
+        namespace: 54c5b22b-7b63-4073-9a77-f07142769f1f
+        file-extension: yaml
+        server-addr: 192.168.124.100:8848
+        shared-configs: redis.yaml

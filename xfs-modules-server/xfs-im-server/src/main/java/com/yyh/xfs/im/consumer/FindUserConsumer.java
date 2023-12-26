@@ -22,9 +22,9 @@ import org.springframework.stereotype.Component;
         consumerGroup = "find-user-consumer-group",
         messageModel = MessageModel.BROADCASTING)
 public class FindUserConsumer implements RocketMQListener<String>{
-
     @Override
     public void onMessage(String s) {
+        log.info("收到消息：{}",s);
         MessageVO message = JSON.parseObject(s, MessageVO.class);
         String messageTo = message.getTo();
         Channel channel = IMServerHandler.USER_CHANNEL_MAP.get(messageTo);

@@ -77,6 +77,8 @@
         <list>
           <option value="com.xuxueli:xxl-job-core" />
           <option value="com.xuxueli:xxl-job-core" />
+          <option value="org.apache.rocketmq:rocketmq-spring-boot-starter" />
+          <option value="com.aliyun.oss:aliyun-sdk-oss" />
         </list>
       </option>
     </inspection_tool>

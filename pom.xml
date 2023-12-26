@@ -31,7 +31,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>2.6.3</spring-boot.version>
         <spring-cloud.version>2021.0.1</spring-cloud.version>
-        <spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
+        <aliyundysmsapi.version>2.0.24</aliyundysmsapi.version>
+        <aliyunoss.version>3.15.0</aliyunoss.version>
         <mysql.version>8.0.27</mysql.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <fastjson.version>1.2.66</fastjson.version>
@@ -40,6 +41,10 @@
         <hutool-http.version>5.8.11</hutool-http.version>
         <jjwt.version>0.9.1</jjwt.version>
         <knife4j.version>3.0.3</knife4j.version>
+        <rocketmq.version>2.2.2</rocketmq.version>
+        <dynamic.datasource.version>3.4.1</dynamic.datasource.version>
+        <xxl.job.core.version>2.3.0</xxl.job.core.version>
+        <spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
     </properties>
 
 

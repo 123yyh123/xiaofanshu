@@ -7,17 +7,18 @@ import com.yyh.xfs.common.redis.utils.RedisKey;
 import com.yyh.xfs.im.domain.Message;
 import com.yyh.xfs.im.vo.MessageVO;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.Executor;
 
 import static com.yyh.xfs.im.handler.IMServerHandler.USER_CHANNEL_MAP;
 
@@ -31,27 +32,30 @@ public class ChatHandler {
     private final RedisCache redisCache;
     private final RocketMQTemplate rocketMQTemplate;
     private final MongoTemplate mongoTemplate;
-    private final ThreadPoolExecutor threadPoolExecutor;
+    private final Executor asyncThreadExecutor;
 
     public ChatHandler(RedisCache redisCache,
                        RocketMQTemplate rocketMQTemplate,
                        MongoTemplate mongoTemplate,
-                       ThreadPoolExecutor threadPoolExecutor) {
+                       Executor asyncThreadExecutor) {
         this.redisCache = redisCache;
         this.rocketMQTemplate = rocketMQTemplate;
         this.mongoTemplate = mongoTemplate;
-        this.threadPoolExecutor = threadPoolExecutor;
+        this.asyncThreadExecutor = asyncThreadExecutor;
     }
-
     public void execute(MessageVO messageVO) {
         Channel channel = USER_CHANNEL_MAP.get(messageVO.getTo());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         messageVO.setTime(simpleDateFormat.format(System.currentTimeMillis()));
-        // 消息持久化到mongodb
-        threadPoolExecutor.execute(() -> {
-            Message message = new Message();
-            BeanUtils.copyProperties(messageVO, message);
-            mongoTemplate.insert(message);
+        // 消息持久化到mongodb，异步执行
+        asyncThreadExecutor.execute(()->{
+            try {
+                Message message = new Message();
+                BeanUtils.copyProperties(messageVO, message);
+                mongoTemplate.insert(message);
+            } catch (Exception e) {
+                log.error("消息持久化失败", e);
+            }
         });
         if (channel != null) {
             log.info("双方在一个服务，直接发送消息");
@@ -71,4 +75,5 @@ public class ChatHandler {
                 RedisKey.build(RedisConstant.REDIS_KEY_USER_OFFLINE_MESSAGE,messageVO.getFrom()+"-"+messageVO.getTo()),
                 JSON.toJSONString(messageVO));
     }
+
 }

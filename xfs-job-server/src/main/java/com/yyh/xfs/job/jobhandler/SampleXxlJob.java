@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 /**
@@ -28,13 +28,13 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SampleXxlJob {
     private final UserService userService;
-    private final ThreadPoolExecutor threadPoolExecutor;
+    private final Executor jobThreadPool;
 
     private final RedisCache redisCache;
 
-    public SampleXxlJob(RedisCache redisCache, ThreadPoolExecutor threadPoolExecutor, UserService userService) {
+    public SampleXxlJob(RedisCache redisCache, Executor jobThreadPool, UserService userService) {
         this.redisCache = redisCache;
-        this.threadPoolExecutor = threadPoolExecutor;
+        this.jobThreadPool=jobThreadPool;
         this.userService = userService;
     }
     /**
@@ -50,7 +50,7 @@ public class SampleXxlJob {
         // 每个线程更新100个用户信息，更新完成后删除，放到线程池中执行，使用多线程更新
         for (int i = 0; i < l / 100 + 1; i++) {
             int finalI = i;
-            threadPoolExecutor.execute(() -> {
+            jobThreadPool.execute(() -> {
                 Set<Object> range = setOps.range(finalI, finalI + 100);
                 if (range != null) {
                     List<String> collect = range.stream().map(o-> RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, o.toString())).collect(Collectors.toList());

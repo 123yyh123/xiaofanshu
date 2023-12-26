@@ -38,9 +38,10 @@ public class MessageVO implements Serializable {
     private String time;
     /**
      * 0:连接信息
-     * 1:系统信息
-     * 2:聊天信息
-     * 3:添加好友信息
+     * 1:心跳信息
+     * 2:系统信息
+     * 3:聊天信息
+     * 4:添加好友信息
      */
     private Integer messageType;
     /**

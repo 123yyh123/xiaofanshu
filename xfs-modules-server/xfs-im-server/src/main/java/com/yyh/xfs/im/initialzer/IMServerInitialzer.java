@@ -8,6 +8,7 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,16 +18,19 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class IMServerInitialzer extends ChannelInitializer<SocketChannel> {
-    @Autowired
-    private IMServerHandler imServerHandler;
+    private final IMServerHandler imServerHandler;
 
+    public IMServerInitialzer(IMServerHandler imServerHandler) {
+        this.imServerHandler = imServerHandler;
+    }
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         ChannelPipeline pipeline = socketChannel.pipeline();
         pipeline.addLast(new HttpServerCodec())
                 .addLast(new ChunkedWriteHandler())
                 .addLast(new HttpObjectAggregator(1024*64))
-                .addLast(new WebSocketServerProtocolHandler("/ws"))
+                .addLast(new WebSocketServerProtocolHandler("/"))
+                .addLast(new IdleStateHandler(60, 0, 0))
                 .addLast(imServerHandler);
     }
 }

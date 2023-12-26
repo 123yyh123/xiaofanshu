@@ -16,9 +16,12 @@ public class IMApplication implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(IMApplication.class, args);
     }
-
+    /**
+     * 项目启动后执行
+     */
     @Override
     public void run(String... args) {
+        // 启动netty
         imServer.start();
     }
 }

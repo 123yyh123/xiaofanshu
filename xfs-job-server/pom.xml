@@ -15,7 +15,6 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <dynamic.datasource.version>3.4.1</dynamic.datasource.version>
     </properties>
 
     <dependencies>
@@ -63,7 +62,7 @@
         <dependency>
             <groupId>com.xuxueli</groupId>
             <artifactId>xxl-job-core</artifactId>
-            <version>2.3.0</version>
+            <version>${xxl.job.core.version}</version>
         </dependency>
     </dependencies>
 </project>
