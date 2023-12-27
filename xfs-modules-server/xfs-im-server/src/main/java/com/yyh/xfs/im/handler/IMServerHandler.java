@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.yyh.xfs.common.myEnum.MessageTypeEnum;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
 import com.yyh.xfs.common.redis.utils.RedisCache;
+import com.yyh.xfs.im.handler.types.ChatHandler;
+import com.yyh.xfs.im.handler.types.ConnectHandler;
 import com.yyh.xfs.im.vo.MessageVO;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
@@ -88,7 +90,7 @@ public class IMServerHandler extends SimpleChannelInboundHandler<TextWebSocketFr
                 // TODO 添加好友消息
             }
         } catch (Exception e) {
-            log.error("消息处理失败", e);
+            log.warn("消息格式不正确");
         }
     }
 
@@ -98,8 +100,8 @@ public class IMServerHandler extends SimpleChannelInboundHandler<TextWebSocketFr
         if(evt instanceof IdleStateEvent){
             IdleStateEvent event = (IdleStateEvent) evt;
             if (Objects.requireNonNull(event.state()) == IdleState.READER_IDLE) {
-                log.warn("客户端已超过60秒未读写数据，关闭连接");
-                handlerRemoved(ctx);
+                log.warn("服务器已超过5秒未收到数据，关闭连接");
+                ctx.close();
             }
         }
     }
@@ -113,12 +115,11 @@ public class IMServerHandler extends SimpleChannelInboundHandler<TextWebSocketFr
             for (Map.Entry<String, Channel> entry : USER_CHANNEL_MAP.entrySet()) {
                 if (entry.getValue() == channel) {
                     USER_CHANNEL_MAP.remove(entry.getKey());
+                    redisCache.setRemove(RedisConstant.REDIS_KEY_USER_ONLINE, entry.getKey());
                     break;
                 }
             }
         });
-        redisCache.setRemove(RedisConstant.REDIS_KEY_USER_ONLINE);
-        ctx.channel().close();
         log.info("客户端断开连接");
     }
 

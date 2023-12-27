@@ -1,4 +1,4 @@
-package com.yyh.xfs.im.handler;
+package com.yyh.xfs.im.handler.types;
 
 import com.yyh.xfs.common.redis.constant.RedisConstant;
 import com.yyh.xfs.common.redis.utils.RedisCache;

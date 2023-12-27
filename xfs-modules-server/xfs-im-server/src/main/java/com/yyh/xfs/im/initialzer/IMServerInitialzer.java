@@ -29,8 +29,8 @@ public class IMServerInitialzer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new HttpServerCodec())
                 .addLast(new ChunkedWriteHandler())
                 .addLast(new HttpObjectAggregator(1024*64))
-                .addLast(new WebSocketServerProtocolHandler("/"))
-                .addLast(new IdleStateHandler(60, 0, 0))
+                .addLast(new WebSocketServerProtocolHandler("/ws/xfs"))
+                .addLast(new IdleStateHandler(5, 0, 0))
                 .addLast(imServerHandler);
     }
 }
