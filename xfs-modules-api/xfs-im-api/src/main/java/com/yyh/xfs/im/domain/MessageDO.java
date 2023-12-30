@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.io.Serializable;
 
@@ -16,19 +15,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(value = "message")
-public class Message implements Serializable {
+public class MessageDO implements Serializable {
     /**
      * 发送者id
      */
     private String from;
-    /**
-     * 发送者名称
-     */
-    private String fromName;
-    /**
-     * 发送者头像
-     */
-    private String fromAvatar;
     /**
      * 接收者id
      */
@@ -40,7 +31,7 @@ public class Message implements Serializable {
     /**
      * 发送时间
      */
-    private String time;
+    private Long time;
     /**
      * 0:不是聊天信息
      * 1:文本信息

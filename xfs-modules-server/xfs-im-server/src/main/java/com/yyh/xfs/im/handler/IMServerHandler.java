@@ -27,7 +27,7 @@ import java.util.concurrent.Executor;
 /**
  * @author yyh
  * @date 2023-12-24
- * Netty的Handler不支持注入，所以需要在启动类中注入
+ * Netty的Handler不支持注入，所以需要在启动中注入
  */
 @Component
 @Slf4j

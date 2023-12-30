@@ -43,4 +43,9 @@ public class RedisConstant {
      */
     public static final String REDIS_KEY_SMS_RESET_PASSWORD_PHONE_CODE = "sms:reset:password:phone:code:";
 
+    /**
+     * redis key 用户关系是否允许发送消息前缀
+     */
+    public static final String REDIS_KEY_USER_RELATION_ALLOW_SEND_MESSAGE = "user:relation:allow:send:message:";
+
 }

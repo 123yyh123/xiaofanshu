@@ -74,7 +74,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     public Result<UserVO> login(String phoneNumber, String password) {
         QueryWrapper<UserDO> queryWrapper = new QueryWrapper<>();
         // 利用MD5加密密码，并且通过手机号给密码加盐
-        String md5Password = Md5Util.getMd5(phoneNumber + password);
+//        String md5Password = Md5Util.getMd5(phoneNumber + password);
+        // TODO 暂时使用死密码，方便测试
+        String md5Password = "@yangyahao5036";
         queryWrapper.lambda().eq(UserDO::getPhoneNumber, phoneNumber).eq(UserDO::getPassword, md5Password);
         UserDO userDO = this.getOne(queryWrapper);
         if (Objects.isNull(userDO)) {

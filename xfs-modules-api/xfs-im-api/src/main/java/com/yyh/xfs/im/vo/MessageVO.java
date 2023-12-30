@@ -35,13 +35,14 @@ public class MessageVO implements Serializable {
     /**
      * 发送时间
      */
-    private String time;
+    private Long time;
     /**
      * 0:连接信息
      * 1:心跳信息
      * 2:系统信息
      * 3:聊天信息
      * 4:添加好友信息
+     * 5:服务器应答信息
      */
     private Integer messageType;
     /**

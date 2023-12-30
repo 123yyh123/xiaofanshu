@@ -40,7 +40,6 @@ public class RedisCache {
         }
         return true;
     }
-
     /**
      * 根据key 获取过期时间
      *
@@ -191,7 +190,7 @@ public class RedisCache {
      * @param time 时间(秒)
      * @return true成功 false失败
      */
-    public boolean hmset(String key, Map<String, Object> map, long time) throws Exception {
+    public boolean hmset(String key, Map<String, Object> map, long time){
         redisTemplate.opsForHash().putAll(key, map);
         if (time > 0) {
             expire(key, time);
@@ -519,15 +518,13 @@ public class RedisCache {
     }
 
     /**
-     * 模糊查询获取key值
-     *
-     * @param pattern
-     * @return
+     * 根据前缀获取所有的key
+     * @param prefix 前缀
+     * @return key集合
      */
-    public Set keys(String pattern) {
-        return redisTemplate.keys(pattern);
+    public Set<String> keys(String prefix) {
+        return redisTemplate.keys(prefix + "*");
     }
-
     /**
      * 使用Redis的消息队列
      *

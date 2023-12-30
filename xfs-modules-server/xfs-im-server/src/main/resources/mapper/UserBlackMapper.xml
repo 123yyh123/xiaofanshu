@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyh.xfs.im.mapper.UserBlackMapper">
+
+    <select id="selectOneByUserIdAndBlackIdIsExist" resultType="java.lang.Boolean">
+        <![CDATA[
+        SELECT
+            COUNT(1)
+        FROM
+            user_black_list
+        WHERE
+            user_id = #{userId}
+        AND black_id = #{blackId}]]>
+    </select>
+</mapper>

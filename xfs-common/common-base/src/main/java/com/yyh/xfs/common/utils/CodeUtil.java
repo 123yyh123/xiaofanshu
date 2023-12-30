@@ -1,6 +1,7 @@
 package com.yyh.xfs.common.utils;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author yyh
@@ -14,7 +15,10 @@ public class CodeUtil {
      * @return 6位随机数
      */
     public static String createSmsCode() {
-        return String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
+        // 使用线程安全的Random
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        int code = random.nextInt(100000, 1000000);
+        return String.valueOf(code);
     }
 
     /**
@@ -43,7 +47,7 @@ public class CodeUtil {
      */
     public static String createNickname(){
         String str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        Random random=new Random();
+        ThreadLocalRandom random = ThreadLocalRandom.current();
         StringBuilder sb=new StringBuilder();
         for(int i=0;i<8;i++){
             int number=random.nextInt(62);

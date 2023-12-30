@@ -4,20 +4,20 @@ import com.alibaba.fastjson.JSON;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
 import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.common.redis.utils.RedisKey;
-import com.yyh.xfs.im.domain.Message;
+import com.yyh.xfs.im.domain.MessageDO;
+import com.yyh.xfs.im.mapper.UserAttentionMapper;
+import com.yyh.xfs.im.mapper.UserBlackMapper;
 import com.yyh.xfs.im.vo.MessageVO;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 import static com.yyh.xfs.im.handler.IMServerHandler.USER_CHANNEL_MAP;
@@ -25,6 +25,7 @@ import static com.yyh.xfs.im.handler.IMServerHandler.USER_CHANNEL_MAP;
 /**
  * @author yyh
  * @date 2023-12-25
+ * @desc 聊天处理器
  */
 @Component
 @Slf4j
@@ -33,24 +34,80 @@ public class ChatHandler {
     private final RocketMQTemplate rocketMQTemplate;
     private final MongoTemplate mongoTemplate;
     private final Executor asyncThreadExecutor;
-
+    private final UserBlackMapper userBlackMapper;
+    private final UserAttentionMapper userAttentionMapper;
     public ChatHandler(RedisCache redisCache,
                        RocketMQTemplate rocketMQTemplate,
                        MongoTemplate mongoTemplate,
-                       Executor asyncThreadExecutor) {
+                       Executor asyncThreadExecutor, UserBlackMapper userBlackMapper, UserAttentionMapper userAttentionMapper) {
         this.redisCache = redisCache;
         this.rocketMQTemplate = rocketMQTemplate;
         this.mongoTemplate = mongoTemplate;
         this.asyncThreadExecutor = asyncThreadExecutor;
+        this.userBlackMapper = userBlackMapper;
+        this.userAttentionMapper = userAttentionMapper;
     }
+
     public void execute(MessageVO messageVO) {
         Channel channel = USER_CHANNEL_MAP.get(messageVO.getTo());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        messageVO.setTime(simpleDateFormat.format(System.currentTimeMillis()));
+        // TODO 判断双方是否可以互相聊天
+        boolean isExist = redisCache.hasKey(RedisKey.build(RedisConstant.REDIS_KEY_USER_RELATION_ALLOW_SEND_MESSAGE,
+                messageVO.getFrom() + ":" + messageVO.getTo()));
+        if (isExist) {
+            Map<String, Object> hmget = redisCache.hmget(RedisKey.build(RedisConstant.REDIS_KEY_USER_RELATION_ALLOW_SEND_MESSAGE,
+                    messageVO.getFrom() + ":" + messageVO.getTo()));
+            Boolean isBlacked = (Boolean) hmget.get("isBlacked");
+            if (isBlacked) {
+                log.info("用户{}被用户{}拉黑，无法发送消息", messageVO.getFrom(), messageVO.getTo());
+                return;
+            }
+            Boolean allowSendMessage = (Boolean) hmget.get("allowSendMessage");
+            if (!allowSendMessage) {
+                log.info("对方没有关注，用户{}24小时内已经向用户{}发送消息", messageVO.getFrom(), messageVO.getTo());
+                return;
+            }
+            sendMessage(channel, messageVO);
+            return;
+        }
+        createKeyAndSendMessage(channel, messageVO);
+    }
+
+    private void createKeyAndSendMessage(Channel channel, MessageVO messageVO) {
+        Map<String, Object> userRelation = new HashMap<>();
+        // 判断对方是否拉黑了自己
+        Boolean isBlack = userBlackMapper.selectOneByUserIdAndBlackIdIsExist
+                (Long.valueOf(messageVO.getTo()), Long.valueOf(messageVO.getFrom()));
+        if (isBlack) {
+            log.info("用户{}被用户{}拉黑，无法发送消息", messageVO.getFrom(), messageVO.getTo());
+            userRelation.putIfAbsent("isBlacked", true);
+            userRelation.putIfAbsent("allowSendMessage", false);
+        } else {
+            // 判断对方是否关注了我
+            Boolean isAttention = userAttentionMapper.selectOneByUserIdAndAttentionIdIsExist(
+                    Long.valueOf(messageVO.getTo()), Long.valueOf(messageVO.getFrom()));
+            if (isAttention) {
+                log.info("对方关注了我，可以发送消息");
+                userRelation.putIfAbsent("isBlacked", false);
+                userRelation.putIfAbsent("allowSendMessage", true);
+            } else {
+                log.info("对方没有关注我，用户{}24小时内只能向用户{}发送一条消息", messageVO.getFrom(), messageVO.getTo());
+                userRelation.putIfAbsent("isBlacked", false);
+                userRelation.putIfAbsent("allowSendMessage", false);
+                // 只发送这一次消息，下次只能等到redis中的key过期后才能发送，即24小时
+            }
+            sendMessage(channel, messageVO);
+        }
+        // 将用户关系存储到redis中，key为发送者和接收者的id，value为用户关系
+        redisCache.hmset(RedisKey.build(RedisConstant.REDIS_KEY_USER_RELATION_ALLOW_SEND_MESSAGE,
+                messageVO.getFrom() + ":" + messageVO.getTo()), userRelation, 24 * 60 * 60);
+    }
+
+    private void sendMessage(Channel channel, MessageVO messageVO) {
+        messageVO.setTime(System.currentTimeMillis());
         // 消息持久化到mongodb，异步执行
-        asyncThreadExecutor.execute(()->{
+        asyncThreadExecutor.execute(() -> {
             try {
-                Message message = new Message();
+                MessageDO message = new MessageDO();
                 BeanUtils.copyProperties(messageVO, message);
                 mongoTemplate.insert(message);
             } catch (Exception e) {
@@ -72,8 +129,7 @@ public class ChatHandler {
         log.info("对方不在线，发送离线消息");
         // 将离线消息存储到redis中，key为发送者和接收者的id，value为消息
         redisCache.lSet(
-                RedisKey.build(RedisConstant.REDIS_KEY_USER_OFFLINE_MESSAGE,messageVO.getFrom()+"-"+messageVO.getTo()),
+                RedisKey.build(RedisConstant.REDIS_KEY_USER_OFFLINE_MESSAGE, messageVO.getTo() + ":" + messageVO.getFrom()),
                 JSON.toJSONString(messageVO));
     }
-
 }
