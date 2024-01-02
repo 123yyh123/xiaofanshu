@@ -91,6 +91,7 @@ public class IMServerHandler extends SimpleChannelInboundHandler<TextWebSocketFr
             }
         } catch (Exception e) {
             log.warn("消息格式不正确");
+
         }
     }
 
@@ -100,8 +101,8 @@ public class IMServerHandler extends SimpleChannelInboundHandler<TextWebSocketFr
         if(evt instanceof IdleStateEvent){
             IdleStateEvent event = (IdleStateEvent) evt;
             if (Objects.requireNonNull(event.state()) == IdleState.READER_IDLE) {
-                log.warn("服务器已超过5秒未收到数据，关闭连接");
-                ctx.close();
+                log.warn("服务器已超过10秒未收到数据，关闭连接");
+                ctx.channel().close();
             }
         }
     }

@@ -46,6 +46,7 @@ public class ConnectHandler {
         // 拉去离线消息
         Set<String> keys = redisCache.keys(RedisKey.build(RedisConstant.REDIS_KEY_USER_OFFLINE_MESSAGE, message.getFrom()));
         if (keys != null && !keys.isEmpty()) {
+            log.info("用户{}上线了，有离线消息，进行拉取", message.getFrom());
             keys.forEach(key -> {
                 //  异步执行
                 asyncThreadExecutor.execute(() -> {

@@ -20,7 +20,6 @@ public class AliyunSms {
     private String accessKeyId;
     @Value("${aliyun.sms.accessKeySecret}")
     private String accessKeySecret;
-
     private static final String ENDPOINT = "dysmsapi.aliyuncs.com";
 
     @Bean

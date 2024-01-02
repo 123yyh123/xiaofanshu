@@ -39,7 +39,9 @@ public class ChatHandler {
     public ChatHandler(RedisCache redisCache,
                        RocketMQTemplate rocketMQTemplate,
                        MongoTemplate mongoTemplate,
-                       Executor asyncThreadExecutor, UserBlackMapper userBlackMapper, UserAttentionMapper userAttentionMapper) {
+                       Executor asyncThreadExecutor,
+                       UserBlackMapper userBlackMapper,
+                       UserAttentionMapper userAttentionMapper) {
         this.redisCache = redisCache;
         this.rocketMQTemplate = rocketMQTemplate;
         this.mongoTemplate = mongoTemplate;
@@ -101,7 +103,6 @@ public class ChatHandler {
         redisCache.hmset(RedisKey.build(RedisConstant.REDIS_KEY_USER_RELATION_ALLOW_SEND_MESSAGE,
                 messageVO.getFrom() + ":" + messageVO.getTo()), userRelation, 24 * 60 * 60);
     }
-
     private void sendMessage(Channel channel, MessageVO messageVO) {
         messageVO.setTime(System.currentTimeMillis());
         // 消息持久化到mongodb，异步执行

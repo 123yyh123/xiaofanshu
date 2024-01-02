@@ -8,11 +8,13 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @author yyh
  * @date 2023-12-11
+ * @desc jwt配置
  */
 @Configuration
 @ConfigurationProperties(prefix = "jwt")
 @Getter
 @Setter
+
 public class JwtProperties {
     // 密钥
     private String secret;
