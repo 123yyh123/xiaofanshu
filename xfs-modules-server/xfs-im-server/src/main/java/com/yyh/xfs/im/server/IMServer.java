@@ -1,6 +1,5 @@
 package com.yyh.xfs.im.server;
 
-import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.alibaba.cloud.nacos.NacosDiscoveryProperties;
 import com.alibaba.cloud.nacos.NacosServiceManager;
 import com.alibaba.nacos.api.exception.NacosException;
@@ -59,8 +58,6 @@ public class IMServer {
         instance.setPort(port);
         namingService.registerInstance(applicationName,instance);
     }
-
-
     /**
      * 启动IM服务器
      */

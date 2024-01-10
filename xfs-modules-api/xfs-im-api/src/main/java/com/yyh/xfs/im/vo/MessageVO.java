@@ -12,6 +12,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageVO implements Serializable {
+    private Integer id;
     /**
      * 发送者id
      */

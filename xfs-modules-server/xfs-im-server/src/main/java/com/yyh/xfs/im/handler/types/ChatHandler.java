@@ -61,14 +61,26 @@ public class ChatHandler {
             Boolean isBlacked = (Boolean) hmget.get("isBlacked");
             if (isBlacked) {
                 log.info("用户{}被用户{}拉黑，无法发送消息", messageVO.getFrom(), messageVO.getTo());
+                // 告知发送者，对方已经将你拉黑
+                messageVO.setContent("对方已将你拉黑");
+                replyMessage(USER_CHANNEL_MAP.get(messageVO.getFrom()), messageVO);
                 return;
             }
             Boolean allowSendMessage = (Boolean) hmget.get("allowSendMessage");
             if (!allowSendMessage) {
                 log.info("对方没有关注，用户{}24小时内已经向用户{}发送消息", messageVO.getFrom(), messageVO.getTo());
+                // 告知发送者，对方没有关注你，24小时内只能发送一条消息
+                messageVO.setContent("对方没有关注你，24小时内只能发送一条消息");
+                replyMessage(USER_CHANNEL_MAP.get(messageVO.getFrom()), messageVO);
                 return;
             }
             sendMessage(channel, messageVO);
+            // 应答消息，告知发送者，消息发送成功
+            MessageVO replyMessage = new MessageVO();
+            replyMessage.setFrom(messageVO.getFrom());
+            replyMessage.setTo(messageVO.getTo());
+            replyMessage.setId(messageVO.getId());
+            replyMessage(USER_CHANNEL_MAP.get(messageVO.getFrom()), replyMessage);
             return;
         }
         createKeyAndSendMessage(channel, messageVO);
@@ -91,6 +103,7 @@ public class ChatHandler {
                 log.info("对方关注了我，可以发送消息");
                 userRelation.putIfAbsent("isBlacked", false);
                 userRelation.putIfAbsent("allowSendMessage", true);
+
             } else {
                 log.info("对方没有关注我，用户{}24小时内只能向用户{}发送一条消息", messageVO.getFrom(), messageVO.getTo());
                 userRelation.putIfAbsent("isBlacked", false);
@@ -132,5 +145,12 @@ public class ChatHandler {
         redisCache.lSet(
                 RedisKey.build(RedisConstant.REDIS_KEY_USER_OFFLINE_MESSAGE, messageVO.getTo() + ":" + messageVO.getFrom()),
                 JSON.toJSONString(messageVO));
+    }
+
+    private void replyMessage(Channel channel, MessageVO messageVO) {
+        messageVO.setTime(System.currentTimeMillis());
+        messageVO.setChatType(0);
+        messageVO.setMessageType(5);
+        channel.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(messageVO)));
     }
 }
