@@ -95,6 +95,9 @@ public class ChatHandler {
             log.info("用户{}被用户{}拉黑，无法发送消息", messageVO.getFrom(), messageVO.getTo());
             userRelation.putIfAbsent("isBlacked", true);
             userRelation.putIfAbsent("allowSendMessage", false);
+            // 告知发送者，对方已经将你拉黑
+            messageVO.setContent("对方已将你拉黑");
+            replyMessage(USER_CHANNEL_MAP.get(messageVO.getFrom()), messageVO);
         } else {
             // 判断对方是否关注了我
             Boolean isAttention = userAttentionMapper.selectOneByUserIdAndAttentionIdIsExist(
@@ -111,6 +114,12 @@ public class ChatHandler {
                 // 只发送这一次消息，下次只能等到redis中的key过期后才能发送，即24小时
             }
             sendMessage(channel, messageVO);
+            // 应答消息，告知发送者，消息发送成功
+            MessageVO replyMessage = new MessageVO();
+            replyMessage.setFrom(messageVO.getFrom());
+            replyMessage.setTo(messageVO.getTo());
+            replyMessage.setId(messageVO.getId());
+            replyMessage(USER_CHANNEL_MAP.get(messageVO.getFrom()), replyMessage);
         }
         // 将用户关系存储到redis中，key为发送者和接收者的id，value为用户关系
         redisCache.hmset(RedisKey.build(RedisConstant.REDIS_KEY_USER_RELATION_ALLOW_SEND_MESSAGE,

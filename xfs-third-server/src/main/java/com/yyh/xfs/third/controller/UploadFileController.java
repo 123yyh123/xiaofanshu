@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * @author yyh
  * @date 2023-12-21
@@ -26,5 +28,15 @@ public class UploadFileController {
     @PostMapping("/uploadImg")
     public Result<String> uploadImg(@RequestParam("file") MultipartFile file) {
         return aliyunOssService.uploadImg(file);
+    }
+
+    @PostMapping("/uploadImgs")
+    public Result<List<String>> uploadImgs(@RequestParam("file") MultipartFile[] file) {
+        return aliyunOssService.uploadImgs(file);
+    }
+
+    @PostMapping("/uploadAudio")
+    public Result<String> uploadAudio(@RequestParam("file") MultipartFile file) {
+        return aliyunOssService.uploadAudio(file);
     }
 }

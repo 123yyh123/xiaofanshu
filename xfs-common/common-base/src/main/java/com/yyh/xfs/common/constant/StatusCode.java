@@ -53,4 +53,6 @@ public class StatusCode {
     //aliyun oss服务异常
     public static final Integer ALIYUN_OSS_INIT_ERROR = 50030;
     public static final Integer REDIS_ERROR = 50040;
+    //文件不能为空
+    public static final Integer FILE_NOT_NULL = 50050;
 }

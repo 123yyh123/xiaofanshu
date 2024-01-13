@@ -23,6 +23,7 @@ public enum ExceptionMsgEnum {
     ACCOUNT_EXCEPTION(StatusCode.ACCOUNT_EXCEPTION,"账号异常"),
     PARAMETER_ERROR(StatusCode.PARAMETER_ERROR,"参数错误"),
     FILE_SIZE_TOO_LARGE(StatusCode.FILE_SIZE_TOO_LARGE,"文件过大"),
+    FILE_NOT_NULL(StatusCode.FILE_NOT_NULL,"文件不能为空"),
     SMS_CODE_SEND_FREQUENTLY(StatusCode.SMS_CODE_SEND_FREQUENTLY,"短信发送频繁,请稍后再试"),
     /**
      * 系统异常

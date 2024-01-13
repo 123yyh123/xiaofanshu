@@ -23,4 +23,6 @@ public class AliyunOss {
     private String bucketName;
     @Value("${spring.servlet.multipart.max-file-size}")
     private String maxFileSize;
+    @Value("${spring.servlet.multipart.max-request-size}")
+    private String maxRequestSize;
 }
