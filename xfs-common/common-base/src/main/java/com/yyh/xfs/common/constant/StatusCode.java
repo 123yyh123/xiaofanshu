@@ -42,6 +42,8 @@ public class StatusCode {
     public static final Integer ACCOUNT_EXCEPTION = 10060;
     //账号在其他设备登录
     public static final Integer ACCOUNT_OTHER_LOGIN = 10061;
+    //账号操作异常
+    public static final Integer ACCOUNT_OPERATION_ERROR = 10062;
     //文件过大
     public static final Integer FILE_SIZE_TOO_LARGE = 10070;
     //参数错误

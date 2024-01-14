@@ -17,8 +17,9 @@ public enum ExceptionMsgEnum {
      * 业务异常
      */
     NOT_LOGIN(StatusCode.NOT_LOGIN,"未登录"),
-    TOKEN_EXPIRED(StatusCode.TOKEN_EXPIRED,"token过期"),
-    TOKEN_INVALID(StatusCode.TOKEN_INVALID,"token不合法"),
+    TOKEN_EXPIRED(StatusCode.TOKEN_EXPIRED,"登录状态过期"),
+    TOKEN_INVALID(StatusCode.TOKEN_INVALID,"登录状态无效"),
+    ACCOUNT_OPERATION_ERROR(StatusCode.ACCOUNT_OPERATION_ERROR,"账号操作异常"),
     ACCOUNT_OTHER_LOGIN(StatusCode.ACCOUNT_OTHER_LOGIN,"账号在其他设备登录"),
     PASSWORD_ERROR(StatusCode.PASSWORD_ERROR,"密码错误"),
     SMS_CODE_ERROR(StatusCode.SMS_CODE_ERROR,"验证码错误"),

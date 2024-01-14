@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.yyh.xfs.common.myEnum.MessageTypeEnum;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
 import com.yyh.xfs.common.redis.utils.RedisCache;
+import com.yyh.xfs.im.handler.types.AuthenticationHandler;
 import com.yyh.xfs.im.handler.types.ChatHandler;
 import com.yyh.xfs.im.handler.types.ConnectHandler;
 import com.yyh.xfs.im.vo.MessageVO;
@@ -44,6 +45,8 @@ public class IMServerHandler extends SimpleChannelInboundHandler<TextWebSocketFr
     @Autowired
     private ConnectHandler connectHandler;
     @Autowired
+    private AuthenticationHandler authenticationHandler;
+    @Autowired
     private ChatHandler chatHandler;
     @Autowired
     private RedisCache redisCache;
@@ -58,6 +61,7 @@ public class IMServerHandler extends SimpleChannelInboundHandler<TextWebSocketFr
     public void init() {
         imServerHandler = this;
         imServerHandler.connectHandler = this.connectHandler;
+        imServerHandler.authenticationHandler = this.authenticationHandler;
         imServerHandler.chatHandler = this.chatHandler;
         imServerHandler.redisCache = this.redisCache;
         imServerHandler.asyncThreadExecutor = this.asyncThreadExecutor;
@@ -79,7 +83,8 @@ public class IMServerHandler extends SimpleChannelInboundHandler<TextWebSocketFr
             if (Objects.equals(type, MessageTypeEnum.CONNECT_MESSAGE)) {
                 connectHandler.execute(channelHandlerContext, message);
             }else if (Objects.equals(type, MessageTypeEnum.HEART_MESSAGE)) {
-                // 心跳消息
+                // 心跳消息，这里主要是验证token是否过期
+                authenticationHandler.execute(channelHandlerContext, message);
                 return;
             } else if (Objects.equals(type, MessageTypeEnum.SYSTEM_MESSAGE)) {
                 // TODO 系统消息
