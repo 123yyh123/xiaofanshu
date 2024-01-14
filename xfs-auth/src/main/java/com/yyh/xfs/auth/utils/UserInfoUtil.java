@@ -1,7 +1,7 @@
 package com.yyh.xfs.auth.utils;
+import com.tencentyun.TLSSigAPIv2;
 import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.web.exception.BusinessException;
-import com.yyh.xfs.common.web.properties.JwtProperties;
 import com.yyh.xfs.common.web.utils.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

@@ -3,6 +3,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.user.domain.UserDO;
 import com.yyh.xfs.user.vo.RegisterInfoVO;
+import com.yyh.xfs.user.vo.UserTrtcVO;
 import com.yyh.xfs.user.vo.UserVO;
 
 /**

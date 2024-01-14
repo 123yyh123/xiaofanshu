@@ -5,6 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * @author yyh
+ * @date 2023-12-11
+ */
+
 @Getter
 @ToString
 public enum ExceptionMsgEnum {
@@ -14,6 +19,7 @@ public enum ExceptionMsgEnum {
     NOT_LOGIN(StatusCode.NOT_LOGIN,"未登录"),
     TOKEN_EXPIRED(StatusCode.TOKEN_EXPIRED,"token过期"),
     TOKEN_INVALID(StatusCode.TOKEN_INVALID,"token不合法"),
+    ACCOUNT_OTHER_LOGIN(StatusCode.ACCOUNT_OTHER_LOGIN,"账号在其他设备登录"),
     PASSWORD_ERROR(StatusCode.PASSWORD_ERROR,"密码错误"),
     SMS_CODE_ERROR(StatusCode.SMS_CODE_ERROR,"验证码错误"),
     PHONE_NUMBER_EXIST(StatusCode.PHONE_NUMBER_EXIST,"手机号已绑定"),

@@ -1,13 +1,17 @@
 package com.yyh.xfs.auth.controller;
 
+import com.tencentyun.TLSSigAPIv2;
 import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.utils.FieldValidationUtil;
 import com.yyh.xfs.common.utils.ResultUtil;
 import com.yyh.xfs.common.web.exception.BusinessException;
+import com.yyh.xfs.common.web.properties.TrtcProperties;
 import com.yyh.xfs.user.service.UserService;
 import com.yyh.xfs.user.vo.RegisterInfoVO;
+import com.yyh.xfs.user.vo.UserTrtcVO;
 import com.yyh.xfs.user.vo.UserVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +24,11 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final UserService userService;
 
-    public AuthController(UserService userService) {
+    private final TrtcProperties trtcProperties;
+
+    public AuthController(UserService userService, TrtcProperties trtcProperties) {
         this.userService = userService;
+        this.trtcProperties = trtcProperties;
     }
 
     /**
@@ -103,5 +110,24 @@ public class AuthController {
             throw new BusinessException(ExceptionMsgEnum.OPEN_ID_NULL);
         }
         return userService.bindPhone(registerInfoVO);
+    }
+
+    /**
+     * 获取TRTC的userSig
+     * @param userId 用户id
+     * @return userSig
+     */
+    @PostMapping("/getTrtcUserSig")
+    public Result<UserTrtcVO> getTrtcUserSig(String userId) {
+        if(!StringUtils.hasText(userId)){
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+        }
+        TLSSigAPIv2 apIv2=new TLSSigAPIv2(trtcProperties.getSdkAppId(),trtcProperties.getSecretKey());
+        String userSig = apIv2.genUserSig(userId, trtcProperties.getExpireTime());
+        UserTrtcVO userTrtcVO=new UserTrtcVO();
+        userTrtcVO.setUserId(userId);
+        userTrtcVO.setSdkAppId(trtcProperties.getSdkAppId());
+        userTrtcVO.setUserSig(userSig);
+        return ResultUtil.successPost(userTrtcVO);
     }
 }

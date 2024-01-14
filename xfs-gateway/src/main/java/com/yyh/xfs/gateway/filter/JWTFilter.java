@@ -73,6 +73,14 @@ public class JWTFilter implements GlobalFilter {
                 log.warn("token过期");
                 return tokenFailure(response,ExceptionMsgEnum.TOKEN_EXPIRED);
             }
+            // 将其他token踢下线
+            String currentToken = (String)redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(map.get("userId"))),
+                    "token");
+            if(!token.equals(currentToken)){
+                // 告知用户，您的账号在其他地方登录或者登录信息已过期
+                log.warn("您的账号在其他地方登录或者登录信息已过期");
+                return tokenFailure(response,ExceptionMsgEnum.ACCOUNT_OTHER_LOGIN);
+            }
             // 刷新token的过期时间
             if(expire - System.currentTimeMillis() < jwtProperties.getRefreshTime()){
                 redisCache.set(

@@ -20,7 +20,9 @@ import com.yyh.xfs.user.domain.UserDO;
 import com.yyh.xfs.user.service.UserService;
 import com.yyh.xfs.user.mapper.UserMapper;
 import com.yyh.xfs.user.vo.RegisterInfoVO;
+import com.yyh.xfs.user.vo.UserTrtcVO;
 import com.yyh.xfs.user.vo.UserVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -37,6 +39,7 @@ import java.util.Objects;
  * 用户服务实现
  */
 @Service
+@Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements UserService {
     private static final String DEFAULT_NICKNAME_PREFIX = "小番薯用户";
 
@@ -416,6 +419,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         // 生成token
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", userDO.getId());
+        claims.put("currentTimeMillis", System.currentTimeMillis());
         String token = JWTUtil.createToken(claims);
         // 利用redis设置token过期时间，过期时间为登录时间+1天
         redisCache.set(
@@ -423,7 +427,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                         RedisConstant.REDIS_KEY_USER_LOGIN_EXPIRE,
                         String.valueOf(userDO.getId())),
                 System.currentTimeMillis() + jwtProperties.getExpireTime());
-        return ResultUtil.successPost(token, userVO);
+        // 更新redis里面的token，防止用户在其他设备登录
+        redisCache.hset(
+                RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userDO.getId())),
+                "token", token);
+        log.info("token:{}", token);
+        userVO.setToken(token);
+        return ResultUtil.successPost(userVO);
     }
 
     /**

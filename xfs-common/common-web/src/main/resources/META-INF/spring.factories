@@ -4,4 +4,5 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.yyh.xfs.common.web.config.SwaggerConfig,\
   com.yyh.xfs.common.web.utils.JWTUtil,\
   com.yyh.xfs.common.web.properties.JwtProperties,\
+  com.yyh.xfs.common.web.properties.TrtcProperties,\
   com.yyh.xfs.common.web.exception.handler.GlobalExceptionHandler

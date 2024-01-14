@@ -26,6 +26,7 @@ public class UserVO implements Serializable {
     private String selfIntroduction;
     private String homePageBackground;
     private String phoneNumber;
+    private String token;
 
     public UserVO() {
     }
@@ -78,6 +79,10 @@ public class UserVO implements Serializable {
         if(o!=null){
             this.phoneNumber=o.toString();
         }
+        o=map.get("token");
+        if(o!=null){
+            this.token=o.toString();
+        }
     }
     /**
      * 将UserVO转换为map
@@ -97,6 +102,7 @@ public class UserVO implements Serializable {
         map.put("selfIntroduction", userVO.getSelfIntroduction());
         map.put("homePageBackground", userVO.getHomePageBackground());
         map.put("phoneNumber", userVO.getPhoneNumber());
+        map.put("token", userVO.getToken());
         return map;
     }
 }

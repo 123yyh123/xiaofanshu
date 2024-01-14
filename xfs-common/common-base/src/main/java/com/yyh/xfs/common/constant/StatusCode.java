@@ -25,13 +25,13 @@ public class StatusCode {
     //token无效
     public static final Integer TOKEN_INVALID = 40330;
     //密码错误
-    public static final Integer PASSWORD_ERROR=40340;
+    public static final Integer PASSWORD_ERROR = 40340;
     //手机号已存在
-    public static final Integer PHONE_NUMBER_EXIST=10010;
+    public static final Integer PHONE_NUMBER_EXIST = 10010;
     //手机号未注册
     public static final Integer PHONE_NUMBER_NOT_REGISTER = 10011;
     //短信验证码错误
-    public static final Integer SMS_CODE_ERROR=10020;
+    public static final Integer SMS_CODE_ERROR = 10020;
     //登录类型错误
     public static final Integer LOGIN_TYPE_ERROR = 10030;
     //第三方账号openId为空
@@ -40,16 +40,18 @@ public class StatusCode {
     public static final Integer SMS_CODE_SEND_FREQUENTLY = 10050;
     //账号异常
     public static final Integer ACCOUNT_EXCEPTION = 10060;
+    //账号在其他设备登录
+    public static final Integer ACCOUNT_OTHER_LOGIN = 10061;
     //文件过大
     public static final Integer FILE_SIZE_TOO_LARGE = 10070;
     //参数错误
     public static final Integer PARAMETER_ERROR = 40010;
     //数据库操作异常
-    public static final Integer DB_ERROR=50010;
+    public static final Integer DB_ERROR = 50010;
     //aliyun短信服务初始化异常
-    public static final Integer ALIYUN_SMS_INIT_ERROR=50020;
+    public static final Integer ALIYUN_SMS_INIT_ERROR = 50020;
     //aliyun短信服务异常
-    public static final Integer ALIYUN_SMS_SEND_ERROR=50021;
+    public static final Integer ALIYUN_SMS_SEND_ERROR = 50021;
     //aliyun oss服务异常
     public static final Integer ALIYUN_OSS_INIT_ERROR = 50030;
     public static final Integer REDIS_ERROR = 50040;

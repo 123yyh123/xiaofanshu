@@ -51,6 +51,13 @@ public class ChatHandler {
     }
 
     public void execute(MessageVO messageVO) {
+        if(messageVO.getFrom().equals(messageVO.getTo())){
+            log.info("不能给自己发送消息");
+            // 告知发送者，不能给自己发送消息
+            messageVO.setContent("不能给自己发送消息");
+            replyMessage(USER_CHANNEL_MAP.get(messageVO.getFrom()), messageVO);
+            return;
+        }
         Channel channel = USER_CHANNEL_MAP.get(messageVO.getTo());
         // TODO 判断双方是否可以互相聊天
         boolean isExist = redisCache.hasKey(RedisKey.build(RedisConstant.REDIS_KEY_USER_RELATION_ALLOW_SEND_MESSAGE,
