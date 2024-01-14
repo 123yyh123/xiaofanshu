@@ -1,9 +1,8 @@
-package com.yyh.xfs.im.mapper;
+package com.yyh.xfs.user.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.yyh.xfs.im.domain.UserBlackDO;
+import com.yyh.xfs.user.domain.UserBlackDO;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 
 /**
  * @author yyh

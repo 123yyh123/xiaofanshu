@@ -1,13 +1,27 @@
 package com.yyh.xfs.common.web.utils;
 
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpResponse;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import org.springframework.util.StringUtils;
+
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author yyh
  * @date 2023-09-17
  */
 public class IPUtils {
-    public static String getRealIpAddr(HttpServletRequest request){
+    /**
+     * 获取真实ip地址
+     *
+     * @param request 请求
+     * @return ip地址
+     */
+    public static String getRealIpAddr(HttpServletRequest request) {
         String ip = null;
         try {
             ip = request.getHeader("x-forwarded-for");
@@ -33,5 +47,54 @@ public class IPUtils {
             ip = ip.substring(0, ip.indexOf(","));
         }
         return ip;
+    }
+
+    /**
+     * 根据ip获取地址
+     *
+     * @param ip ip地址
+     * @return 地址
+     */
+    public static String getAddrByIp(String ip) {
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            return "";
+        }
+        if ("127.0.0.1".equals(ip)) {
+            return "获取失败";
+        }
+        String url = "https://sp0.baidu.com/8aQDcjqpAAV3otqbppnN2DJv/api.php?resource_id=6006&format=json&query=" + ip;
+        HttpResponse res = HttpRequest.get(url).execute();
+        if (200 != res.getStatus()) {
+            return "获取位置失败";
+        } else {
+            JSONObject jsonObject = JSON.parseObject(res.body());
+            JSONArray data = JSONArray.parseArray(jsonObject.get("data").toString());
+            Map<String, String> map = (Map<String, String>) data.get(0);
+            return map.get("location");
+        }
+    }
+
+    /**
+     * 切割地址，供前端使用
+     *
+     * @param address 地址
+     */
+    public static String splitAddress(String address) {
+        if (!StringUtils.hasText(address)) {
+            return "";
+        }
+        String province = "";
+        String city;
+        if (address.contains("市")) {
+            if (address.contains("省")) {
+                province = address.substring(0, address.indexOf("省"));
+                city = address.substring(address.indexOf("省") + 1, address.indexOf("市"));
+            } else {
+                city = address.substring(0, address.indexOf("市"));
+            }
+            return province + city;
+        } else {
+            return address;
+        }
     }
 }

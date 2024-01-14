@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/xfs-modules-server/xfs-im-server/src/main/java/com/yyh/xfs/im/mapper/UserBlackMapper.java" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/xfs-modules-server/xfs-user-server/src/main/java/com/yyh/xfs/user/mapper/UserBlackMapper.java" dialect="MySQL" />
     <file url="PROJECT" dialect="MySQL" />
   </component>
 </project>

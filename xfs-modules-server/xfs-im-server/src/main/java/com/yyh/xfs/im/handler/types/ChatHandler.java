@@ -1,18 +1,21 @@
 package com.yyh.xfs.im.handler.types;
 
 import com.alibaba.fastjson.JSON;
+import com.yyh.xfs.common.domain.Result;
+import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
 import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.common.redis.utils.RedisKey;
+import com.yyh.xfs.common.web.exception.OnlyWarnException;
 import com.yyh.xfs.im.domain.MessageDO;
-import com.yyh.xfs.im.mapper.UserAttentionMapper;
-import com.yyh.xfs.im.mapper.UserBlackMapper;
+import com.yyh.xfs.im.feign.user.UserFeign;
 import com.yyh.xfs.im.vo.MessageVO;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
@@ -34,20 +37,17 @@ public class ChatHandler {
     private final RocketMQTemplate rocketMQTemplate;
     private final MongoTemplate mongoTemplate;
     private final Executor asyncThreadExecutor;
-    private final UserBlackMapper userBlackMapper;
-    private final UserAttentionMapper userAttentionMapper;
+    private final UserFeign userFeign;
     public ChatHandler(RedisCache redisCache,
                        RocketMQTemplate rocketMQTemplate,
                        MongoTemplate mongoTemplate,
                        Executor asyncThreadExecutor,
-                       UserBlackMapper userBlackMapper,
-                       UserAttentionMapper userAttentionMapper) {
+                       UserFeign userFeign) {
         this.redisCache = redisCache;
         this.rocketMQTemplate = rocketMQTemplate;
         this.mongoTemplate = mongoTemplate;
         this.asyncThreadExecutor = asyncThreadExecutor;
-        this.userBlackMapper = userBlackMapper;
-        this.userAttentionMapper = userAttentionMapper;
+        this.userFeign = userFeign;
     }
 
     public void execute(MessageVO messageVO) {
@@ -96,8 +96,13 @@ public class ChatHandler {
     private void createKeyAndSendMessage(Channel channel, MessageVO messageVO) {
         Map<String, Object> userRelation = new HashMap<>();
         // 判断对方是否拉黑了自己
-        Boolean isBlack = userBlackMapper.selectOneByUserIdAndBlackIdIsExist
+        Result<Boolean> a = userFeign.selectOneByUserIdAndBlackIdIsExist
                 (Long.valueOf(messageVO.getTo()), Long.valueOf(messageVO.getFrom()));
+        if(a.getCode() != 20010){
+            log.error("查询用户关系失败");
+            throw new OnlyWarnException(ExceptionMsgEnum.SERVER_ERROR);
+        }
+        Boolean isBlack = a.getData();
         if (isBlack) {
             log.info("用户{}被用户{}拉黑，无法发送消息", messageVO.getFrom(), messageVO.getTo());
             userRelation.putIfAbsent("isBlacked", true);
@@ -107,8 +112,13 @@ public class ChatHandler {
             replyMessage(USER_CHANNEL_MAP.get(messageVO.getFrom()), messageVO);
         } else {
             // 判断对方是否关注了我
-            Boolean isAttention = userAttentionMapper.selectOneByUserIdAndAttentionIdIsExist(
+            Result<Boolean> b = userFeign.selectOneByUserIdAndAttentionIdIsExist(
                     Long.valueOf(messageVO.getTo()), Long.valueOf(messageVO.getFrom()));
+            if(b.getCode() != 20010){
+                log.error("查询用户关系失败");
+                throw new OnlyWarnException(ExceptionMsgEnum.SERVER_ERROR);
+            }
+            Boolean isAttention = b.getData();
             if (isAttention) {
                 log.info("对方关注了我，可以发送消息");
                 userRelation.putIfAbsent("isBlacked", false);

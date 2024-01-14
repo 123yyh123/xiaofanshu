@@ -15,6 +15,7 @@ import com.yyh.xfs.common.utils.TimeUtil;
 import com.yyh.xfs.common.web.exception.BusinessException;
 import com.yyh.xfs.common.web.exception.SystemException;
 import com.yyh.xfs.common.web.properties.JwtProperties;
+import com.yyh.xfs.common.web.utils.IPUtils;
 import com.yyh.xfs.common.web.utils.JWTUtil;
 import com.yyh.xfs.user.domain.UserDO;
 import com.yyh.xfs.user.service.UserService;
@@ -24,10 +25,12 @@ import com.yyh.xfs.user.vo.UserTrtcVO;
 import com.yyh.xfs.user.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,10 +48,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 
     private final JwtProperties jwtProperties;
     private final RedisCache redisCache;
+    private final HttpServletRequest request;
 
-    public UserServiceImpl(RedisCache redisCache, JwtProperties jwtProperties) {
+    public UserServiceImpl(RedisCache redisCache, JwtProperties jwtProperties, HttpServletRequest request) {
         this.redisCache = redisCache;
         this.jwtProperties = jwtProperties;
+        this.request = request;
     }
 
     /**
@@ -205,9 +210,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         if (Objects.isNull(userId)) {
             throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
         }
+        String ipAddr = IPUtils.getRealIpAddr(request);
+        String addr = IPUtils.getAddrByIp(ipAddr);
+        String address = IPUtils.splitAddress(addr);
         if (redisCache.hasKey(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userId)))) {
             Map<String, Object> map = redisCache.hmget(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userId)));
             UserVO userVO = new UserVO(map);
+            userVO.setIpAddr(address);
+            redisCache.hset(
+                    RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userId)),
+                    "ipAddr", address);
             return ResultUtil.successGet("获取用户信息成功", userVO);
         }
         UserDO userDO = this.getById(userId);
@@ -219,6 +231,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         if (Objects.nonNull(userDO.getBirthday())) {
             userVO.setBirthday(userDO.getBirthday().toString());
         }
+        userVO.setIpAddr(address);
+        log.info("userVO:{}", userVO);
         redisCache.hmset(
                 RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userDO.getId())),
                 UserVO.toMap(userVO)
@@ -433,6 +447,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 "token", token);
         log.info("token:{}", token);
         userVO.setToken(token);
+        String ipAddr = IPUtils.getRealIpAddr(request);
+        String addr = IPUtils.getAddrByIp(ipAddr);
+        String address = IPUtils.splitAddress(addr);
+        userVO.setIpAddr(IPUtils.splitAddress(address));
+        redisCache.hset(
+                RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userDO.getId())),
+                "ipAddr", address);
         return ResultUtil.successPost(userVO);
     }
 

@@ -27,6 +27,7 @@ public class UserVO implements Serializable {
     private String homePageBackground;
     private String phoneNumber;
     private String token;
+    private String ipAddr;
 
     public UserVO() {
     }

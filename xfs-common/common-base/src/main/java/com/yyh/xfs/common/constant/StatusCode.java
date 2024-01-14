@@ -48,6 +48,8 @@ public class StatusCode {
     public static final Integer FILE_SIZE_TOO_LARGE = 10070;
     //参数错误
     public static final Integer PARAMETER_ERROR = 40010;
+    //服务器异常
+    public static final Integer SERVER_ERROR = 50000;
     //数据库操作异常
     public static final Integer DB_ERROR = 50010;
     //aliyun短信服务初始化异常

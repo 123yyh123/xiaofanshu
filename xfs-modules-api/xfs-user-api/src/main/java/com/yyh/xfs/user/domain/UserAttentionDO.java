@@ -1,9 +1,10 @@
-package com.yyh.xfs.im.domain;
+package com.yyh.xfs.user.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,16 +15,18 @@ import java.util.Date;
  * @date 2023-12-30
  */
 @Data
-@TableName("user_black_list")
-public class UserBlackDO implements Serializable {
+@TableName("user_attention")
+public class UserAttentionDO implements Serializable {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
     @TableId(type = IdType.AUTO)
     private Long id;
 
     private Long userId;
 
-    private Long blackId;
+    private Long attentionId;
 
     private Date createTime;
+
 }

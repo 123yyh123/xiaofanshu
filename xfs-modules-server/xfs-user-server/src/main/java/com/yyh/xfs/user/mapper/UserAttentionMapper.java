@@ -1,7 +1,6 @@
-package com.yyh.xfs.im.mapper;
-
+package com.yyh.xfs.user.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.yyh.xfs.im.domain.UserAttentionDO;
+import com.yyh.xfs.user.domain.UserAttentionDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

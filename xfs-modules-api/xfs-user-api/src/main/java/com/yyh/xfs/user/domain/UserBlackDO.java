@@ -1,4 +1,4 @@
-package com.yyh.xfs.im.domain;
+package com.yyh.xfs.user.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -14,8 +14,8 @@ import java.util.Date;
  * @date 2023-12-30
  */
 @Data
-@TableName("user_fans")
-public class UserFansDO implements Serializable {
+@TableName("user_black_list")
+public class UserBlackDO implements Serializable {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)
@@ -23,7 +23,7 @@ public class UserFansDO implements Serializable {
 
     private Long userId;
 
-    private Long fansId;
+    private Long blackId;
 
     private Date createTime;
 }
