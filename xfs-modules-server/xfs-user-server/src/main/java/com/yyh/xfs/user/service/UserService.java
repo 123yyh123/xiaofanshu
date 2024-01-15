@@ -5,6 +5,7 @@ import com.yyh.xfs.user.domain.UserDO;
 import com.yyh.xfs.user.vo.RegisterInfoVO;
 import com.yyh.xfs.user.vo.UserTrtcVO;
 import com.yyh.xfs.user.vo.UserVO;
+import com.yyh.xfs.user.vo.ViewUserVO;
 
 /**
  * @author yyh
@@ -94,4 +95,6 @@ public interface UserService extends IService<UserDO> {
      * @return 更新结果
      */
     Result<?> updateArea(UserVO userVO);
+
+    Result<ViewUserVO> viewUserInfo(Long userId);
 }

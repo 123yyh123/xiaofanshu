@@ -4,4 +4,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yyh.xfs.user.mapper.UserFansMapper">
 
+    <resultMap id="BaseResultMap" type="com.yyh.xfs.user.domain.UserFansDO">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="fansId" column="fans_id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <select id="selectFansList" resultType="com.yyh.xfs.user.vo.UserRelationVO">
+        SELECT u.id AS user_id,
+               u.avatar_url,
+               u.self_introduction,
+               u.nickname,
+               IF(uf2.user_id IS NOT NULL, TRUE, FALSE)               AS bidirectional
+        FROM user_fans AS uf
+                 LEFT JOIN user AS u ON uf.fans_id = u.id
+                 LEFT JOIN user_fans AS uf2 ON uf2.user_id = u.id AND uf2.fans_id = #{userId}
+        WHERE uf.user_id = #{userId}
+            AND u.account_status = 0
+        ORDER BY uf.create_time DESC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+
 </mapper>

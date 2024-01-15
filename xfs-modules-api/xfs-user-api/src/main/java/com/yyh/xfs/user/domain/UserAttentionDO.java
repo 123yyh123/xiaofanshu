@@ -26,6 +26,7 @@ public class UserAttentionDO implements Serializable {
     private Long userId;
 
     private Long attentionId;
+    private String remarkName;
 
     private Date createTime;
 

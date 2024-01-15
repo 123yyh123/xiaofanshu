@@ -3,6 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yyh.xfs.user.mapper.UserAttentionMapper">
+    <resultMap id="BaseResultMap" type="com.yyh.xfs.user.domain.UserAttentionDO">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="attentionId" column="attention_id" jdbcType="BIGINT"/>
+        <result property="remarkName" column="remark_name" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
 
     <select id="selectOneByUserIdAndAttentionIdIsExist" resultType="java.lang.Boolean">
         <![CDATA[
@@ -13,5 +20,21 @@
         WHERE
             user_id = #{userId}
         AND attention_id = #{attentionId}]]>
+    </select>
+    <select id="selectAttentionList" resultType="com.yyh.xfs.user.vo.UserRelationVO">
+        #         如果备注名不为空，则显示备注名，否则显示用户名
+        SELECT u.id AS user_id,
+               u.avatar_url,
+               u.self_introduction,
+               IF(ua.remark_name IS NULL, u.nickname, ua.remark_name) AS nickname,
+               IF(ua2.user_id IS NOT NULL, TRUE, FALSE)               AS bidirectional
+        FROM user_attention AS ua
+                 LEFT JOIN user AS u ON ua.attention_id = u.id
+                 LEFT JOIN user_attention AS ua2 ON ua2.user_id = u.id AND ua2.attention_id = #{userId}
+        WHERE ua.user_id = #{userId}
+          AND u.account_status = 0
+        ORDER BY ua.create_time DESC
+        LIMIT #{pageSize} OFFSET #{offset}
+
     </select>
 </mapper>

@@ -18,11 +18,14 @@ import com.yyh.xfs.common.web.properties.JwtProperties;
 import com.yyh.xfs.common.web.utils.IPUtils;
 import com.yyh.xfs.common.web.utils.JWTUtil;
 import com.yyh.xfs.user.domain.UserDO;
+import com.yyh.xfs.user.mapper.UserAttentionMapper;
+import com.yyh.xfs.user.mapper.UserFansMapper;
 import com.yyh.xfs.user.service.UserService;
 import com.yyh.xfs.user.mapper.UserMapper;
 import com.yyh.xfs.user.vo.RegisterInfoVO;
 import com.yyh.xfs.user.vo.UserTrtcVO;
 import com.yyh.xfs.user.vo.UserVO;
+import com.yyh.xfs.user.vo.ViewUserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,10 +53,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     private final RedisCache redisCache;
     private final HttpServletRequest request;
 
-    public UserServiceImpl(RedisCache redisCache, JwtProperties jwtProperties, HttpServletRequest request) {
+    private final UserAttentionMapper userAttentionMapper;
+    private final UserFansMapper userFansMapper;
+
+    public UserServiceImpl(RedisCache redisCache, JwtProperties jwtProperties, HttpServletRequest request, UserAttentionMapper userAttentionMapper, UserFansMapper userFansMapper) {
         this.redisCache = redisCache;
         this.jwtProperties = jwtProperties;
         this.request = request;
+        this.userAttentionMapper = userAttentionMapper;
+        this.userFansMapper = userFansMapper;
     }
 
     /**
@@ -232,7 +240,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             userVO.setBirthday(userDO.getBirthday().toString());
         }
         userVO.setIpAddr(address);
-        log.info("userVO:{}", userVO);
+        Integer attentionNum = userAttentionMapper.getCountById(userDO.getId());
+        Integer fansNum = userFansMapper.getCountById(userDO.getId());
+        if (Objects.isNull(attentionNum)) {
+            attentionNum = 0;
+        }
+        if (Objects.isNull(fansNum)) {
+            fansNum = 0;
+        }
+        userVO.setAttentionNum(attentionNum);
+        userVO.setFansNum(fansNum);
         redisCache.hmset(
                 RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userDO.getId())),
                 UserVO.toMap(userVO)
@@ -396,6 +413,45 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         return ResultUtil.successPost("修改地区成功", null);
     }
 
+    @Override
+    public Result<ViewUserVO> viewUserInfo(Long userId) {
+        if (Objects.isNull(userId)) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        if (redisCache.hasKey(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userId)))) {
+            Map<String, Object> map = redisCache.hmget(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userId)));
+            UserVO userVO = new UserVO(map);
+            ViewUserVO viewUserVO = new ViewUserVO();
+            BeanUtils.copyProperties(userVO, viewUserVO);
+            return ResultUtil.successGet("获取用户信息成功", viewUserVO);
+        }
+        UserDO userDO = this.getById(userId);
+        if (Objects.isNull(userDO)) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        UserVO userVO = new UserVO();
+        if(Objects.nonNull(userDO.getBirthday())){
+            userVO.setBirthday(userDO.getBirthday().toString());
+        }
+        Integer attentionNum = userAttentionMapper.getCountById(userDO.getId());
+        Integer fansNum = userFansMapper.getCountById(userDO.getId());
+        if(attentionNum==null){
+            attentionNum=0;
+        }
+        if(fansNum==null){
+            fansNum=0;
+        }
+        userVO.setAttentionNum(attentionNum);
+        userVO.setFansNum(fansNum);
+        redisCache.hmset(
+                RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userDO.getId())),
+                UserVO.toMap(userVO)
+        );
+        ViewUserVO viewUserVO = new ViewUserVO();
+        BeanUtils.copyProperties(userVO, viewUserVO);
+        return ResultUtil.successGet("获取用户信息成功", viewUserVO);
+    }
+
     /**
      * 检验验证码是否正确
      *
@@ -425,6 +481,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             if (Objects.nonNull(userDO.getBirthday())) {
                 userVO.setBirthday(userDO.getBirthday().toString());
             }
+            Integer attentionNum = userAttentionMapper.getCountById(userDO.getId());
+            Integer fansNum = userFansMapper.getCountById(userDO.getId());
+            if(attentionNum==null){
+                attentionNum=0;
+            }
+            if(fansNum==null){
+                fansNum=0;
+            }
+            userVO.setAttentionNum(attentionNum);
+            userVO.setFansNum(fansNum);
             redisCache.hmset(
                     RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userDO.getId())),
                     UserVO.toMap(userVO)

@@ -5,6 +5,7 @@ import com.yyh.xfs.common.utils.FieldValidationUtil;
 import com.yyh.xfs.common.utils.ResultUtil;
 import com.yyh.xfs.user.service.UserService;
 import com.yyh.xfs.user.vo.UserVO;
+import com.yyh.xfs.user.vo.ViewUserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -113,5 +114,15 @@ public class UserController {
     @PostMapping("/updateArea")
     public Result<?> updateArea(@RequestBody UserVO userVO) {
         return userService.updateArea(userVO);
+    }
+
+    /**
+     * 查看对方用户信息
+     * @param userId 用户id
+     * @return 用户信息
+     */
+    @GetMapping("/viewUserInfo")
+    public Result<ViewUserVO> viewUserInfo(Long userId) {
+        return userService.viewUserInfo(userId);
     }
 }

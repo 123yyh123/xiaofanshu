@@ -28,6 +28,8 @@ public class UserVO implements Serializable {
     private String phoneNumber;
     private String token;
     private String ipAddr;
+    private Integer attentionNum;
+    private Integer fansNum;
 
     public UserVO() {
     }
@@ -84,6 +86,18 @@ public class UserVO implements Serializable {
         if(o!=null){
             this.token=o.toString();
         }
+        o=map.get("ipAddr");
+        if(o!=null){
+            this.ipAddr=o.toString();
+        }
+        o=map.get("attentionNum");
+        if(o!=null){
+            this.attentionNum=Integer.parseInt(o.toString());
+        }
+        o=map.get("fansNum");
+        if(o!=null){
+            this.fansNum=Integer.parseInt(o.toString());
+        }
     }
     /**
      * 将UserVO转换为map
@@ -104,6 +118,9 @@ public class UserVO implements Serializable {
         map.put("homePageBackground", userVO.getHomePageBackground());
         map.put("phoneNumber", userVO.getPhoneNumber());
         map.put("token", userVO.getToken());
+        map.put("ipAddr", userVO.getIpAddr());
+        map.put("attentionNum", userVO.getAttentionNum());
+        map.put("fansNum", userVO.getFansNum());
         return map;
     }
 }
