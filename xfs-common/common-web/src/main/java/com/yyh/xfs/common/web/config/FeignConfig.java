@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author yyh
- * @date 2023-09-26
+ * @date 2023-12-11
  */
 @Configuration
 public class FeignConfig implements RequestInterceptor {

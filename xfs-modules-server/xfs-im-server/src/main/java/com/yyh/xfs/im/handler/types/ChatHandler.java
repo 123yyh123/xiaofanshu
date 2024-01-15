@@ -38,6 +38,7 @@ public class ChatHandler {
     private final MongoTemplate mongoTemplate;
     private final Executor asyncThreadExecutor;
     private final UserFeign userFeign;
+
     public ChatHandler(RedisCache redisCache,
                        RocketMQTemplate rocketMQTemplate,
                        MongoTemplate mongoTemplate,
@@ -51,7 +52,7 @@ public class ChatHandler {
     }
 
     public void execute(MessageVO messageVO) {
-        if(messageVO.getFrom().equals(messageVO.getTo())){
+        if (messageVO.getFrom().equals(messageVO.getTo())) {
             log.info("不能给自己发送消息");
             // 告知发送者，不能给自己发送消息
             messageVO.setContent("不能给自己发送消息");
@@ -96,9 +97,10 @@ public class ChatHandler {
     private void createKeyAndSendMessage(Channel channel, MessageVO messageVO) {
         Map<String, Object> userRelation = new HashMap<>();
         // 判断对方是否拉黑了自己
+        String token = (String) redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, messageVO.getFrom()), "token");
         Result<Boolean> a = userFeign.selectOneByUserIdAndBlackIdIsExist
-                (Long.valueOf(messageVO.getTo()), Long.valueOf(messageVO.getFrom()));
-        if(a.getCode() != 20010){
+                (Long.valueOf(messageVO.getTo()), Long.valueOf(messageVO.getFrom()), token);
+        if (a.getCode() != 20010) {
             log.error("查询用户关系失败");
             throw new OnlyWarnException(ExceptionMsgEnum.SERVER_ERROR);
         }
@@ -113,8 +115,8 @@ public class ChatHandler {
         } else {
             // 判断对方是否关注了我
             Result<Boolean> b = userFeign.selectOneByUserIdAndAttentionIdIsExist(
-                    Long.valueOf(messageVO.getTo()), Long.valueOf(messageVO.getFrom()));
-            if(b.getCode() != 20010){
+                    Long.valueOf(messageVO.getTo()), Long.valueOf(messageVO.getFrom()), token);
+            if (b.getCode() != 20010) {
                 log.error("查询用户关系失败");
                 throw new OnlyWarnException(ExceptionMsgEnum.SERVER_ERROR);
             }
@@ -142,6 +144,7 @@ public class ChatHandler {
         redisCache.hmset(RedisKey.build(RedisConstant.REDIS_KEY_USER_RELATION_ALLOW_SEND_MESSAGE,
                 messageVO.getFrom() + ":" + messageVO.getTo()), userRelation, 24 * 60 * 60);
     }
+
     private void sendMessage(Channel channel, MessageVO messageVO) {
         messageVO.setTime(System.currentTimeMillis());
         // 消息持久化到mongodb，异步执行

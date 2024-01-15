@@ -24,4 +24,5 @@ public class ViewUserVO implements Serializable {
     private String homePageBackground;
     private Integer attentionNum;
     private Integer fansNum;
+    private Integer attentionStatus;
 }

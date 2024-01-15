@@ -17,6 +17,7 @@ import com.yyh.xfs.common.web.exception.SystemException;
 import com.yyh.xfs.common.web.properties.JwtProperties;
 import com.yyh.xfs.common.web.utils.IPUtils;
 import com.yyh.xfs.common.web.utils.JWTUtil;
+import com.yyh.xfs.user.domain.UserAttentionDO;
 import com.yyh.xfs.user.domain.UserDO;
 import com.yyh.xfs.user.mapper.UserAttentionMapper;
 import com.yyh.xfs.user.mapper.UserFansMapper;
@@ -418,11 +419,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         if (Objects.isNull(userId)) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
         }
+        Map<String, Object> token = JWTUtil.parseToken(request.getHeader("token"));
+        Long id = Long.valueOf(String.valueOf(token.get("userId")));
+        UserAttentionDO exist = userAttentionMapper.getExist(id, userId);
         if (redisCache.hasKey(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userId)))) {
             Map<String, Object> map = redisCache.hmget(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userId)));
             UserVO userVO = new UserVO(map);
             ViewUserVO viewUserVO = new ViewUserVO();
             BeanUtils.copyProperties(userVO, viewUserVO);
+            if (Objects.nonNull(exist)) {
+                viewUserVO.setAttentionStatus(1);
+            } else {
+                viewUserVO.setAttentionStatus(0);
+            }
             return ResultUtil.successGet("获取用户信息成功", viewUserVO);
         }
         UserDO userDO = this.getById(userId);
@@ -449,6 +458,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         );
         ViewUserVO viewUserVO = new ViewUserVO();
         BeanUtils.copyProperties(userVO, viewUserVO);
+        if (Objects.nonNull(exist)) {
+            viewUserVO.setAttentionStatus(1);
+        } else {
+            viewUserVO.setAttentionStatus(0);
+        }
         return ResultUtil.successGet("获取用户信息成功", viewUserVO);
     }
 
