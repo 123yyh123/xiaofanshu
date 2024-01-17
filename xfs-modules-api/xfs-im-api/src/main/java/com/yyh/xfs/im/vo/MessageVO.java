@@ -42,7 +42,7 @@ public class MessageVO implements Serializable {
      * 1:心跳信息
      * 2:系统信息
      * 3:聊天信息
-     * 4:添加好友信息
+     * 4:新增关注信息
      * 5:服务器应答信息
      * 6:token鉴权信息
      */
@@ -60,7 +60,6 @@ public class MessageVO implements Serializable {
      * 1:陌生人消息
      */
     private Integer friendType;
-
     /**
      * 语音时长，单位秒
      */

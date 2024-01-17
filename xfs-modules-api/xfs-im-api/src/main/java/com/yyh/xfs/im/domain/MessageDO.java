@@ -37,6 +37,7 @@ public class MessageDO implements Serializable {
      * 1:文本信息
      * 2:图片信息
      * 3:文件信息
+     * 4:语音信息
      */
     private Integer chatType;
     /**
@@ -44,4 +45,8 @@ public class MessageDO implements Serializable {
      * 1:陌生人消息
      */
     private Integer friendType;
+    /**
+     * 语音时长，单位秒
+     */
+    private Integer audioTime;
 }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.yyh.xfs.common.myEnum.MessageTypeEnum;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
 import com.yyh.xfs.common.redis.utils.RedisCache;
+import com.yyh.xfs.im.handler.types.AttentionHandler;
 import com.yyh.xfs.im.handler.types.AuthenticationHandler;
 import com.yyh.xfs.im.handler.types.ChatHandler;
 import com.yyh.xfs.im.handler.types.ConnectHandler;
@@ -52,6 +53,8 @@ public class IMServerHandler extends SimpleChannelInboundHandler<TextWebSocketFr
     private RedisCache redisCache;
     @Autowired
     private Executor asyncThreadExecutor;
+    @Autowired
+    private AttentionHandler attentionHandler;
 
     public IMServerHandler() {
     }
@@ -65,6 +68,7 @@ public class IMServerHandler extends SimpleChannelInboundHandler<TextWebSocketFr
         imServerHandler.chatHandler = this.chatHandler;
         imServerHandler.redisCache = this.redisCache;
         imServerHandler.asyncThreadExecutor = this.asyncThreadExecutor;
+        imServerHandler.attentionHandler = this.attentionHandler;
     }
 
     /**
@@ -85,14 +89,13 @@ public class IMServerHandler extends SimpleChannelInboundHandler<TextWebSocketFr
             }else if (Objects.equals(type, MessageTypeEnum.HEART_MESSAGE)) {
                 // 心跳消息，这里主要是验证token是否过期
                 authenticationHandler.execute(channelHandlerContext, message);
-                return;
             } else if (Objects.equals(type, MessageTypeEnum.SYSTEM_MESSAGE)) {
                 // TODO 系统消息
             } else if (Objects.equals(type, MessageTypeEnum.CHAT_MESSAGE)) {
                 // 聊天消息
                 chatHandler.execute(message);
-            } else if (Objects.equals(type, MessageTypeEnum.ADD_FRIEND_MESSAGE)) {
-                // TODO 添加好友消息
+            } else if (Objects.equals(type, MessageTypeEnum.FOLLOW_MESSAGE)) {
+                attentionHandler.execute(message);
             }
         } catch (Exception e) {
             log.error("消息格式不正确", e);

@@ -145,7 +145,7 @@ public class ChatHandler {
                 messageVO.getFrom() + ":" + messageVO.getTo()), userRelation, 24 * 60 * 60);
     }
 
-    private void sendMessage(Channel channel, MessageVO messageVO) {
+    public void sendMessage(Channel channel, MessageVO messageVO) {
         messageVO.setTime(System.currentTimeMillis());
         // 消息持久化到mongodb，异步执行
         asyncThreadExecutor.execute(() -> {
