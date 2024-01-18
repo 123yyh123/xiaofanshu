@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yyh.xfs.user.vo.UserVO;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -22,28 +21,7 @@ import java.sql.Date;
 @ApiModel(value = "用户表")
 @TableName("user")
 public class UserDO implements Serializable {
-/*    CREATE TABLE `user` (
-            `id` bigint(20) NOT NULL COMMENT '用户id',
-            `uid` varchar(20) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT '账号的唯一凭证，可以为英文，数字，下划线，6-15位组成，相对于用户id，			其不同之处在于用户可以对其进行修改，但是也是唯一的',
-            `nickname` varchar(20) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT '昵称',
-            `avatar_url` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT '用户头像地址',
-            `age` tinyint(3) unsigned zerofill NOT NULL COMMENT '年龄',
-            `sex` tinyint(1) unsigned zerofill NOT NULL COMMENT '性别，0为女，1为男，默认为0',
-            `area` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '地区',
-            `self_introduction` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '自我介绍',
-            `birthday` date DEFAULT NULL COMMENT '生日',
-            `home_page_background` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT '主页背景图',
-            `occupation` varchar(20) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '职业，可以根据该字段为用户的推荐加一点占比',
-            `phone_number` int(11) NOT NULL COMMENT '手机号',
-            `password` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT '密码',
-            `wx_open_id` varchar(50) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '微信openId，微信登陆唯一标识，默认为null，即未绑定微信',
-            `qq_open_id` varchar(50) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'QQopenId，QQ登陆唯一标识，默认为null，即未绑定QQ',
-            `facebook_open_id` varchar(50) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'fackbookopenId，fackbook登陆唯一标识，默认为null，即未绑定facebook',
-            `account_status` tinyint(3) unsigned zerofill NOT NULL COMMENT '账号状态，0为正常，1为注销，2为封禁',
-            `create__time` timestamp NOT NULL COMMENT '创建时间',
-            `update_time` timestamp NOT NULL COMMENT '修改时间',
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;*/
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
@@ -133,15 +111,15 @@ public class UserDO implements Serializable {
     private String wxOpenId;
 
     /**
-     * QQopenId，QQ登陆唯一标识，默认为null，即未绑定QQ
+     * qqOpenId，QQ登陆唯一标识，默认为null，即未绑定QQ
      */
-    @ApiModelProperty(value = "QQopenId，QQ登陆唯一标识，默认为null，即未绑定QQ")
+    @ApiModelProperty(value = "qqOpenId，QQ登陆唯一标识，默认为null，即未绑定QQ")
     private String qqOpenId;
 
     /**
-     * fackbookOpenId，fackbook登陆唯一标识，默认为null，即未绑定facebook
+     * facebookOpenId，facebook登陆唯一标识，默认为null，即未绑定facebook
      */
-    @ApiModelProperty(value = "fackbookOpenId，fackbook登陆唯一标识，默认为null，即未绑定facebook")
+    @ApiModelProperty(value = "facebookOpenId，facebook登陆唯一标识，默认为null，即未绑定facebook")
     private String facebookOpenId;
 
     /**

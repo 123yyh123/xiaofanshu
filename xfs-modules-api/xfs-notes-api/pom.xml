@@ -5,17 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.example</groupId>
-        <artifactId>xiaofanshu</artifactId>
+        <artifactId>xfs-modules-api</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>xfs-modules-api</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>xfs-user-api</module>
-        <module>xfs-im-api</module>
-        <module>xfs-notes-api</module>
-    </modules>
+    <artifactId>xfs-notes-api</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -26,12 +20,8 @@
     <dependencies>
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>common-base</artifactId>
+            <artifactId>common-mybatis</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
 </project>

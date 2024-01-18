@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>xfs-user-server</artifactId>
+    <artifactId>xfs-notes-server</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>xfs-user-api</artifactId>
+            <artifactId>xfs-notes-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
