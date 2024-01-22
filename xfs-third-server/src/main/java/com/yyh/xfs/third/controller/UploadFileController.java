@@ -39,4 +39,9 @@ public class UploadFileController {
     public Result<String> uploadAudio(@RequestParam("file") MultipartFile file) {
         return aliyunOssService.uploadAudio(file);
     }
+
+    @PostMapping("/uploadVideo")
+    public Result<String> uploadVideo(@RequestParam("file") MultipartFile file) {
+        return aliyunOssService.uploadVideo(file);
+    }
 }

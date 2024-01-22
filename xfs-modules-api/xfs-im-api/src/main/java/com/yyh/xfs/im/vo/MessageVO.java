@@ -45,6 +45,7 @@ public class MessageVO implements Serializable {
      * 4:新增关注信息
      * 5:服务器应答信息
      * 6:token鉴权信息
+     * 7:@消息
      */
     private Integer messageType;
     /**

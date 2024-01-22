@@ -2,9 +2,16 @@ package com.yyh.xfs.notes;
 
 import com.yyh.xfs.notes.domain.NotesCategoryDO;
 import com.yyh.xfs.notes.mapper.NotesCategoryMapper;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author yyh
@@ -27,5 +34,43 @@ public class NotesApplicationTest {
             notesCategoryDO.setCategorySort(0);
             notesCategoryMapper.insert(notesCategoryDO);
         }*/
+    }
+
+    @Test
+    void test2() {
+        String htmlContent = "<p>在一起的蛋仔打卡地图<a href=\"#{&quot;topicname&quot;:&quot;蛋仔派对&quot;}\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(69, 105, 215); text-decoration: none;\">#蛋仔派对#</a> <a href=\"#{&quot;userId&quot;:&quot;1675532564583455936&quot;}\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(69, 105, 215); text-decoration: none;\">@测试用户1</a> <img src=\"https://gitee.com/yyh12345678/image/raw/master/image/墨镜笑脸.gif\" alt=\"[墨镜笑脸XFS]\" height=\"25px\" width=\"25px\"></p>";
+        List<String> topics = new ArrayList<>();
+        Document document = Jsoup.parse(htmlContent);
+        Elements elements = document.select("a");
+        for (Element element : elements) {
+            String href = element.attr("href");
+            if (href.contains("topicname")) {
+                String topicName = href.substring(href.indexOf("topicname") + 12, href.indexOf("}") - 1);
+                topics.add(topicName);
+            }
+        }
+        System.out.println(topics);
+    }
+
+    @Test
+    void test3(){
+        List<Long> userIds = new ArrayList<>();
+        String content = "<p>在一起的蛋仔打卡地图<a href=\"#"
+                + "{&quot;topicname&quot;:&quot;蛋仔派对&quot;}"
+                + "\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(69, 105, 215); text-decoration: none;\">#蛋仔派对#</a> "
+                + "<a href=\"#"
+                + "{&quot;userId&quot;:&quot;1675532564583455936&quot;}"
+                + "\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(69, 105, 215); text-decoration: none;\">@测试用户1</a> "
+                + "<img src=\"https://gitee.com/yyh12345678/image/raw/master/image/墨镜笑脸.gif\" alt=\"[墨镜笑脸XFS]\" height=\"25px\" width=\"25px\"></p>";
+        Document document = Jsoup.parse(content);
+        Elements elements = document.select("a");
+        for (Element element : elements) {
+            String href = element.attr("href");
+            if (href.contains("userId")) {
+                String userId = href.substring(href.indexOf("userId") + 9, href.indexOf("}") - 1);
+                userIds.add(Long.valueOf(userId));
+            }
+        }
+        System.out.println(userIds);
     }
 }

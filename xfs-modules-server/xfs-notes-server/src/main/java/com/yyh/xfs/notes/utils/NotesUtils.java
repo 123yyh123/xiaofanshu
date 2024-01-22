@@ -1,5 +1,6 @@
 package com.yyh.xfs.notes.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.yyh.xfs.notes.config.BaiduAiConfig;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -45,7 +46,8 @@ public class NotesUtils {
 
             try (Response response = HTTP_CLIENT.newCall(request).execute()) {
                 if (response.body() != null) {
-                    return new JSONObject(response.body().string()).getJSONArray("item").getJSONObject(0).getString("lv1_tag_list");
+                    String s= JSON.parseObject(response.body().string()).getJSONObject("item").getString("lv1_tag_list");
+                    return JSON.parseArray(s).getJSONObject(0).getString("tag");
                 }
             }
         } catch (IOException | JSONException e) {

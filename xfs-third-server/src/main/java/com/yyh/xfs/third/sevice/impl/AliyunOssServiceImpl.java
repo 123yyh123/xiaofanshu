@@ -91,6 +91,19 @@ public class AliyunOssServiceImpl implements AliyunOssService {
         }
     }
 
+    @Override
+    public Result<String> uploadVideo(MultipartFile file) {
+        OSS ossClient = getOssClient(file);
+        try {
+            String s = uploadAndCreateUrl(ossClient, file,".mp4");
+            return ResultUtil.successPost(s);
+        } catch (Exception e) {
+            throw new SystemException(ExceptionMsgEnum.ALIYUN_OSS_INIT_ERROR, e);
+        } finally {
+            ossClient.shutdown();
+        }
+    }
+
     private String uploadAndCreateUrl(OSS ossClient,MultipartFile multipartFile,String suffix) {
         try {
             String replace = UUID.randomUUID().toString().replace("-", "");

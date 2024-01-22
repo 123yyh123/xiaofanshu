@@ -13,3 +13,7 @@ spring:
         file-extension: yaml
         server-addr: 192.168.124.100:8848
         shared-configs: mybatis-plus.yaml,redis.yaml
+baiduyun:
+  ai:
+    apikey: R0etuiI4OX76vCgXita2DcmI
+    secretKey: xviHswWh7dFXfCONQ6pI6CtkerdGX3XX

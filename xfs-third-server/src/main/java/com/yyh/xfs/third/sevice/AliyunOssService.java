@@ -15,4 +15,6 @@ public interface AliyunOssService {
     Result<List<String>> uploadImgs(MultipartFile[] file);
 
     Result<String> uploadAudio(MultipartFile file);
+
+    Result<String> uploadVideo(MultipartFile file);
 }
