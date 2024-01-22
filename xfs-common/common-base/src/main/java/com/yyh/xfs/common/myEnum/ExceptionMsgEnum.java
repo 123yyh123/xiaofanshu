@@ -2,7 +2,6 @@ package com.yyh.xfs.common.myEnum;
 
 import com.yyh.xfs.common.constant.StatusCode;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 /**

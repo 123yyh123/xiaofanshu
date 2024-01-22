@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyh.xfs.notes.mapper.NotesTopicRelationMapper">
+    <resultMap id="BaseResultMap" type="com.yyh.xfs.notes.domain.NotesTopicRelationDO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="notes_id" property="notesId" jdbcType="BIGINT"/>
+        <result column="topic_id" property="topicId" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, notes_id, topic_id
+    </sql>
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyh.xfs.notes.mapper.NotesCategoryMapper">
+    <resultMap id="BaseResultMap" type="com.yyh.xfs.notes.domain.NotesCategoryDO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="category_name" property="categoryName" jdbcType="VARCHAR"/>
+        <result column="category_sort" property="categorySort" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, category_name, category_sort
+    </sql>
+</mapper>

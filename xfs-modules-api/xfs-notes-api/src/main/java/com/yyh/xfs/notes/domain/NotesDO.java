@@ -42,14 +42,19 @@ public class NotesDO implements Serializable {
     private Long belongUserId;
 
     /**
-     * 所属话题，格式为json序列化数组后的字符串
+     * 所属分类
      */
-    private String belongTopic;
+    private Integer belongCategory;
 
     /**
      * 笔记类型，0为图片笔记，1为视频笔记
      */
     private Integer notesType;
+
+    /**
+     * 封面图片
+     */
+    private String coverPicture;
 
     /**
      * 笔记资源，图片或视频，视频只能一个，图片最多9个，格式为json序列化数组后的字符串

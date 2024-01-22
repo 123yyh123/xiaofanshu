@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyh.xfs.notes.mapper.NotesTopicMapper">
+    <resultMap id="BaseResultMap" type="com.yyh.xfs.notes.domain.NotesTopicDO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="topic_name" property="topicName" jdbcType="VARCHAR"/>
+        <result column="topic_desc" property="topicDesc" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_user" property="createUser" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, topic_name, topic_desc, create_time, create_user
+    </sql>
+</mapper>

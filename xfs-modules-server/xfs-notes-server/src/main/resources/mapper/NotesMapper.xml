@@ -8,8 +8,9 @@
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="content" property="content" jdbcType="VARCHAR"/>
         <result column="belong_user_id" property="belongUserId" jdbcType="BIGINT"/>
-        <result column="belong_topic" property="belongTopic" jdbcType="VARCHAR"/>
+        <result column="belong_category" property="belongCategory" jdbcType="INTEGER"/>
         <result column="notes_type" property="notesType" jdbcType="INTEGER"/>
+        <result column="cover_picture" property="coverPicture" jdbcType="VARCHAR"/>
         <result column="notes_resources" property="notesResources" jdbcType="VARCHAR"/>
         <result column="notes_like_num" property="notesLikeNum" jdbcType="INTEGER"/>
         <result column="notes_collection_num" property="notesCollectionNum" jdbcType="INTEGER"/>
@@ -23,6 +24,6 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, title, content, belong_user_id, belong_topic, notes_type, notes_resources, notes_like_num, notes_collection_num, notes_comment_num, address, latitude, longitude, authority, create_time, update_time
+        id, title, content, belong_user_id, belong_category, notes_type,cover_picture, notes_resources, notes_like_num, notes_collection_num, notes_comment_num, address, latitude, longitude, authority, create_time, update_time
     </sql>
 </mapper>
