@@ -15,6 +15,7 @@
         <module>xfs-user-api</module>
         <module>xfs-im-api</module>
         <module>xfs-notes-api</module>
+        <module>xfs-search-api</module>
     </modules>
 
     <properties>

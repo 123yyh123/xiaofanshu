@@ -40,6 +40,7 @@
         <hutool.version>5.7.17</hutool.version>
         <hutool-http.version>5.8.11</hutool-http.version>
         <jjwt.version>0.9.1</jjwt.version>
+        <jsoup.version>1.15.4</jsoup.version>
         <knife4j.version>3.0.3</knife4j.version>
         <rocketmq.version>2.2.2</rocketmq.version>
         <dynamic.datasource.version>3.4.1</dynamic.datasource.version>

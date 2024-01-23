@@ -46,6 +46,10 @@ public class StatusCode {
     public static final Integer ACCOUNT_OPERATION_ERROR = 10062;
     //文件过大
     public static final Integer FILE_SIZE_TOO_LARGE = 10070;
+    //ElasticSearch已初始化
+    public static final Integer ELASTICSEARCH_INIT_ALREADY = 10080;
+    // ElasticSearch初始化异常
+    public static final Integer ELASTICSEARCH_INIT_ERROR = 10081;
     //参数错误
     public static final Integer PARAMETER_ERROR = 40010;
     //服务器异常

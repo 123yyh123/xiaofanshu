@@ -5,18 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.example</groupId>
-        <artifactId>xiaofanshu</artifactId>
+        <artifactId>xfs-modules-api</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>xfs-modules-server</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>xfs-user-server</module>
-        <module>xfs-im-server</module>
-        <module>xfs-notes-server</module>
-        <module>xfs-search-server</module>
-    </modules>
+    <artifactId>xfs-search-api</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -24,4 +17,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
+    </dependencies>
 </project>

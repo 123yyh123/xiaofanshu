@@ -602,4 +602,8 @@ public class RedisCache {
             return null;
         });
     }
+
+    public Boolean setnx(String key) {
+        return redisTemplate.opsForValue().setIfAbsent(key, 1);
+    }
 }

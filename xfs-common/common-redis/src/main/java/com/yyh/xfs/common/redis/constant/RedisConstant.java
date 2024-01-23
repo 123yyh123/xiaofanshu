@@ -48,4 +48,9 @@ public class RedisConstant {
      */
     public static final String REDIS_KEY_USER_RELATION_ALLOW_SEND_MESSAGE = "user:relation:allow:send:message:";
 
+    /**
+     * elasticsearch初始化key前缀
+     */
+    public static final String REDIS_KEY_ELASTICSEARCH_INIT = "elasticsearch:init:";
+
 }

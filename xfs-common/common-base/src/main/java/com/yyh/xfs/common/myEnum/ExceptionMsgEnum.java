@@ -30,6 +30,7 @@ public enum ExceptionMsgEnum {
     PARAMETER_ERROR(StatusCode.PARAMETER_ERROR,"参数错误"),
     FILE_SIZE_TOO_LARGE(StatusCode.FILE_SIZE_TOO_LARGE,"文件过大"),
     FILE_NOT_NULL(StatusCode.FILE_NOT_NULL,"文件不能为空"),
+    ELASTICSEARCH_INIT_ALREADY(StatusCode.ELASTICSEARCH_INIT_ALREADY,"ElasticSearch已初始化"),
     SMS_CODE_SEND_FREQUENTLY(StatusCode.SMS_CODE_SEND_FREQUENTLY,"短信发送频繁,请稍后再试"),
     /**
      * 系统异常
@@ -37,6 +38,7 @@ public enum ExceptionMsgEnum {
     ALIYUN_SMS_SEND_ERROR(StatusCode.ALIYUN_SMS_SEND_ERROR,"短信发送失败"),
     ALIYUN_SMS_INIT_ERROR(StatusCode.ALIYUN_SMS_INIT_ERROR,"短信服务初始化异常"),
     ALIYUN_OSS_INIT_ERROR(StatusCode.ALIYUN_OSS_INIT_ERROR,"OSS服务初始化异常"),
+    ELASTICSEARCH_INIT_ERROR(StatusCode.ELASTICSEARCH_INIT_ERROR,"ElasticSearch初始化异常"),
     REDIS_ERROR(StatusCode.REDIS_ERROR,"redis操作异常"),
     DB_ERROR(StatusCode.DB_ERROR,"数据库操作异常"),
     SERVER_ERROR(StatusCode.SERVER_ERROR,"服务器异常");

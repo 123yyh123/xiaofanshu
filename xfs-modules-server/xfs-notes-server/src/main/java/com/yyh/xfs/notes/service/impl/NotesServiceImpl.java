@@ -85,7 +85,16 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         // 保存笔记
         this.baseMapper.insert(notesDO);
         // TODO 利用rocketMQ异步将笔记保存到ES中
-
+        rocketMQTemplate.asyncSend("notes-add-es-topic", JSON.toJSONString(notesDO), new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("保存笔记到ES成功");
+            }
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("保存笔记到ES失败", throwable);
+            }
+        });
         // 找到所有的"#话题#"
         List<String> topics = findTopic(notesVO);
         log.info("topics:{}", topics);
