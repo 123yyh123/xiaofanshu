@@ -1,13 +1,12 @@
 package com.yyh.xfs.notes.controller;
 
 import com.yyh.xfs.common.domain.Result;
+import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
+import com.yyh.xfs.common.web.exception.BusinessException;
 import com.yyh.xfs.notes.service.NotesService;
-import com.yyh.xfs.notes.vo.NotesVO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.yyh.xfs.notes.vo.NotesPageVO;
+import com.yyh.xfs.notes.vo.NotesPublishVO;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author yyh
@@ -23,7 +22,22 @@ public class NotesController {
         this.notesService = notesService;
     }
     @PostMapping("/publish")
-    public Result<?> addNotes(@RequestBody NotesVO notesVO) {
-        return notesService.addNotes(notesVO);
+    public Result<?> addNotes(@RequestBody NotesPublishVO notesPublishVO) {
+        return notesService.addNotes(notesPublishVO);
     }
+
+    @GetMapping("/getLastNotesByPage")
+    public Result<NotesPageVO> getLastNotesByPage(Integer page, Integer pageSize) {
+        if(page==null||pageSize==null){
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        if (page < 1 ) {
+            page = 1;
+        }
+        if (pageSize < 1) {
+            pageSize = 10;
+        }
+        return notesService.getLastNotesByPage(page,pageSize);
+    }
+
 }
