@@ -1,7 +1,6 @@
 package com.yyh.xfs.notes.vo;
 
 import lombok.Data;
-
 import java.io.Serializable;
 
 /**
@@ -17,4 +16,6 @@ public class NotesVO implements Serializable {
     private String avatarUrl;
     private Integer notesLikeNum;
     private Integer notesType;
+    private Boolean isLike;
+    private Boolean isCollect;
 }

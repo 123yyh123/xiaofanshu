@@ -5,17 +5,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
+import com.yyh.xfs.common.redis.constant.RedisConstant;
+import com.yyh.xfs.common.redis.utils.RedisCache;
+import com.yyh.xfs.common.redis.utils.RedisKey;
 import com.yyh.xfs.common.utils.ResultUtil;
 import com.yyh.xfs.common.web.exception.BusinessException;
-import com.yyh.xfs.notes.domain.NotesCategoryDO;
-import com.yyh.xfs.notes.domain.NotesDO;
-import com.yyh.xfs.notes.domain.NotesTopicDO;
-import com.yyh.xfs.notes.domain.NotesTopicRelationDO;
+import com.yyh.xfs.notes.domain.*;
 import com.yyh.xfs.notes.feign.UserFeign;
-import com.yyh.xfs.notes.mapper.NotesCategoryMapper;
-import com.yyh.xfs.notes.mapper.NotesMapper;
-import com.yyh.xfs.notes.mapper.NotesTopicMapper;
-import com.yyh.xfs.notes.mapper.NotesTopicRelationMapper;
+import com.yyh.xfs.notes.mapper.*;
 import com.yyh.xfs.notes.service.NotesService;
 import com.yyh.xfs.notes.utils.NotesUtils;
 import com.yyh.xfs.notes.vo.NotesPageVO;
@@ -47,14 +44,26 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
     private final NotesCategoryMapper notesCategoryMapper;
     private final NotesTopicRelationMapper notesTopicRelationMapper;
     private final NotesTopicMapper notesTopicMapper;
-
+    private final UserLikeNotesMapper userLikeNotesMapper;
+    private final UserCollectNotesMapper userCollectNotesMapper;
+    private final RedisCache redisCache;
     private final UserFeign userFeign;
-    public NotesServiceImpl(NotesTopicMapper notesTopicMapper, NotesTopicRelationMapper notesTopicRelationMapper, NotesCategoryMapper notesCategoryMapper, RocketMQTemplate rocketMQTemplate, UserFeign userFeign) {
+    public NotesServiceImpl(NotesTopicMapper notesTopicMapper,
+                            NotesTopicRelationMapper notesTopicRelationMapper,
+                            NotesCategoryMapper notesCategoryMapper,
+                            RocketMQTemplate rocketMQTemplate,
+                            UserFeign userFeign,
+                            UserLikeNotesMapper userLikeNotesMapper,
+                            UserCollectNotesMapper userCollectNotesMapper,
+                            RedisCache redisCache) {
         this.notesTopicMapper = notesTopicMapper;
         this.notesTopicRelationMapper = notesTopicRelationMapper;
         this.notesCategoryMapper = notesCategoryMapper;
         this.rocketMQTemplate = rocketMQTemplate;
         this.userFeign = userFeign;
+        this.userLikeNotesMapper = userLikeNotesMapper;
+        this.userCollectNotesMapper = userCollectNotesMapper;
+        this.redisCache = redisCache;
     }
 
     @Override
@@ -161,6 +170,36 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         notesPageVO.setPage(page);
         notesPageVO.setPageSize(pageSize);
         return ResultUtil.successGet(notesPageVO);
+    }
+
+    @Override
+    public Result<?> initNotesLike(Long notesId) {
+        List<UserLikeNotesDO> userLikeNotesList = userLikeNotesMapper.selectList(new QueryWrapper<UserLikeNotesDO>().lambda().eq(UserLikeNotesDO::getNotesId, notesId));
+        if (userLikeNotesList.isEmpty()) {
+            return ResultUtil.successPost(null);
+        }
+        List<Long> userIds = userLikeNotesList.stream().map(UserLikeNotesDO::getUserId).collect(Collectors.toList());
+        // 将所有点赞的用户id存储到redis中，利用redis的set集合去重，key进行分片，设置15个分片
+        for (Long userId : userIds) {
+            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES,notesId+":"+(userId % 15));
+            redisCache.sSet(key, userId);
+        }
+        return ResultUtil.successPost(null);
+    }
+
+    @Override
+    public Result<?> initNotesCollect(Long notesId) {
+        List<UserCollectNotesDO> userCollectNotesList = userCollectNotesMapper.selectList(new QueryWrapper<UserCollectNotesDO>().lambda().eq(UserCollectNotesDO::getNotesId, notesId));
+        if (userCollectNotesList.isEmpty()) {
+            return ResultUtil.successPost(null);
+        }
+        List<Long> userIds = userCollectNotesList.stream().map(UserCollectNotesDO::getUserId).collect(Collectors.toList());
+        // 将所有收藏的用户id存储到redis中，利用redis的set集合去重，key进行分片，设置15个分片
+        for (Long userId : userIds) {
+            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES,notesId+":"+(userId % 15));
+            redisCache.sSet(key, userId);
+        }
+        return ResultUtil.successPost(null);
     }
 
     private List<Long> findUserId(NotesPublishVO notesPublishVO) {

@@ -13,7 +13,7 @@ public class RedisConstant {
     /**
      * redis key 用户登录信息前缀
      */
-    public static final String REDIS_KEY_USER_LOGIN_INFO= "user:login:info:";
+    public static final String REDIS_KEY_USER_LOGIN_INFO = "user:login:info:";
     /**
      * redis key 在线用户set集合key
      */
@@ -52,5 +52,16 @@ public class RedisConstant {
      * elasticsearch初始化key前缀
      */
     public static final String REDIS_KEY_ELASTICSEARCH_INIT = "elasticsearch:init:";
+
+    /**
+     * redis key 笔记点赞用户集合前缀
+     */
+    public static final String REDIS_KEY_USER_LIKE_NOTES = "notes:like:user:";
+
+
+    /**
+     * redis key 笔记收藏用户集合前缀
+     */
+    public static final String REDIS_KEY_USER_COLLECT_NOTES = "notes:collect:user:";
 
 }

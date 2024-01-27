@@ -2,6 +2,7 @@ package com.yyh.xfs.notes;
 
 import com.yyh.xfs.notes.domain.NotesCategoryDO;
 import com.yyh.xfs.notes.mapper.NotesCategoryMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,6 +19,7 @@ import java.util.List;
  * @date 2024-01-22
  */
 @SpringBootTest
+@Slf4j
 public class NotesApplicationTest {
     @Autowired
     private NotesCategoryMapper notesCategoryMapper;
@@ -53,7 +55,7 @@ public class NotesApplicationTest {
     }
 
     @Test
-    void test3(){
+    void test3() {
         List<Long> userIds = new ArrayList<>();
         String content = "<p>在一起的蛋仔打卡地图<a href=\"#"
                 + "{&quot;topicname&quot;:&quot;蛋仔派对&quot;}"
@@ -72,5 +74,15 @@ public class NotesApplicationTest {
             }
         }
         System.out.println(userIds);
+    }
+
+    @Test
+    void test4() {
+        long userId1 = 1675532564583455936L;
+        long userId2 = 1000187117221975680L;
+        log.info("userId1.hashCode() = {}", Long.hashCode(userId1));
+        log.info("userId2.hashCode() = {}", Long.hashCode(userId2));
+        log.info("userId1.hashCode() = {}", Long.hashCode(userId1) % 10);
+        log.info("userId2.hashCode() = {}", Long.hashCode(userId2) % 10);
     }
 }
