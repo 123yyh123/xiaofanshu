@@ -175,11 +175,16 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
     @Override
     public Result<?> initNotesLike(Long notesId) {
         List<UserLikeNotesDO> userLikeNotesList = userLikeNotesMapper.selectList(new QueryWrapper<UserLikeNotesDO>().lambda().eq(UserLikeNotesDO::getNotesId, notesId));
+        NotesDO notesDO = this.baseMapper.selectById(notesId);
+        if (Objects.isNull(notesDO)) {
+            return ResultUtil.successPost(null);
+        }
+        redisCache.set(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_LIKE_NUM, notesId.toString()), notesDO.getNotesLikeNum());
         if (userLikeNotesList.isEmpty()) {
             return ResultUtil.successPost(null);
         }
         List<Long> userIds = userLikeNotesList.stream().map(UserLikeNotesDO::getUserId).collect(Collectors.toList());
-        // 将所有点赞的用户id存储到redis中，利用redis的set集合去重，key进行分片，设置15个分片
+        // 将所有点赞的用户id存储到redis中，利用redis的set集合去重，key进行分片，设置15个分片，防止一个key过大
         for (Long userId : userIds) {
             String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES,notesId+":"+(userId % 15));
             redisCache.sSet(key, userId);
@@ -193,6 +198,11 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         if (userCollectNotesList.isEmpty()) {
             return ResultUtil.successPost(null);
         }
+        NotesDO notesDO = this.baseMapper.selectById(notesId);
+        if (Objects.isNull(notesDO)) {
+            return ResultUtil.successPost(null);
+        }
+        redisCache.set(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COLLECT_NUM, notesId.toString()), notesDO.getNotesCollectionNum());
         List<Long> userIds = userCollectNotesList.stream().map(UserCollectNotesDO::getUserId).collect(Collectors.toList());
         // 将所有收藏的用户id存储到redis中，利用redis的set集合去重，key进行分片，设置15个分片
         for (Long userId : userIds) {
