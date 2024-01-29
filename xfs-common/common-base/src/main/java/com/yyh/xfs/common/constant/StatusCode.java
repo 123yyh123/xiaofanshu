@@ -50,6 +50,8 @@ public class StatusCode {
     public static final Integer ELASTICSEARCH_INIT_ALREADY = 10080;
     // ElasticSearch初始化异常
     public static final Integer ELASTICSEARCH_INIT_ERROR = 10081;
+    //获取地理信息失败
+    public static final Integer GET_GEOGRAPHIC_INFORMATION_ERROR = 10090;
     //参数错误
     public static final Integer PARAMETER_ERROR = 40010;
     //服务器异常

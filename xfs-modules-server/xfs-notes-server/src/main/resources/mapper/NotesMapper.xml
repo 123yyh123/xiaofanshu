@@ -15,6 +15,7 @@
         <result column="notes_like_num" property="notesLikeNum" jdbcType="INTEGER"/>
         <result column="notes_collection_num" property="notesCollectionNum" jdbcType="INTEGER"/>
         <result column="notes_comment_num" property="notesCommentNum" jdbcType="INTEGER"/>
+        <result column="notes_view_num" property="notesViewNum" jdbcType="INTEGER"/>
         <result column="address" property="address" jdbcType="VARCHAR"/>
         <result column="latitude" property="latitude" jdbcType="DOUBLE"/>
         <result column="longitude" property="longitude" jdbcType="DOUBLE"/>
@@ -24,12 +25,13 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, title, content, belong_user_id, belong_category, notes_type,cover_picture, notes_resources, notes_like_num, notes_collection_num, notes_comment_num, address, latitude, longitude, authority, create_time, update_time
+        id, title, content, belong_user_id, belong_category, notes_type,cover_picture, notes_resources, notes_like_num, notes_collection_num, notes_comment_num, notes_view_num,address, latitude, longitude, authority, create_time, update_time
     </sql>
     <select id="selectPageByTime" resultType="com.yyh.xfs.notes.domain.NotesDO">
         select
         <include refid="Base_Column_List"/>
         from notes
+        where authority = 0
         order by create_time desc
         limit #{pageSize} offset #{offset}
     </select>

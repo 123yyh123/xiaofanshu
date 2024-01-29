@@ -1,5 +1,6 @@
 package com.yyh.xfs.notes.controller;
 
+import com.yyh.xfs.common.domain.PageParam;
 import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.web.exception.BusinessException;
@@ -21,6 +22,7 @@ public class NotesController {
     public NotesController(NotesService notesService) {
         this.notesService = notesService;
     }
+
     @PostMapping("/publish")
     public Result<?> addNotes(@RequestBody NotesPublishVO notesPublishVO) {
         return notesService.addNotes(notesPublishVO);
@@ -28,16 +30,15 @@ public class NotesController {
 
     @GetMapping("/getLastNotesByPage")
     public Result<NotesPageVO> getLastNotesByPage(Integer page, Integer pageSize) {
-        if(page==null||pageSize==null){
+        if (page == null || pageSize == null) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
         }
-        if (page < 1 ) {
+        if (page < 1) {
             page = 1;
         }
         if (pageSize < 1) {
             pageSize = 10;
         }
-        return notesService.getLastNotesByPage(page,pageSize);
+        return notesService.getLastNotesByPage(page, pageSize);
     }
-
 }

@@ -12,4 +12,4 @@ spring:
         namespace: 54c5b22b-7b63-4073-9a77-f07142769f1f
         file-extension: yaml
         server-addr: 192.168.124.100:8848
-        shared-configs: mybatis-plus.yaml,redis.yaml
+        shared-configs: mybatis-plus.yaml,redis.yaml,jwt.yaml

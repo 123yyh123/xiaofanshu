@@ -1,6 +1,7 @@
 package com.yyh.xfs.notes.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yyh.xfs.common.domain.PageParam;
 import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.notes.domain.NotesDO;
 import com.yyh.xfs.notes.vo.NotesPageVO;

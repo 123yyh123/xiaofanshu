@@ -3,6 +3,7 @@ package com.yyh.xfs.notes.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yyh.xfs.common.domain.PageParam;
 import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
@@ -10,6 +11,7 @@ import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.common.redis.utils.RedisKey;
 import com.yyh.xfs.common.utils.ResultUtil;
 import com.yyh.xfs.common.web.exception.BusinessException;
+import com.yyh.xfs.common.web.utils.JWTUtil;
 import com.yyh.xfs.notes.domain.*;
 import com.yyh.xfs.notes.feign.UserFeign;
 import com.yyh.xfs.notes.mapper.*;
@@ -30,6 +32,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -48,6 +52,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
     private final UserCollectNotesMapper userCollectNotesMapper;
     private final RedisCache redisCache;
     private final UserFeign userFeign;
+    private final HttpServletRequest request;
     public NotesServiceImpl(NotesTopicMapper notesTopicMapper,
                             NotesTopicRelationMapper notesTopicRelationMapper,
                             NotesCategoryMapper notesCategoryMapper,
@@ -55,7 +60,8 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
                             UserFeign userFeign,
                             UserLikeNotesMapper userLikeNotesMapper,
                             UserCollectNotesMapper userCollectNotesMapper,
-                            RedisCache redisCache) {
+                            RedisCache redisCache,
+                            HttpServletRequest request) {
         this.notesTopicMapper = notesTopicMapper;
         this.notesTopicRelationMapper = notesTopicRelationMapper;
         this.notesCategoryMapper = notesCategoryMapper;
@@ -64,6 +70,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         this.userLikeNotesMapper = userLikeNotesMapper;
         this.userCollectNotesMapper = userCollectNotesMapper;
         this.redisCache = redisCache;
+        this.request = request;
     }
 
     @Override
@@ -102,6 +109,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             public void onSuccess(SendResult sendResult) {
                 log.info("保存笔记到ES成功");
             }
+
             @Override
             public void onException(Throwable throwable) {
                 log.error("保存笔记到ES失败", throwable);
@@ -130,15 +138,16 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         log.info("userIds:{}", userIds);
         // TODO 利用rocketMQ异步发送通知
         userIds.forEach(userId -> {
-            Map<String,Object> map=new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             map.put("belongUserId", notesPublishVO.getBelongUserId().toString());
-            map.put("toUserId",userId.toString());
+            map.put("toUserId", userId.toString());
             map.put("coverPicture", notesPublishVO.getCoverPicture());
             rocketMQTemplate.asyncSend("notes-remind-target-topic", JSON.toJSONString(map), new SendCallback() {
                 @Override
                 public void onSuccess(SendResult sendResult) {
                     log.info("发送通知成功");
                 }
+
                 @Override
                 public void onException(Throwable throwable) {
                     log.error("发送通知失败", throwable);
@@ -163,6 +172,29 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
                 notesVO.setNickname((String) userInfo.get("nickname"));
                 notesVO.setAvatarUrl((String) userInfo.get("avatarUrl"));
             }
+            Object notesLikeNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesDO.getId().toString()), "notesLikeNum");
+            if (Objects.isNull(notesLikeNum)) {
+                notesVO.setNotesLikeNum(notesDO.getNotesLikeNum());
+                redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesDO.getId().toString()), "notesLikeNum", notesDO.getNotesLikeNum());
+            } else {
+                notesVO.setNotesLikeNum((Integer) notesLikeNum);
+            }
+            // 判断当前用户是否点赞
+            String token = request.getHeader("token");
+            try {
+                if (StringUtils.hasText(token)) {
+                    Map<String, Object> map = JWTUtil.parseToken(token);
+                    long userId = Long.parseLong((String) map.get("userId"));
+                    String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, notesDO.getId().toString() + ":" + userId % 15);
+                    Boolean isLike = redisCache.sHasKey(key, userId);
+                    notesVO.setIsLike(isLike);
+                } else {
+                    notesVO.setIsLike(false);
+                }
+            } catch (Exception e) {
+                log.error("获取当前用户id失败", e);
+                notesVO.setIsLike(false);
+            }
             return notesVO;
         }).collect(Collectors.toList());
         notesPageVO.setList(collect);
@@ -179,14 +211,14 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         if (Objects.isNull(notesDO)) {
             return ResultUtil.successPost(null);
         }
-        redisCache.set(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_LIKE_NUM, notesId.toString()), notesDO.getNotesLikeNum());
+        redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesId.toString()), "notesLikeNum", notesDO.getNotesLikeNum());
         if (userLikeNotesList.isEmpty()) {
             return ResultUtil.successPost(null);
         }
         List<Long> userIds = userLikeNotesList.stream().map(UserLikeNotesDO::getUserId).collect(Collectors.toList());
         // 将所有点赞的用户id存储到redis中，利用redis的set集合去重，key进行分片，设置15个分片，防止一个key过大
         for (Long userId : userIds) {
-            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES,notesId+":"+(userId % 15));
+            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, notesId + ":" + (userId % 15));
             redisCache.sSet(key, userId);
         }
         return ResultUtil.successPost(null);
@@ -202,11 +234,11 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         if (Objects.isNull(notesDO)) {
             return ResultUtil.successPost(null);
         }
-        redisCache.set(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COLLECT_NUM, notesId.toString()), notesDO.getNotesCollectionNum());
+        redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesId.toString()), "notesCollectionNum", notesDO.getNotesCollectionNum());
         List<Long> userIds = userCollectNotesList.stream().map(UserCollectNotesDO::getUserId).collect(Collectors.toList());
         // 将所有收藏的用户id存储到redis中，利用redis的set集合去重，key进行分片，设置15个分片
         for (Long userId : userIds) {
-            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES,notesId+":"+(userId % 15));
+            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES, notesId + ":" + (userId % 15));
             redisCache.sSet(key, userId);
         }
         return ResultUtil.successPost(null);

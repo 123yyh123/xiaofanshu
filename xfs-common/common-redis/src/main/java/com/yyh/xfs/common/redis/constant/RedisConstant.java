@@ -59,19 +59,13 @@ public class RedisConstant {
     public static final String REDIS_KEY_USER_LIKE_NOTES = "notes:like:user:";
 
     /**
-     * redis key 笔记点赞数量前缀
-     */
-    public static final String REDIS_KEY_NOTES_LIKE_NUM = "notes:like:num:";
-
-
-    /**
      * redis key 笔记收藏用户集合前缀
      */
     public static final String REDIS_KEY_USER_COLLECT_NOTES = "notes:collect:user:";
 
-    /**
-     * redis key 笔记收藏数量前缀
-     */
-    public static final String REDIS_KEY_NOTES_COLLECT_NUM = "notes:collect:num:";
 
+    /**
+     * redis key 笔记前缀
+     */
+    public static final String REDIS_KEY_NOTES = "notes:";
 }

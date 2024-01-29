@@ -77,6 +77,11 @@ public class NotesDO implements Serializable {
     private Integer notesCommentNum;
 
     /**
+     * 浏览数
+     */
+    private Integer notesViewNum;
+
+    /**
      * 展示的地点，可以为空
      */
     private String address;
