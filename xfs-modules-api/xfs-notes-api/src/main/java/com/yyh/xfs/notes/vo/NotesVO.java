@@ -15,6 +15,7 @@ public class NotesVO implements Serializable {
     private String nickname;
     private String avatarUrl;
     private Integer notesLikeNum;
+    private Integer notesViewNum;
     private Integer notesType;
     private Boolean isLike;
     private Boolean isCollect;

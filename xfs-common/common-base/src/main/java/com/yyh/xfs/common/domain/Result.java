@@ -1,18 +1,15 @@
 package com.yyh.xfs.common.domain;
 
 import lombok.*;
-
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * @author yyh
- * @date 2023-12-09
+ * @date 2023-12-11
+ * @desc 返回结果
  */
 
-@Setter
-@Getter
-@ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Result<T> implements Serializable {

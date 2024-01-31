@@ -184,7 +184,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             try {
                 if (StringUtils.hasText(token)) {
                     Map<String, Object> map = JWTUtil.parseToken(token);
-                    long userId = Long.parseLong((String) map.get("userId"));
+                    Long userId = (Long) map.get("userId");
                     String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, notesDO.getId().toString() + ":" + userId % 15);
                     Boolean isLike = redisCache.sHasKey(key, userId);
                     notesVO.setIsLike(isLike);
@@ -242,6 +242,76 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             redisCache.sSet(key, userId);
         }
         return ResultUtil.successPost(null);
+    }
+
+    @Override
+    public Result<NotesPageVO> getNotesByUserId(Integer page, Integer pageSize, Integer authority, Integer type) {
+        NotesPageVO notesPageVO = new NotesPageVO();
+        Integer offset = (page - 1) * pageSize;
+        String token;
+        Long userId = null;
+        try {
+            token = request.getHeader("token");
+            if (StringUtils.hasText(token)) {
+                Map<String, Object> map = JWTUtil.parseToken(token);
+                userId = (Long) map.get("userId");
+            }
+        } catch (Exception e) {
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+        }
+        List<NotesDO> notes = null;
+        Integer total = null;
+        if(type==0) {
+            notes = this.baseMapper.selectPageByUserId(offset, pageSize, userId, authority);
+            total = this.baseMapper.selectCount(new QueryWrapper<NotesDO>().lambda().eq(NotesDO::getBelongUserId, userId).eq(NotesDO::getAuthority, authority));
+        } else if (type==1) {
+            notes = this.baseMapper.selectPageByUserIdAndLike(offset, pageSize, userId);
+            total = userLikeNotesMapper.selectCount(new QueryWrapper<UserLikeNotesDO>().lambda().eq(UserLikeNotesDO::getUserId, userId));
+        } else if (type==2) {
+            notes = this.baseMapper.selectPageByUserIdAndCollect(offset, pageSize, userId);
+            total = userCollectNotesMapper.selectCount(new QueryWrapper<UserCollectNotesDO>().lambda().eq(UserCollectNotesDO::getUserId, userId));
+        } else {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+
+        }
+        String finalToken = token;
+        Long finalUserId = userId;
+        List<NotesVO> collect = notes.stream().map(notesDO -> {
+            NotesVO notesVO = new NotesVO();
+            BeanUtils.copyProperties(notesDO, notesVO);
+            Result<?> result = userFeign.getUserInfo(notesDO.getBelongUserId());
+            if (result.getCode() == 20010) {
+                Map<String, Object> userInfo = (Map<String, Object>) result.getData();
+                notesVO.setNickname((String) userInfo.get("nickname"));
+                notesVO.setAvatarUrl((String) userInfo.get("avatarUrl"));
+            }
+            Object notesLikeNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesDO.getId().toString()), "notesLikeNum");
+            if (Objects.isNull(notesLikeNum)) {
+                notesVO.setNotesLikeNum(notesDO.getNotesLikeNum());
+                redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesDO.getId().toString()), "notesLikeNum", notesDO.getNotesLikeNum());
+            } else {
+                notesVO.setNotesLikeNum((Integer) notesLikeNum);
+            }
+            // 判断当前用户是否点赞
+            try {
+                if (StringUtils.hasText(finalToken)) {
+                    String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, notesDO.getId().toString() + ":" + finalUserId % 15);
+                    Boolean isLike = redisCache.sHasKey(key, finalUserId);
+                    notesVO.setIsLike(isLike);
+                } else {
+                    notesVO.setIsLike(false);
+                }
+            } catch (Exception e) {
+                log.error("获取当前用户id失败", e);
+                notesVO.setIsLike(false);
+            }
+            return notesVO;
+        }).collect(Collectors.toList());
+        notesPageVO.setList(collect);
+        notesPageVO.setTotal(total);
+        notesPageVO.setPage(page);
+        notesPageVO.setPageSize(pageSize);
+        return ResultUtil.successGet(notesPageVO);
     }
 
     private List<Long> findUserId(NotesPublishVO notesPublishVO) {

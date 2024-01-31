@@ -35,4 +35,33 @@
         order by create_time desc
         limit #{pageSize} offset #{offset}
     </select>
+    <select id="selectPageByUserId" resultType="com.yyh.xfs.notes.domain.NotesDO">
+        select
+        <include refid="Base_Column_List"/>
+        from notes
+        where belong_user_id = #{userId}
+        and authority = #{authority}
+        order by create_time desc
+        limit #{pageSize} offset #{offset}
+    </select>
+    <select id="selectPageByUserIdAndLike" resultType="com.yyh.xfs.notes.domain.NotesDO">
+        select
+        <include refid="Base_Column_List"/>
+        from notes
+        where authority = 0
+        and id in(
+        select notes_id from user_like_notes where user_id = #{userId} order by create_time desc
+        )
+        limit #{pageSize} offset #{offset}
+    </select>
+    <select id="selectPageByUserIdAndCollect" resultType="com.yyh.xfs.notes.domain.NotesDO">
+        select
+        <include refid="Base_Column_List"/>
+        from notes
+        where authority = 0
+        and id in(
+        select notes_id from user_collect_notes where user_id = #{userId} order by create_time desc
+        )
+        limit #{pageSize} offset #{offset}
+    </select>
 </mapper>

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author yyh
@@ -28,4 +29,6 @@ public class UserViewsRecordNotesDO implements Serializable {
      * 笔记id
      */
     private Long notesId;
+
+    private Date createTime;
 }

@@ -15,4 +15,10 @@ import java.util.List;
 public interface NotesMapper extends BaseMapper<NotesDO> {
 
     List<NotesDO> selectPageByTime(Integer offset, Integer pageSize);
+
+    List<NotesDO> selectPageByUserId(Integer offset, Integer pageSize, Long userId, Integer authority);
+
+    List<NotesDO> selectPageByUserIdAndLike(Integer offset, Integer pageSize, Long userId);
+
+    List<NotesDO> selectPageByUserIdAndCollect(Integer offset, Integer pageSize, Long userId);
 }

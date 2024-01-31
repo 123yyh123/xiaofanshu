@@ -7,10 +7,7 @@ import com.yyh.xfs.common.web.exception.BusinessException;
 import com.yyh.xfs.notes.vo.NotesPageVO;
 import com.yyh.xfs.search.service.NotesSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author yyh
@@ -26,7 +23,7 @@ public class NotesSearchController {
         this.notesSearchService = notesSearchService;
     }
 
-    @GetMapping("/getNotesNearBy")
+    @PostMapping("/getNotesNearBy")
     public Result<NotesPageVO> getNotesNearBy(@RequestBody PageParam pageParam) {
         if (pageParam.getPage() == null || pageParam.getPageSize() == null) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);

@@ -41,4 +41,24 @@ public class NotesController {
         }
         return notesService.getLastNotesByPage(page, pageSize);
     }
+
+    @GetMapping("/getNotesByUserId")
+    public Result<NotesPageVO> getNotesByUserId(Integer page, Integer pageSize,Integer authority,Integer type) {
+        if (page == null || pageSize == null) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        if(authority == null||authority < 0||authority > 1) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        if(type == null||type < 0||type > 2) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        if (page < 1) {
+            page = 1;
+        }
+        if (pageSize < 1) {
+            pageSize = 10;
+        }
+        return notesService.getNotesByUserId(page, pageSize,authority,type);
+    }
 }

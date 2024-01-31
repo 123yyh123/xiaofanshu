@@ -17,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.BeanUtils;
@@ -80,12 +82,13 @@ public class NotesSearchServiceImpl implements NotesSearchService {
         // 设置分页
         PageRequest pageRequest = PageRequest.of(pageParam.getPage() - 1, pageParam.getPageSize());
         nativeSearchQueryBuilder.withPageable(pageRequest);
-        // 设置查询条件，默认距离100km的笔记
+        // 设置查询条件，默认距离100km的笔记，authority为0,表示公开
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
         GeoDistanceQueryBuilder geoDistanceQueryBuilder = new GeoDistanceQueryBuilder("location");
         geoDistanceQueryBuilder.point(pageParam.getLatitude(), pageParam.getLongitude());
         geoDistanceQueryBuilder.distance(100, DistanceUnit.KILOMETERS);
         boolQueryBuilder.must(geoDistanceQueryBuilder);
+        boolQueryBuilder.must(QueryBuilders.termQuery("authority", 0));
         nativeSearchQueryBuilder.withQuery(boolQueryBuilder);
         // 设置排序
         GeoDistanceSortBuilder geoDistanceSortBuilder = new GeoDistanceSortBuilder("location", pageParam.getLatitude(), pageParam.getLongitude());
@@ -115,7 +118,7 @@ public class NotesSearchServiceImpl implements NotesSearchService {
                     try {
                         if (StringUtils.hasText(token)) {
                             Map<String, Object> map = JWTUtil.parseToken(token);
-                            long userId = Long.parseLong((String) map.get("userId"));
+                            Long userId = (Long) map.get("userId");
                             String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, content.getId().toString() + ":" + userId % 15);
                             Boolean isLike = redisCache.sHasKey(key, userId);
                             notesVO.setIsLike(isLike);
