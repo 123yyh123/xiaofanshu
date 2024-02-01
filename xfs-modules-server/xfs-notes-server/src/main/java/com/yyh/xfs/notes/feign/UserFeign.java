@@ -14,4 +14,7 @@ public interface UserFeign {
 
     @GetMapping("/user/getUserInfo")
     Result<?> getUserInfo(@RequestParam("userId") Long userId);
+
+    @GetMapping("/user/relation/isAttention")
+    Result<Boolean> selectOneByUserIdAndAttentionIdIsExist(@RequestParam("toId") Long toId, @RequestParam("fromId") Long fromId);
 }

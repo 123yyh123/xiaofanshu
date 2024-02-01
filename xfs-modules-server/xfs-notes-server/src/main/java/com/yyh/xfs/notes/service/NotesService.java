@@ -6,6 +6,7 @@ import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.notes.domain.NotesDO;
 import com.yyh.xfs.notes.vo.NotesPageVO;
 import com.yyh.xfs.notes.vo.NotesPublishVO;
+import com.yyh.xfs.notes.vo.NotesVO;
 
 /**
  * @author yyh
@@ -21,4 +22,6 @@ public interface NotesService extends IService<NotesDO> {
     Result<?> initNotesCollect(Long notesId);
 
     Result<NotesPageVO> getNotesByUserId(Integer page, Integer pageSize, Integer authority, Integer type);
+
+    Result<NotesVO> getNotesByNotesId(Long notesId);
 }

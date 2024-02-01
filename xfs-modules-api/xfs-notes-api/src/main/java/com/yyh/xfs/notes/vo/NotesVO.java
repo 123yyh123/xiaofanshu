@@ -1,7 +1,9 @@
 package com.yyh.xfs.notes.vo;
 
+import com.yyh.xfs.notes.dto.ResourcesDTO;
 import lombok.Data;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author yyh
@@ -19,4 +21,6 @@ public class NotesVO implements Serializable {
     private Integer notesType;
     private Boolean isLike;
     private Boolean isCollect;
+    private Boolean isFollow;
+    private List<ResourcesDTO> notesResources;
 }

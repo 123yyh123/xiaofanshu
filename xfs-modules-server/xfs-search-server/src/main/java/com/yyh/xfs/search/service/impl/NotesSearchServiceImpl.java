@@ -17,22 +17,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
@@ -47,13 +43,15 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class NotesSearchServiceImpl implements NotesSearchService {
-
     private final UserFeign userFeign;
     private final ElasticsearchRestTemplate elasticsearchRestTemplate;
     private final RedisCache redisCache;
     private final HttpServletRequest request;
 
-    public NotesSearchServiceImpl(ElasticsearchRestTemplate elasticsearchRestTemplate, UserFeign userFeign, RedisCache redisCache, HttpServletRequest request) {
+    public NotesSearchServiceImpl(ElasticsearchRestTemplate elasticsearchRestTemplate,
+                                  UserFeign userFeign,
+                                  RedisCache redisCache,
+                                  HttpServletRequest request) {
         this.elasticsearchRestTemplate = elasticsearchRestTemplate;
         this.userFeign = userFeign;
         this.redisCache = redisCache;

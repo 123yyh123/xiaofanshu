@@ -13,6 +13,7 @@ import com.yyh.xfs.common.utils.ResultUtil;
 import com.yyh.xfs.common.web.exception.BusinessException;
 import com.yyh.xfs.common.web.utils.JWTUtil;
 import com.yyh.xfs.notes.domain.*;
+import com.yyh.xfs.notes.dto.ResourcesDTO;
 import com.yyh.xfs.notes.feign.UserFeign;
 import com.yyh.xfs.notes.mapper.*;
 import com.yyh.xfs.notes.service.NotesService;
@@ -53,6 +54,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
     private final RedisCache redisCache;
     private final UserFeign userFeign;
     private final HttpServletRequest request;
+
     public NotesServiceImpl(NotesTopicMapper notesTopicMapper,
                             NotesTopicRelationMapper notesTopicRelationMapper,
                             NotesCategoryMapper notesCategoryMapper,
@@ -261,13 +263,13 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         }
         List<NotesDO> notes = null;
         Integer total = null;
-        if(type==0) {
+        if (type == 0) {
             notes = this.baseMapper.selectPageByUserId(offset, pageSize, userId, authority);
             total = this.baseMapper.selectCount(new QueryWrapper<NotesDO>().lambda().eq(NotesDO::getBelongUserId, userId).eq(NotesDO::getAuthority, authority));
-        } else if (type==1) {
+        } else if (type == 1) {
             notes = this.baseMapper.selectPageByUserIdAndLike(offset, pageSize, userId);
             total = userLikeNotesMapper.selectCount(new QueryWrapper<UserLikeNotesDO>().lambda().eq(UserLikeNotesDO::getUserId, userId));
-        } else if (type==2) {
+        } else if (type == 2) {
             notes = this.baseMapper.selectPageByUserIdAndCollect(offset, pageSize, userId);
             total = userCollectNotesMapper.selectCount(new QueryWrapper<UserCollectNotesDO>().lambda().eq(UserCollectNotesDO::getUserId, userId));
         } else {
@@ -312,6 +314,72 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         notesPageVO.setPage(page);
         notesPageVO.setPageSize(pageSize);
         return ResultUtil.successGet(notesPageVO);
+    }
+
+    @Override
+    public Result<NotesVO> getNotesByNotesId(Long notesId) {
+        NotesDO notesDO = this.baseMapper.selectById(notesId);
+        if (Objects.isNull(notesDO)) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        NotesVO notesVO = new NotesVO();
+        BeanUtils.copyProperties(notesDO, notesVO);
+        String notesResources = notesDO.getNotesResources();
+        List<String> resources = JSON.parseObject(notesResources, List.class);
+        List<ResourcesDTO> collect = resources.stream().map(resource -> {
+            ResourcesDTO resourcesDTO = new ResourcesDTO();
+            resourcesDTO.setUrl(resource);
+            return resourcesDTO;
+        }).collect(Collectors.toList());
+        notesVO.setNotesResources(collect);
+        Result<?> result = userFeign.getUserInfo(notesDO.getBelongUserId());
+        if (result.getCode() == 20010) {
+            Map<String, Object> userInfo = (Map<String, Object>) result.getData();
+            notesVO.setNickname((String) userInfo.get("nickname"));
+            notesVO.setAvatarUrl((String) userInfo.get("avatarUrl"));
+        }
+        Object notesLikeNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesDO.getId().toString()), "notesLikeNum");
+        if (Objects.isNull(notesLikeNum)) {
+            notesVO.setNotesLikeNum(notesDO.getNotesLikeNum());
+            redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesDO.getId().toString()), "notesLikeNum", notesDO.getNotesLikeNum());
+        } else {
+            notesVO.setNotesLikeNum((Integer) notesLikeNum);
+        }
+        String token = request.getHeader("token");
+        Long userId = null;
+        try {
+            if (StringUtils.hasText(token)) {
+                Map<String, Object> map = JWTUtil.parseToken(token);
+                userId = (Long) map.get("userId");
+            }
+        } catch (Exception e) {
+            log.error("获取当前用户id失败", e);
+            notesVO.setIsLike(false);
+            notesVO.setIsCollect(false);
+        }
+        // 判断当前用户是否收藏
+        if (StringUtils.hasText(token) && Objects.nonNull(userId)) {
+            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES, notesDO.getId().toString() + ":" + userId % 15);
+            Boolean isCollect = redisCache.sHasKey(key, userId);
+            notesVO.setIsCollect(isCollect);
+        } else {
+            notesVO.setIsCollect(false);
+        }
+        // 判断当前用户是否点赞
+        if (StringUtils.hasText(token) && Objects.nonNull(userId)) {
+            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, notesDO.getId().toString() + ":" + userId % 15);
+            Boolean isLike = redisCache.sHasKey(key, userId);
+            notesVO.setIsLike(isLike);
+        } else {
+            notesVO.setIsLike(false);
+        }
+        Result<Boolean> result1 = userFeign.selectOneByUserIdAndAttentionIdIsExist(userId, notesDO.getBelongUserId());
+        if (result1.getCode() == 20010) {
+            notesVO.setIsFollow(result1.getData());
+        } else {
+            notesVO.setIsFollow(false);
+        }
+        return ResultUtil.successGet(notesVO);
     }
 
     private List<Long> findUserId(NotesPublishVO notesPublishVO) {

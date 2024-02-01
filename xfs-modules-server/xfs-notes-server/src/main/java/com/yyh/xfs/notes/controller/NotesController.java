@@ -7,6 +7,7 @@ import com.yyh.xfs.common.web.exception.BusinessException;
 import com.yyh.xfs.notes.service.NotesService;
 import com.yyh.xfs.notes.vo.NotesPageVO;
 import com.yyh.xfs.notes.vo.NotesPublishVO;
+import com.yyh.xfs.notes.vo.NotesVO;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -60,5 +61,13 @@ public class NotesController {
             pageSize = 10;
         }
         return notesService.getNotesByUserId(page, pageSize,authority,type);
+    }
+
+    @GetMapping("/getNotesByNotesId")
+    public Result<NotesVO> getNotesByNotesId(Long notesId) {
+        if (notesId == null) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        return notesService.getNotesByNotesId(notesId);
     }
 }
