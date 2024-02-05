@@ -5,35 +5,21 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.example</groupId>
-        <artifactId>xiaofanshu</artifactId>
+        <artifactId>xfs-modules-api</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>xfs-modules-api</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>xfs-user-api</module>
-        <module>xfs-im-api</module>
-        <module>xfs-notes-api</module>
-        <module>xfs-search-api</module>
-        <module>xfs-comment-api</module>
-    </modules>
+    <artifactId>xfs-comment-api</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
     <dependencies>
         <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>common-base</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
     </dependencies>
 </project>

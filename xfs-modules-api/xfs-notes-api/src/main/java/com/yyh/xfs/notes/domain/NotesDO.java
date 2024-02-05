@@ -97,6 +97,11 @@ public class NotesDO implements Serializable {
     private Double longitude;
 
     /**
+     * 省份，中国显示省份，国外显示国家
+     */
+    private String province;
+
+    /**
      * 是否公开，0为公开，1为私密
      */
     private Integer authority;

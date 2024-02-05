@@ -16,6 +16,7 @@
         <module>xfs-im-server</module>
         <module>xfs-notes-server</module>
         <module>xfs-search-server</module>
+        <module>xfs-comment-server</module>
     </modules>
 
     <properties>

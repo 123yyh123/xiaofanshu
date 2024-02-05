@@ -3,7 +3,6 @@ package com.yyh.xfs.notes.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yyh.xfs.common.domain.PageParam;
 import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
@@ -11,6 +10,7 @@ import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.common.redis.utils.RedisKey;
 import com.yyh.xfs.common.utils.ResultUtil;
 import com.yyh.xfs.common.web.exception.BusinessException;
+import com.yyh.xfs.common.web.utils.AddressUtil;
 import com.yyh.xfs.common.web.utils.JWTUtil;
 import com.yyh.xfs.notes.domain.*;
 import com.yyh.xfs.notes.dto.ResourcesDTO;
@@ -103,6 +103,14 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         } else {
             notesDO.setBelongCategory(notesCategoryDO.getId());
         }
+        // 设置省份
+        try {
+            String p = AddressUtil.getAddress(notesPublishVO.getLongitude(), notesPublishVO.getLatitude());
+            notesDO.setProvince(p);
+        } catch (Exception e) {
+            log.error("获取省份失败", e);
+            notesDO.setProvince("未知");
+        }
         // 保存笔记
         this.baseMapper.insert(notesDO);
         //利用rocketMQ异步将笔记保存到ES中
@@ -155,7 +163,6 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
                     log.error("发送通知失败", throwable);
                 }
             });
-
         });
         return ResultUtil.successPost(null);
     }
@@ -345,6 +352,13 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         } else {
             notesVO.setNotesLikeNum((Integer) notesLikeNum);
         }
+        Object notesCollectionNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesDO.getId().toString()), "notesCollectionNum");
+        if (Objects.isNull(notesCollectionNum)) {
+            notesVO.setNotesCollectNum(notesDO.getNotesCollectionNum());
+            redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesDO.getId().toString()), "notesCollectionNum", notesDO.getNotesCollectionNum());
+        } else {
+            notesVO.setNotesCollectNum((Integer) notesCollectionNum);
+        }
         String token = request.getHeader("token");
         Long userId = null;
         try {
@@ -373,9 +387,19 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         } else {
             notesVO.setIsLike(false);
         }
-        Result<Boolean> result1 = userFeign.selectOneByUserIdAndAttentionIdIsExist(userId, notesDO.getBelongUserId());
-        if (result1.getCode() == 20010) {
-            notesVO.setIsFollow(result1.getData());
+        // 判断笔记所属用户与当前用户是否为一个人
+        if (Objects.nonNull(userId)) {
+            if (userId.equals(notesDO.getBelongUserId())) {
+                notesVO.setIsFollow(true);
+            } else {
+                // 判断当前用户是否关注笔记所属用户
+                Result<Boolean> result1 = userFeign.selectOneByUserIdAndAttentionIdIsExist(userId, notesDO.getBelongUserId());
+                if (result1.getCode() == 20010) {
+                    notesVO.setIsFollow(result1.getData());
+                } else {
+                    notesVO.setIsFollow(false);
+                }
+            }
         } else {
             notesVO.setIsFollow(false);
         }

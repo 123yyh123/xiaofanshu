@@ -15,6 +15,7 @@ import java.util.Map;
  * @date 2023-09-17
  */
 public class IPUtils {
+
     /**
      * 获取真实ip地址
      *
@@ -57,15 +58,15 @@ public class IPUtils {
      */
     public static String getAddrByIp(String ip) {
         if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            return "";
+            return null;
         }
         if ("127.0.0.1".equals(ip)) {
-            return "获取失败";
+            return null;
         }
         String url = "https://sp0.baidu.com/8aQDcjqpAAV3otqbppnN2DJv/api.php?resource_id=6006&format=json&query=" + ip;
         HttpResponse res = HttpRequest.get(url).execute();
         if (200 != res.getStatus()) {
-            return "获取位置失败";
+            return null;
         } else {
             JSONObject jsonObject = JSON.parseObject(res.body());
             JSONArray data = JSONArray.parseArray(jsonObject.get("data").toString());
@@ -93,6 +94,25 @@ public class IPUtils {
                 city = address.substring(0, address.indexOf("市"));
             }
             return province + city;
+        } else {
+            return address;
+        }
+    }
+
+    /**
+     * 获取省份，若为直辖市则返回直辖市，若为外国则返回国家
+     *
+     * @param address 地址
+     * @return 省份
+     */
+    public static String provinceAddress(String address) {
+        if (!StringUtils.hasText(address)) {
+            return "";
+        }
+        if (address.contains("省")) {
+            return address.substring(0, address.indexOf("省"));
+        } else if (address.contains("市")) {
+            return address.substring(0, address.indexOf("市"));
         } else {
             return address;
         }
