@@ -70,4 +70,34 @@ public class NotesController {
         }
         return notesService.getNotesByNotesId(notesId);
     }
+
+    /**
+     * 点赞笔记
+     *
+     * @param notesId 笔记id
+     * @param userId  用户id
+     * @return 点赞结果
+     */
+    @PostMapping("/praiseNotes")
+    public Result<?> praiseNotes(Long notesId,Long userId) {
+        if (notesId == null || userId == null) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        return notesService.praiseNotes(notesId,userId);
+    }
+
+    /**
+     * 收藏笔记
+     *
+     * @param notesId 笔记id
+     * @param userId  用户id
+     * @return 收藏结果
+     */
+    @PostMapping("/collectNotes")
+    public Result<?> collectNotes(Long notesId,Long userId) {
+        if (notesId == null || userId == null) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        return notesService.collectNotes(notesId,userId);
+    }
 }

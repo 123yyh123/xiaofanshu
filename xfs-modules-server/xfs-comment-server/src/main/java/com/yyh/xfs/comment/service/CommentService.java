@@ -16,4 +16,8 @@ public interface CommentService {
     Result<Integer> getCommentCount(Long notesId);
 
     Result<List<CommentVO>> getCommentFirstList(Long notesId, Integer page, Integer pageSize);
+
+    Result<List<CommentVO>> getCommentSecondList(Long notesId,String parentId, Integer page, Integer pageSize);
+
+    Result<Boolean> praiseComment(String commentId, Long userId, Long targetUserId);
 }

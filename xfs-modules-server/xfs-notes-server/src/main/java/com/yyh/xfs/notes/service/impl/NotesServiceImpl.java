@@ -181,10 +181,10 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
                 notesVO.setNickname((String) userInfo.get("nickname"));
                 notesVO.setAvatarUrl((String) userInfo.get("avatarUrl"));
             }
-            Object notesLikeNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesDO.getId().toString()), "notesLikeNum");
+            Object notesLikeNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesDO.getId().toString()), "notesLikeNum");
             if (Objects.isNull(notesLikeNum)) {
                 notesVO.setNotesLikeNum(notesDO.getNotesLikeNum());
-                redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesDO.getId().toString()), "notesLikeNum", notesDO.getNotesLikeNum());
+                redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesDO.getId().toString()), "notesLikeNum", notesDO.getNotesLikeNum());
             } else {
                 notesVO.setNotesLikeNum((Integer) notesLikeNum);
             }
@@ -194,8 +194,8 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
                 if (StringUtils.hasText(token)) {
                     Map<String, Object> map = JWTUtil.parseToken(token);
                     Long userId = (Long) map.get("userId");
-                    String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, notesDO.getId().toString() + ":" + userId % 15);
-                    Boolean isLike = redisCache.sHasKey(key, userId);
+                    String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, userId.toString());
+                    Boolean isLike = Objects.nonNull(redisCache.zSetScore(key, notesDO.getId()));
                     notesVO.setIsLike(isLike);
                 } else {
                     notesVO.setIsLike(false);
@@ -220,16 +220,15 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         if (Objects.isNull(notesDO)) {
             return ResultUtil.successPost(null);
         }
-        redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesId.toString()), "notesLikeNum", notesDO.getNotesLikeNum());
+        redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesLikeNum", notesDO.getNotesLikeNum());
         if (userLikeNotesList.isEmpty()) {
             return ResultUtil.successPost(null);
         }
-        List<Long> userIds = userLikeNotesList.stream().map(UserLikeNotesDO::getUserId).collect(Collectors.toList());
-        // 将所有点赞的用户id存储到redis中，利用redis的set集合去重，key进行分片，设置15个分片，防止一个key过大
-        for (Long userId : userIds) {
-            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, notesId + ":" + (userId % 15));
-            redisCache.sSet(key, userId);
-        }
+        // 将所有点赞的用户id存储到redis中，利用redis的set集合去重
+        userLikeNotesList.forEach(userLikeNotesDO -> {
+            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, userLikeNotesDO.getUserId().toString());
+            redisCache.addZSet(key, notesId, userLikeNotesDO.getCreateTime().getTime());
+        });
         return ResultUtil.successPost(null);
     }
 
@@ -243,13 +242,12 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         if (Objects.isNull(notesDO)) {
             return ResultUtil.successPost(null);
         }
-        redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesId.toString()), "notesCollectionNum", notesDO.getNotesCollectionNum());
-        List<Long> userIds = userCollectNotesList.stream().map(UserCollectNotesDO::getUserId).collect(Collectors.toList());
-        // 将所有收藏的用户id存储到redis中，利用redis的set集合去重，key进行分片，设置15个分片
-        for (Long userId : userIds) {
-            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES, notesId + ":" + (userId % 15));
-            redisCache.sSet(key, userId);
-        }
+        redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesCollectionNum", notesDO.getNotesCollectionNum());
+        // 将所有收藏的用户id存储到redis中，利用redis的set集合去重
+        userCollectNotesList.forEach(userCollectNotesDO -> {
+            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES, userCollectNotesDO.getUserId().toString());
+            redisCache.addZSet(key, notesId, userCollectNotesDO.getCreateTime().getTime());
+        });
         return ResultUtil.successPost(null);
     }
 
@@ -294,18 +292,21 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
                 notesVO.setNickname((String) userInfo.get("nickname"));
                 notesVO.setAvatarUrl((String) userInfo.get("avatarUrl"));
             }
-            Object notesLikeNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesDO.getId().toString()), "notesLikeNum");
+            Object notesLikeNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesDO.getId().toString()), "notesLikeNum");
             if (Objects.isNull(notesLikeNum)) {
                 notesVO.setNotesLikeNum(notesDO.getNotesLikeNum());
-                redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesDO.getId().toString()), "notesLikeNum", notesDO.getNotesLikeNum());
+                redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesDO.getId().toString()), "notesLikeNum", notesDO.getNotesLikeNum());
             } else {
                 notesVO.setNotesLikeNum((Integer) notesLikeNum);
             }
             // 判断当前用户是否点赞
             try {
                 if (StringUtils.hasText(finalToken)) {
-                    String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, notesDO.getId().toString() + ":" + finalUserId % 15);
-                    Boolean isLike = redisCache.sHasKey(key, finalUserId);
+                    String key = null;
+                    if (finalUserId != null) {
+                        key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, finalUserId.toString());
+                    }
+                    Boolean isLike = Objects.nonNull(redisCache.zSetScore(key, notesDO.getId()));
                     notesVO.setIsLike(isLike);
                 } else {
                     notesVO.setIsLike(false);
@@ -345,17 +346,17 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             notesVO.setNickname((String) userInfo.get("nickname"));
             notesVO.setAvatarUrl((String) userInfo.get("avatarUrl"));
         }
-        Object notesLikeNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesDO.getId().toString()), "notesLikeNum");
+        Object notesLikeNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesDO.getId().toString()), "notesLikeNum");
         if (Objects.isNull(notesLikeNum)) {
             notesVO.setNotesLikeNum(notesDO.getNotesLikeNum());
-            redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesDO.getId().toString()), "notesLikeNum", notesDO.getNotesLikeNum());
+            redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesDO.getId().toString()), "notesLikeNum", notesDO.getNotesLikeNum());
         } else {
             notesVO.setNotesLikeNum((Integer) notesLikeNum);
         }
-        Object notesCollectionNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesDO.getId().toString()), "notesCollectionNum");
+        Object notesCollectionNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesDO.getId().toString()), "notesCollectionNum");
         if (Objects.isNull(notesCollectionNum)) {
             notesVO.setNotesCollectNum(notesDO.getNotesCollectionNum());
-            redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, notesDO.getId().toString()), "notesCollectionNum", notesDO.getNotesCollectionNum());
+            redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesDO.getId().toString()), "notesCollectionNum", notesDO.getNotesCollectionNum());
         } else {
             notesVO.setNotesCollectNum((Integer) notesCollectionNum);
         }
@@ -373,16 +374,16 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         }
         // 判断当前用户是否收藏
         if (StringUtils.hasText(token) && Objects.nonNull(userId)) {
-            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES, notesDO.getId().toString() + ":" + userId % 15);
-            Boolean isCollect = redisCache.sHasKey(key, userId);
+            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES, userId.toString());
+            Boolean isCollect = Objects.nonNull(redisCache.zSetScore(key, notesId));
             notesVO.setIsCollect(isCollect);
         } else {
             notesVO.setIsCollect(false);
         }
         // 判断当前用户是否点赞
         if (StringUtils.hasText(token) && Objects.nonNull(userId)) {
-            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, notesDO.getId().toString() + ":" + userId % 15);
-            Boolean isLike = redisCache.sHasKey(key, userId);
+            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, userId.toString());
+            Boolean isLike = Objects.nonNull(redisCache.zSetScore(key, notesId));
             notesVO.setIsLike(isLike);
         } else {
             notesVO.setIsLike(false);
@@ -404,6 +405,68 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             notesVO.setIsFollow(false);
         }
         return ResultUtil.successGet(notesVO);
+    }
+
+    @Override
+    public Result<?> praiseNotes(Long notesId, Long userId) {
+        NotesDO notesDO = this.baseMapper.selectById(notesId);
+        if (Objects.isNull(notesDO)) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, userId.toString());
+        boolean isLike = Objects.nonNull(redisCache.zSetScore(key, notesId));
+        Map<String, Object> userLikeNotesMap = new HashMap<>();
+        userLikeNotesMap.put("userId", userId);
+        userLikeNotesMap.put("notesId", notesId);
+        userLikeNotesMap.put("isLike", !isLike);
+        userLikeNotesMap.put("createTime", new Date());
+        // 考虑到由于新增的点赞记录可能过多，分片存储，避免大key，分10片
+        int i = userLikeNotesMap.hashCode() % 10;
+        // 根据用户维度存储点赞记录
+        if (isLike) {
+            redisCache.removeZSet(key, notesId);
+            redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesLikeNum", -1);
+            // TODO 便于定时任务更新数据库，不能直接删除键，避免不能删除数据库中的点赞记录，定时任务判断isLike字段操作数据库，如果为false则删除
+            String userLikeNotesKey = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES_RECENT, i + "");
+            redisCache.sSet(userLikeNotesKey, JSON.toJSONString(userLikeNotesMap));
+        } else {
+            redisCache.addZSet(key, notesId, System.currentTimeMillis());
+            redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesLikeNum", 1);
+            String userLikeNotesKey = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES_RECENT, i + "");
+            redisCache.sSet(userLikeNotesKey, JSON.toJSONString(userLikeNotesMap));
+        }
+        return ResultUtil.successPost(null);
+    }
+
+    @Override
+    public Result<?> collectNotes(Long notesId, Long userId) {
+        NotesDO notesDO = this.baseMapper.selectById(notesId);
+        if (Objects.isNull(notesDO)) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES, userId.toString());
+        boolean isCollect = Objects.nonNull(redisCache.zSetScore(key, notesId));
+        Map<String, Object> userCollectNotesMap = new HashMap<>();
+        userCollectNotesMap.put("userId", userId);
+        userCollectNotesMap.put("notesId", notesId);
+        userCollectNotesMap.put("isCollect", !isCollect);
+        userCollectNotesMap.put("createTime", new Date());
+        // 考虑到由于新增的收藏记录可能过多，分片存储，避免大key，分10片
+        int i = userCollectNotesMap.hashCode() % 10;
+        // 根据用户维度存储收藏记录
+        if (isCollect) {
+            redisCache.removeZSet(key, notesId);
+            redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesCollectionNum", -1);
+            // TODO 便于定时任务更新数据库，不能直接删除键，避免不能删除数据库中的收藏记录，定时任务判断isCollect字段操作数据库，如果为false则删除
+            String userCollectNotesKey = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES_RECENT, i + "");
+            redisCache.sSet(userCollectNotesKey, JSON.toJSONString(userCollectNotesMap));
+        } else {
+            redisCache.addZSet(key, notesId, System.currentTimeMillis());
+            redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesCollectionNum", 1);
+            String userCollectNotesKey = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES_RECENT, i + "");
+            redisCache.sSet(userCollectNotesKey, JSON.toJSONString(userCollectNotesMap));
+        }
+        return ResultUtil.successPost(null);
     }
 
     private List<Long> findUserId(NotesPublishVO notesPublishVO) {

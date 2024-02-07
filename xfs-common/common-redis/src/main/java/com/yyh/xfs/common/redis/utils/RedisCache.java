@@ -315,7 +315,7 @@ public class RedisCache {
      * @param values 值 可以是多个
      * @return 成功个数
      */
-    public Long sSetAndTime(String key, long time, Object... values) throws Exception {
+    public Long sSetAndTime(String key, long time, Object... values){
         Long count = redisTemplate.opsForSet().add(key, values);
         if (time > 0) {
             expire(key, time);
@@ -496,6 +496,27 @@ public class RedisCache {
     }
 
     /**
+     * 删除特定的zSet
+     * @param key 键
+     * @param value 值
+     * @return 是否删除成功
+     */
+    public boolean removeZSet(String key, Object value) {
+        Long remove = redisTemplate.opsForZSet().remove(key, value);
+        return remove != null && remove > 0;
+    }
+
+    /**
+     * 根据key和value获取zSet的score
+     * @param key 键
+     * @param value 值
+     * @return score 值
+     */
+    public Double zSetScore(String key, Object value) {
+        return redisTemplate.opsForZSet().score(key, value);
+    }
+
+    /**
      * 获取zSet长度
      *
      * @param key 键
@@ -508,10 +529,10 @@ public class RedisCache {
     /**
      * 删除zSet
      *
-     * @param key
-     * @param start
-     * @param end
-     * @return
+     * @param key 键
+     * @param start 开始
+     * @param end 结束
+     * @return 删除的个数
      */
     public long zSetRemove(String key, long start, long end) {
         return redisTemplate.opsForZSet().removeRange(key, start, end);

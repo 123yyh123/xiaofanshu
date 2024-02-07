@@ -41,6 +41,16 @@ public class CommentDO implements Serializable {
     private String parentId;
 
     /**
+     * 评论回复者id
+     */
+    private Long replyUserId;
+
+    /**
+     * 评论回复者名称
+     */
+    private String replyUserName;
+
+    /**
      * 评论图片
      */
     private String pictureUrl;

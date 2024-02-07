@@ -14,7 +14,11 @@ public class CommentVO implements Serializable {
     private String content;
     private String province;
     private Long commentUserId;
+    private String commentUserName;
+    private String commentUserAvatar;
     private String parentId;
+    private Long replyUserId;
+    private String replyUserName;
     private String pictureUrl;
     private Integer commentLikeNum;
     // 评论回复数，只在为一级评论时有效
