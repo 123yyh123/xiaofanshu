@@ -104,10 +104,10 @@ public class NotesSearchServiceImpl implements NotesSearchService {
                         notesVO.setNickname((String) userInfo.get("nickname"));
                         notesVO.setAvatarUrl((String) userInfo.get("avatarUrl"));
                     }
-                    Object notesLikeNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, content.getId().toString()), "notesLikeNum");
+                    Object notesLikeNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, content.getId().toString()), "notesLikeNum");
                     if (Objects.isNull(notesLikeNum)) {
                         notesVO.setNotesLikeNum(content.getNotesLikeNum());
-                        redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES, content.getId().toString()), "notesLikeNum", content.getNotesLikeNum());
+                        redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, content.getId().toString()), "notesLikeNum", content.getNotesLikeNum());
                     } else {
                         notesVO.setNotesLikeNum((Integer) notesLikeNum);
                     }
@@ -117,8 +117,8 @@ public class NotesSearchServiceImpl implements NotesSearchService {
                         if (StringUtils.hasText(token)) {
                             Map<String, Object> map = JWTUtil.parseToken(token);
                             Long userId = (Long) map.get("userId");
-                            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, content.getId().toString() + ":" + userId % 15);
-                            Boolean isLike = redisCache.sHasKey(key, userId);
+                            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, userId.toString());
+                            Boolean isLike = Objects.nonNull(redisCache.zSetScore(key, content.getId()));
                             notesVO.setIsLike(isLike);
                         } else {
                             notesVO.setIsLike(false);

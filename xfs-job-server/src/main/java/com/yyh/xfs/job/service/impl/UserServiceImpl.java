@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
  * @date 2023-12-23
  */
 @Service
-@DS("xfs_user")
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements UserService {
+
     /**
      * 没有用updateBatchById，因为该方法有事务，会导致事务回滚，而我们不需要事务回滚
      * @param userVos vo

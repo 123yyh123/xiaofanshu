@@ -56,12 +56,12 @@ public class RedisConstant {
     /**
      * redis key 笔记点赞用户集合前缀
      */
-    public static final String REDIS_KEY_USER_LIKE_NOTES = "user:like:notes:";
+    public static final String REDIS_KEY_USER_LIKE_NOTES = "user:like:notes:all:";
 
     /**
      * redis key 笔记收藏用户集合前缀
      */
-    public static final String REDIS_KEY_USER_COLLECT_NOTES = "user:collect:notes:";
+    public static final String REDIS_KEY_USER_COLLECT_NOTES = "user:collect:notes:all:";
 
     /**
      * redis key 笔记最近点赞用户集合前缀，用于定时任务的更新
@@ -84,7 +84,7 @@ public class RedisConstant {
     public static final String REDIS_KEY_COMMENT_LIKE = "notes:comment:like:";
 
     /**
-     * redis key 笔记评论数量
+     * redis key 笔记评论喜欢数量
      */
     public static final String REDIS_KEY_COMMENT_COUNT = "notes:comment:count:";
 }

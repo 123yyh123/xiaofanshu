@@ -13,7 +13,7 @@ import java.util.List;
 public interface UserService extends IService<UserDO> {
     /**
      * 根据vo更新用户信息
-     * @param userVO vo
+     * @param userVos vo
      */
     void updateByVos(List<UserVO> userVos);
 }

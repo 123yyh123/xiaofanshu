@@ -251,6 +251,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         return ResultUtil.successPost(null);
     }
 
+
     @Override
     public Result<NotesPageVO> getNotesByUserId(Integer page, Integer pageSize, Integer authority, Integer type) {
         NotesPageVO notesPageVO = new NotesPageVO();
@@ -408,7 +409,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
     }
 
     @Override
-    public Result<?> praiseNotes(Long notesId, Long userId) {
+    public Result<?> praiseNotes(Long notesId, Long userId, Long targetUserId) {
         NotesDO notesDO = this.baseMapper.selectById(notesId);
         if (Objects.isNull(notesDO)) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
@@ -421,25 +422,24 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         userLikeNotesMap.put("isLike", !isLike);
         userLikeNotesMap.put("createTime", new Date());
         // 考虑到由于新增的点赞记录可能过多，分片存储，避免大key，分10片
-        int i = userLikeNotesMap.hashCode() % 10;
+        int i = Math.abs(userLikeNotesMap.hashCode()) % 10;
+        // TODO 便于定时任务更新数据库，不能直接删除键，避免不能删除数据库中的点赞记录，定时任务判断isLike字段操作数据库，如果为false则删除
+        String userLikeNotesKey = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES_RECENT, i + "");
+        redisCache.sSet(userLikeNotesKey, JSON.toJSONString(userLikeNotesMap));
         // 根据用户维度存储点赞记录
         if (isLike) {
             redisCache.removeZSet(key, notesId);
             redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesLikeNum", -1);
-            // TODO 便于定时任务更新数据库，不能直接删除键，避免不能删除数据库中的点赞记录，定时任务判断isLike字段操作数据库，如果为false则删除
-            String userLikeNotesKey = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES_RECENT, i + "");
-            redisCache.sSet(userLikeNotesKey, JSON.toJSONString(userLikeNotesMap));
         } else {
             redisCache.addZSet(key, notesId, System.currentTimeMillis());
             redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesLikeNum", 1);
-            String userLikeNotesKey = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES_RECENT, i + "");
-            redisCache.sSet(userLikeNotesKey, JSON.toJSONString(userLikeNotesMap));
         }
+        // TODO 利用rocketMQ异步给发送targetUserId通知
         return ResultUtil.successPost(null);
     }
 
     @Override
-    public Result<?> collectNotes(Long notesId, Long userId) {
+    public Result<?> collectNotes(Long notesId, Long userId, Long targetUserId) {
         NotesDO notesDO = this.baseMapper.selectById(notesId);
         if (Objects.isNull(notesDO)) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
@@ -452,20 +452,19 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         userCollectNotesMap.put("isCollect", !isCollect);
         userCollectNotesMap.put("createTime", new Date());
         // 考虑到由于新增的收藏记录可能过多，分片存储，避免大key，分10片
-        int i = userCollectNotesMap.hashCode() % 10;
+        int i = Math.abs(userCollectNotesMap.hashCode()) % 10;
+        // TODO 便于定时任务更新数据库，不能直接删除键，避免不能删除数据库中的收藏记录，定时任务判断isCollect字段操作数据库，如果为false则删除
+        String userCollectNotesKey = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES_RECENT, i + "");
+        redisCache.sSet(userCollectNotesKey, JSON.toJSONString(userCollectNotesMap));
         // 根据用户维度存储收藏记录
         if (isCollect) {
             redisCache.removeZSet(key, notesId);
             redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesCollectionNum", -1);
-            // TODO 便于定时任务更新数据库，不能直接删除键，避免不能删除数据库中的收藏记录，定时任务判断isCollect字段操作数据库，如果为false则删除
-            String userCollectNotesKey = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES_RECENT, i + "");
-            redisCache.sSet(userCollectNotesKey, JSON.toJSONString(userCollectNotesMap));
         } else {
             redisCache.addZSet(key, notesId, System.currentTimeMillis());
             redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesCollectionNum", 1);
-            String userCollectNotesKey = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES_RECENT, i + "");
-            redisCache.sSet(userCollectNotesKey, JSON.toJSONString(userCollectNotesMap));
         }
+        // TODO 利用rocketMQ异步给发送targetUserId通知
         return ResultUtil.successPost(null);
     }
 

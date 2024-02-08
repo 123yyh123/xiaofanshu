@@ -25,7 +25,7 @@ public interface NotesService extends IService<NotesDO> {
 
     Result<NotesVO> getNotesByNotesId(Long notesId);
 
-    Result<?> praiseNotes(Long notesId, Long userId);
+    Result<?> praiseNotes(Long notesId, Long userId, Long targetUserId);
 
-    Result<?> collectNotes(Long notesId, Long userId);
+    Result<?> collectNotes(Long notesId, Long userId, Long targetUserId);
 }

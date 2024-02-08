@@ -76,14 +76,15 @@ public class NotesController {
      *
      * @param notesId 笔记id
      * @param userId  用户id
+     * @param targetUserId  目标用户id
      * @return 点赞结果
      */
     @PostMapping("/praiseNotes")
-    public Result<?> praiseNotes(Long notesId,Long userId) {
-        if (notesId == null || userId == null) {
+    public Result<?> praiseNotes(Long notesId,Long userId,Long targetUserId) {
+        if (notesId == null || userId == null||targetUserId == null) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
         }
-        return notesService.praiseNotes(notesId,userId);
+        return notesService.praiseNotes(notesId,userId,targetUserId);
     }
 
     /**
@@ -91,13 +92,14 @@ public class NotesController {
      *
      * @param notesId 笔记id
      * @param userId  用户id
+     * @param targetUserId  目标用户id
      * @return 收藏结果
      */
     @PostMapping("/collectNotes")
-    public Result<?> collectNotes(Long notesId,Long userId) {
-        if (notesId == null || userId == null) {
+    public Result<?> collectNotes(Long notesId,Long userId,Long targetUserId) {
+        if (notesId == null || userId == null||targetUserId == null) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
         }
-        return notesService.collectNotes(notesId,userId);
+        return notesService.collectNotes(notesId,userId,targetUserId);
     }
 }

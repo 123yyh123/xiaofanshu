@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyh.xfs.job.mapper.NotesMapper">
+
+    <update id="updateNotesLikeNum">
+        update notes
+        set notes_like_num = #{likeNum}
+        where id = #{notesId}
+    </update>
+
+    <update id="updateNotesCollectNum">
+        update notes
+        set notes_collection_num = #{collectNum}
+        where id = #{notesId}
+    </update>
+</mapper>
