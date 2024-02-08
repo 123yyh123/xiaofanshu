@@ -420,12 +420,20 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         userLikeNotesMap.put("userId", userId);
         userLikeNotesMap.put("notesId", notesId);
         userLikeNotesMap.put("isLike", !isLike);
-        userLikeNotesMap.put("createTime", new Date());
         // 考虑到由于新增的点赞记录可能过多，分片存储，避免大key，分10片
-        int i = Math.abs(userLikeNotesMap.hashCode()) % 10;
-        // TODO 便于定时任务更新数据库，不能直接删除键，避免不能删除数据库中的点赞记录，定时任务判断isLike字段操作数据库，如果为false则删除
+        int i = Math.abs(userId.hashCode()) % 10;
+        // 便于定时任务更新数据库，不能直接删除键，避免不能删除数据库中的点赞记录，定时任务判断isLike字段操作数据库，如果为false则删除
         String userLikeNotesKey = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES_RECENT, i + "");
-        redisCache.sSet(userLikeNotesKey, JSON.toJSONString(userLikeNotesMap));
+        // 先判断有记录没有，若与之前相反，则删除之前的记录，否则直接新增覆盖
+        Map<String,Object> map= new HashMap<>();
+        map.put("userId",userId);
+        map.put("notesId",notesId);
+        map.put("isLike",isLike);
+        Double v = redisCache.zSetScore(userLikeNotesKey, JSON.toJSONString(map));
+        if(Objects.nonNull(v)){
+            redisCache.removeZSet(userLikeNotesKey, JSON.toJSONString(map));
+        }
+        redisCache.addZSet(userLikeNotesKey, JSON.toJSONString(userLikeNotesMap), System.currentTimeMillis());
         // 根据用户维度存储点赞记录
         if (isLike) {
             redisCache.removeZSet(key, notesId);
@@ -450,12 +458,20 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         userCollectNotesMap.put("userId", userId);
         userCollectNotesMap.put("notesId", notesId);
         userCollectNotesMap.put("isCollect", !isCollect);
-        userCollectNotesMap.put("createTime", new Date());
         // 考虑到由于新增的收藏记录可能过多，分片存储，避免大key，分10片
-        int i = Math.abs(userCollectNotesMap.hashCode()) % 10;
-        // TODO 便于定时任务更新数据库，不能直接删除键，避免不能删除数据库中的收藏记录，定时任务判断isCollect字段操作数据库，如果为false则删除
+        int i = Math.abs(userId.hashCode()) % 10;
+        // 便于定时任务更新数据库，不能直接删除键，避免不能删除数据库中的收藏记录，定时任务判断isCollect字段操作数据库，如果为false则删除
         String userCollectNotesKey = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES_RECENT, i + "");
-        redisCache.sSet(userCollectNotesKey, JSON.toJSONString(userCollectNotesMap));
+        // 先判断有记录没有，若与之前相反，则删除之前的记录，否则直接新增覆盖
+        Map<String,Object> map= new HashMap<>();
+        map.put("userId",userId);
+        map.put("notesId",notesId);
+        map.put("isCollect",isCollect);
+        Double v = redisCache.zSetScore(userCollectNotesKey, JSON.toJSONString(map));
+        if(Objects.nonNull(v)){
+            redisCache.removeZSet(userCollectNotesKey, JSON.toJSONString(map));
+        }
+        redisCache.addZSet(userCollectNotesKey, JSON.toJSONString(userCollectNotesMap), System.currentTimeMillis());
         // 根据用户维度存储收藏记录
         if (isCollect) {
             redisCache.removeZSet(key, notesId);

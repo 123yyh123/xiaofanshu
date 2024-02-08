@@ -40,13 +40,13 @@
         </dependency>
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>common-mybatis</artifactId>
+            <artifactId>xfs-notes-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-            <version>${dynamic.datasource.version}</version>
+            <groupId>org.example</groupId>
+            <artifactId>common-mybatis</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

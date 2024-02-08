@@ -3,8 +3,8 @@ package com.yyh.xfs.comment.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.io.Serializable;
 
@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Document(value = "comment")
 public class CommentDO implements Serializable {
 
-    @MongoId
+    @Id
     private String id;
     /**
      * 评论内容

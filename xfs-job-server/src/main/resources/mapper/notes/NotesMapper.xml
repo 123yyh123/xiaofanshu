@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyh.xfs.job.mapper.notes.NotesMapper">
+    <insert id="insertUserLikeNotes" parameterType="com.yyh.xfs.notes.domain.UserLikeNotesDO">
+        insert into user_like_notes(id, notes_id, user_id, create_time)
+        values(#{id}, #{notesId}, #{userId}, #{createTime})
+    </insert>
+
+    <insert id="insertUserCollectNotes" parameterType="com.yyh.xfs.notes.domain.UserCollectNotesDO">
+        insert into user_collect_notes(id, notes_id, user_id, create_time)
+        values(#{id}, #{notesId}, #{userId}, #{createTime})
+    </insert>
+
+    <update id="updateNotesLikeNum">
+        update notes
+        set notes_like_num = #{likeNum}
+        where id = #{notesId}
+    </update>
+
+    <update id="updateNotesCollectionNum">
+        update notes
+        set notes_collection_num = #{collectNum}
+        where id = #{notesId}
+    </update>
+
+    <delete id="deleteUserLikeNotes" parameterType="com.yyh.xfs.notes.domain.UserLikeNotesDO">
+        delete from user_like_notes
+        where notes_id = #{notesId} and user_id = #{userId}
+    </delete>
+
+    <delete id="deleteUserCollectNotes" parameterType="com.yyh.xfs.notes.domain.UserCollectNotesDO">
+        delete from user_collect_notes
+        where notes_id = #{notesId} and user_id = #{userId}
+    </delete>
+</mapper>

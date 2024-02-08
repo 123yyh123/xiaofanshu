@@ -29,5 +29,8 @@ public class UserCollectNotesDO implements Serializable {
      */
     private Long notesId;
 
+    /**
+     * 创建时间
+     */
     private Date createTime;
 }

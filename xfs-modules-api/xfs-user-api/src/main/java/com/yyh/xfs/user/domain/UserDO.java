@@ -142,7 +142,9 @@ public class UserDO implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private java.util.Date updateTime;
 
-    public static UserDO voToDO(UserDO userDO,UserVO userVO) {
+    public static UserDO voToDO(UserVO userVO) {
+        UserDO userDO = new UserDO();
+        userDO.setId(userVO.getId());
         userDO.setNickname(userVO.getNickname());
         userDO.setAge(userVO.getAge());
         userDO.setSex(userVO.getSex());

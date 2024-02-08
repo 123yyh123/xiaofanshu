@@ -272,7 +272,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 "avatarUrl",
                 userVO.getAvatarUrl()
         );
-        redisCache.addZSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
+        redisCache.sSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
         return ResultUtil.successPost("修改头像成功", null);
     }
 
@@ -290,7 +290,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 "homePageBackground",
                 userVO.getHomePageBackground()
         );
-        redisCache.addZSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
+        redisCache.sSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
         return ResultUtil.successPost("修改背景成功", null);
     }
 
@@ -310,7 +310,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 "nickname",
                 userVO.getNickname()
         );
-        redisCache.addZSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
+        redisCache.sSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
         return ResultUtil.successPost("修改昵称成功", null);
     }
 
@@ -331,7 +331,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 "selfIntroduction",
                 userVO.getSelfIntroduction()
         );
-        redisCache.addZSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
+        redisCache.sSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
         return ResultUtil.successPost("修改简介成功", null);
     }
 
@@ -352,7 +352,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 "sex",
                 userVO.getSex()
         );
-        redisCache.addZSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
+        redisCache.sSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
         return ResultUtil.successPost("修改性别成功", null);
     }
 
@@ -382,7 +382,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 "age",
                 age
         );
-        redisCache.addZSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
+        redisCache.sSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
         return ResultUtil.successPost("修改生日成功", age);
     }
 
@@ -410,7 +410,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 "area",
                 area
         );
-        redisCache.addZSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
+        redisCache.sSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
         return ResultUtil.successPost("修改地区成功", null);
     }
 

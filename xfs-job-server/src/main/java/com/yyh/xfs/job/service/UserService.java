@@ -10,10 +10,5 @@ import java.util.List;
  * @author yyh
  * @date 2023-12-23
  */
-public interface UserService extends IService<UserDO> {
-    /**
-     * 根据vo更新用户信息
-     * @param userVos vo
-     */
-    void updateByVos(List<UserVO> userVos);
+public interface UserService{
 }
