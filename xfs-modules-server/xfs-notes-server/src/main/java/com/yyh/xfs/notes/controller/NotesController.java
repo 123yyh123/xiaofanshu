@@ -1,6 +1,5 @@
 package com.yyh.xfs.notes.controller;
 
-import com.yyh.xfs.common.domain.PageParam;
 import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.web.exception.BusinessException;

@@ -17,6 +17,7 @@ import com.yyh.xfs.user.domain.UserDO;
 import com.yyh.xfs.user.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -41,7 +42,7 @@ public class SampleXxlJob {
     private final MongoTemplate mongoTemplate;
 
     public SampleXxlJob(RedisCache redisCache,
-                        Executor jobThreadPool,
+                        @Qualifier("asyncThreadExecutor") Executor jobThreadPool,
                         NotesMapper notesMapper,
                         MongoTemplate mongoTemplate,
                         UserMapper userMapper) {

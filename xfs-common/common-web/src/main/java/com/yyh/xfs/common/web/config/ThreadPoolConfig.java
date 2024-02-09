@@ -1,4 +1,4 @@
-package com.yyh.xfs.job.config;
+package com.yyh.xfs.common.web.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
@@ -49,7 +49,7 @@ public class ThreadPoolConfig implements AsyncConfigurer {
      * 线程池中任务的等待时间，如果超过这个时间还没有销毁就强制销毁，以确保应用最后能够被关闭，而不是阻塞住，默认60
      */
     private int awaitTerminationSeconds= 60;
-    @Bean(name = "jobThreadPool")
+    @Bean(name = "asyncThreadExecutor")
     public Executor asyncThreadExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         // 核心线程数

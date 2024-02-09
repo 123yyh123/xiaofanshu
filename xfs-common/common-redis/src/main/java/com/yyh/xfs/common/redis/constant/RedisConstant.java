@@ -87,4 +87,9 @@ public class RedisConstant {
      * redis key 笔记评论喜欢数量
      */
     public static final String REDIS_KEY_COMMENT_COUNT = "notes:comment:count:";
+
+    /**
+     * redis key 已经更新热门评论的笔记id集合
+     */
+    public static final String REDIS_KEY_NOTES_COMMENT_HOT = "notes:comment:hot";
 }

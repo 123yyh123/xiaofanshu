@@ -273,11 +273,25 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             notes = this.baseMapper.selectPageByUserId(offset, pageSize, userId, authority);
             total = this.baseMapper.selectCount(new QueryWrapper<NotesDO>().lambda().eq(NotesDO::getBelongUserId, userId).eq(NotesDO::getAuthority, authority));
         } else if (type == 1) {
-            notes = this.baseMapper.selectPageByUserIdAndLike(offset, pageSize, userId);
-            total = userLikeNotesMapper.selectCount(new QueryWrapper<UserLikeNotesDO>().lambda().eq(UserLikeNotesDO::getUserId, userId));
+            List<Long> collect = redisCache.rangeZSet(
+                            RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES, userId.toString()), offset, offset + pageSize)
+                    .stream().map(s -> Long.valueOf(s.toString())).collect(Collectors.toList());
+            if (collect.isEmpty()) {
+                notes = new ArrayList<>();
+            } else {
+                notes = this.baseMapper.selectBatchIds(collect);
+            }
+            total= Math.toIntExact(redisCache.zSetSize(RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES, userId.toString())));
         } else if (type == 2) {
-            notes = this.baseMapper.selectPageByUserIdAndCollect(offset, pageSize, userId);
-            total = userCollectNotesMapper.selectCount(new QueryWrapper<UserCollectNotesDO>().lambda().eq(UserCollectNotesDO::getUserId, userId));
+            List<Long> collect = redisCache.rangeZSet(
+                            RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, userId.toString()), offset, offset + pageSize)
+                    .stream().map(s -> Long.valueOf(s.toString())).collect(Collectors.toList());
+            if (collect.isEmpty()) {
+                notes = new ArrayList<>();
+            } else {
+                notes = this.baseMapper.selectBatchIds(collect);
+            }
+            total= Math.toIntExact(redisCache.zSetSize(RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, userId.toString())));
         } else {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
 

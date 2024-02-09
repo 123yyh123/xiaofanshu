@@ -71,6 +71,10 @@ public class CommentDO implements Serializable {
     private Boolean isTop;
 
     /**
+     * 是否为热门评论，前10条赞数最多的为热门评论，超过10条则按时间排序
+     */
+    private Boolean isHot;
+    /**
      * 评论时间
      */
     private Long createTime;

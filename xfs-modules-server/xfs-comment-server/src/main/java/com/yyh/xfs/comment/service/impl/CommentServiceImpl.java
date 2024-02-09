@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 /**
@@ -35,21 +36,25 @@ public class CommentServiceImpl implements CommentService {
     private final MongoTemplate mongoTemplate;
     private final UserFeign userFeign;
     private final RedisCache redisCache;
+    private final Executor asyncThreadExecutor;
 
     public CommentServiceImpl(MongoTemplate mongoTemplate,
                               HttpServletRequest request,
                               UserFeign userFeign,
-                              RedisCache redisCache) {
+                              RedisCache redisCache,
+                              Executor asyncThreadExecutor) {
         this.mongoTemplate = mongoTemplate;
         this.request = request;
         this.userFeign = userFeign;
         this.redisCache = redisCache;
+        this.asyncThreadExecutor = asyncThreadExecutor;
     }
 
     @Override
     public Result<CommentVO> addComment(CommentDO commentDO) {
         commentDO.setCommentLikeNum(0);
         commentDO.setIsTop(false);
+        commentDO.setIsHot(false);
         commentDO.setCreateTime(System.currentTimeMillis());
         String ipAddr = IPUtils.getRealIpAddr(request);
         String addr = IPUtils.getAddrByIp(ipAddr);
@@ -109,11 +114,60 @@ public class CommentServiceImpl implements CommentService {
             if (topComment != null) {
                 commentDOList.add(topComment);
             }
+            Query query1 = new Query();
+            query1.addCriteria(new Criteria("notesId").is(notesId));
+            query1.addCriteria(new Criteria("parentId").is("0"));
+            query1.addCriteria(new Criteria("isTop").is(false));
+            query1.addCriteria(new Criteria("isHot").is(true));
+            query1.with(Sort.by(Sort.Order.desc("commentLikeNum"), Sort.Order.desc("createTime")));
+            List<CommentDO> hotComment = mongoTemplate.find(query1, CommentDO.class);
+            if (!hotComment.isEmpty()) {
+                commentDOList.addAll(hotComment);
+            }
+            // 如果redis中有更新热门评论标识，不更新，没有则更新
+            boolean b = redisCache.sHasKey(RedisConstant.REDIS_KEY_NOTES_COMMENT_HOT, notesId.toString());
+            if (!b) {
+                // 6小时更新一次
+                Long l = redisCache.sSetAndTime(RedisConstant.REDIS_KEY_NOTES_COMMENT_HOT, 60 * 60 * 6, notesId.toString());
+                // 若l为1，说明redis中没有该key，需要更新，防止并发，只有一个线程更新
+                if (l == 1) {
+                    // 线程池异步更新热门评论
+                    asyncThreadExecutor.execute(() -> {
+                        // 先将所有热门评论标识置为false
+                        Query query2 = new Query();
+                        query2.addCriteria(new Criteria("notesId").is(notesId));
+                        query2.addCriteria(new Criteria("parentId").is("0"));
+                        query2.addCriteria(new Criteria("isHot").is(true));
+                        List<CommentDO> hot = mongoTemplate.find(query2, CommentDO.class);
+                        if (!hot.isEmpty()) {
+                            hot.forEach(commentDO -> {
+                                commentDO.setIsHot(false);
+                                mongoTemplate.save(commentDO);
+                            });
+                        }
+                        // 再将commentLikeNum最高的8条评论置为热门评论
+                        Query query3 = new Query();
+                        query3.addCriteria(new Criteria("notesId").is(notesId));
+                        query3.addCriteria(new Criteria("parentId").is("0"));
+                        query3.addCriteria(new Criteria("isTop").is(false));
+                        query3.with(Sort.by(Sort.Order.desc("commentLikeNum"), Sort.Order.desc("createTime")));
+                        query3.limit(8);
+                        List<CommentDO> hot1 = mongoTemplate.find(query3, CommentDO.class);
+                        if (!hot1.isEmpty()) {
+                            hot1.forEach(commentDO -> {
+                                commentDO.setIsHot(true);
+                                mongoTemplate.save(commentDO);
+                            });
+                        }
+                    });
+                }
+            }
         }
         Query query = new Query();
         query.addCriteria(new Criteria("notesId").is(notesId));
         query.addCriteria(new Criteria("parentId").is("0"));
         query.addCriteria(new Criteria("isTop").is(false));
+        query.addCriteria(new Criteria("isHot").is(false));
         query.skip((long) (page - 1) * pageSize);
         query.limit(pageSize);
         // 按commentLikeNum降序排序，若commentLikeNum相同则按createTime降序排序
@@ -140,7 +194,7 @@ public class CommentServiceImpl implements CommentService {
             String countKey = RedisKey.build(RedisConstant.REDIS_KEY_COMMENT_COUNT, commentDO.getId());
             commentVO.setIsLike(redisCache.sHasKey(key, commentDO.getCommentUserId()));
             if (redisCache.get(countKey) == null) {
-                redisCache.set(countKey,commentDO.getCommentLikeNum().longValue());
+                redisCache.set(countKey, commentDO.getCommentLikeNum().longValue());
             } else {
                 commentVO.setCommentLikeNum(Integer.parseInt(redisCache.get(countKey).toString()));
             }
@@ -151,13 +205,26 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Result<List<CommentVO>> getCommentSecondList(Long notesId, String parentId, Integer page, Integer pageSize) {
+        List<CommentDO> commentDOList = new ArrayList<>();
+        if (page == 1) {
+            Query query = new Query();
+            query.addCriteria(new Criteria("notesId").is(notesId));
+            query.addCriteria(new Criteria("parentId").is(parentId));
+            query.addCriteria(new Criteria("isHot").is(true));
+            query.with(Sort.by(Sort.Order.desc("commentLikeNum"), Sort.Order.desc("createTime")));
+            List<CommentDO> hotComment = mongoTemplate.find(query, CommentDO.class);
+            if (!hotComment.isEmpty()) {
+                commentDOList.addAll(hotComment);
+            }
+        }
         Query query = new Query();
         query.addCriteria(new Criteria("parentId").is(parentId));
         query.addCriteria(new Criteria("notesId").is(notesId));
+        query.addCriteria(new Criteria("isHot").is(false));
         query.skip((long) (page - 1) * pageSize);
         query.limit(pageSize);
         query.with(Sort.by(Sort.Order.desc("commentLikeNum"), Sort.Order.desc("createTime")));
-        List<CommentDO> commentDOList = mongoTemplate.find(query, CommentDO.class);
+        commentDOList.addAll(mongoTemplate.find(query, CommentDO.class));
         List<CommentVO> commentVOList = commentDOList.stream().map(commentDO -> {
             CommentVO commentVO = new CommentVO();
             BeanUtils.copyProperties(commentDO, commentVO);
@@ -174,7 +241,7 @@ public class CommentServiceImpl implements CommentService {
             String countKey = RedisKey.build(RedisConstant.REDIS_KEY_COMMENT_COUNT, commentDO.getId());
             commentVO.setIsLike(redisCache.sHasKey(key, commentDO.getCommentUserId()));
             if (redisCache.get(countKey) == null) {
-                redisCache.set(countKey,commentDO.getCommentLikeNum().longValue());
+                redisCache.set(countKey, commentDO.getCommentLikeNum().longValue());
             } else {
                 commentVO.setCommentLikeNum(Integer.parseInt(redisCache.get(countKey).toString()));
             }
