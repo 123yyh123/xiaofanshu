@@ -28,4 +28,6 @@ public interface NotesService extends IService<NotesDO> {
     Result<?> praiseNotes(Long notesId, Long userId, Long targetUserId);
 
     Result<?> collectNotes(Long notesId, Long userId, Long targetUserId);
+
+    Result<?> viewNotes(Long notesId);
 }

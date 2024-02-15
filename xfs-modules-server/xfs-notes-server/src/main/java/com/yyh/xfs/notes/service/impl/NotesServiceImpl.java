@@ -272,6 +272,16 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         if (type == 0) {
             notes = this.baseMapper.selectPageByUserId(offset, pageSize, userId, authority);
             total = this.baseMapper.selectCount(new QueryWrapper<NotesDO>().lambda().eq(NotesDO::getBelongUserId, userId).eq(NotesDO::getAuthority, authority));
+            // 获取浏览量
+            notes.forEach(notesDO -> {
+                Object notesViewNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesDO.getId().toString()), "notesViewNum");
+                if (Objects.isNull(notesViewNum)) {
+                    notesDO.setNotesViewNum(notesDO.getNotesViewNum());
+                    redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesDO.getId().toString()), "notesViewNum", notesDO.getNotesViewNum());
+                } else {
+                    notesDO.setNotesViewNum((Integer) notesViewNum);
+                }
+            });
         } else if (type == 1) {
             List<Long> collect = redisCache.rangeZSet(
                             RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES, userId.toString()), offset, offset + pageSize)
@@ -301,6 +311,9 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         List<NotesVO> collect = notes.stream().map(notesDO -> {
             NotesVO notesVO = new NotesVO();
             BeanUtils.copyProperties(notesDO, notesVO);
+            if(type!=0){
+                notesVO.setNotesViewNum(null);
+            }
             Result<?> result = userFeign.getUserInfo(notesDO.getBelongUserId());
             if (result.getCode() == 20010) {
                 Map<String, Object> userInfo = (Map<String, Object>) result.getData();
@@ -495,6 +508,12 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesCollectionNum", 1);
         }
         // TODO 利用rocketMQ异步给发送targetUserId通知
+        return ResultUtil.successPost(null);
+    }
+
+    @Override
+    public Result<?> viewNotes(Long notesId) {
+        redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesViewNum", 1);
         return ResultUtil.successPost(null);
     }
 

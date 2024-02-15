@@ -25,6 +25,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
@@ -93,42 +94,42 @@ public class NotesSearchServiceImpl implements NotesSearchService {
         geoDistanceSortBuilder.unit(DistanceUnit.KILOMETERS);
         geoDistanceSortBuilder.order(SortOrder.ASC);
         nativeSearchQueryBuilder.withSorts(geoDistanceSortBuilder);
-        List<NotesVO> list = elasticsearchRestTemplate.searchForStream(nativeSearchQueryBuilder.build(), NotesEsDO.class)
-                .stream().map(hit -> {
-                    NotesEsDO content = hit.getContent();
-                    NotesVO notesVO = new NotesVO();
-                    BeanUtils.copyProperties(content, notesVO);
-                    Result<?> result = userFeign.getUserInfo(content.getBelongUserId());
-                    if (result.getCode() == 20010) {
-                        Map<String, Object> userInfo = (Map<String, Object>) result.getData();
-                        notesVO.setNickname((String) userInfo.get("nickname"));
-                        notesVO.setAvatarUrl((String) userInfo.get("avatarUrl"));
-                    }
-                    Object notesLikeNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, content.getId().toString()), "notesLikeNum");
-                    if (Objects.isNull(notesLikeNum)) {
-                        notesVO.setNotesLikeNum(content.getNotesLikeNum());
-                        redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, content.getId().toString()), "notesLikeNum", content.getNotesLikeNum());
-                    } else {
-                        notesVO.setNotesLikeNum((Integer) notesLikeNum);
-                    }
-                    // 判断当前用户是否点赞
-                    String token = request.getHeader("token");
-                    try {
-                        if (StringUtils.hasText(token)) {
-                            Map<String, Object> map = JWTUtil.parseToken(token);
-                            Long userId = (Long) map.get("userId");
-                            String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, userId.toString());
-                            Boolean isLike = Objects.nonNull(redisCache.zSetScore(key, content.getId()));
-                            notesVO.setIsLike(isLike);
-                        } else {
-                            notesVO.setIsLike(false);
-                        }
-                    } catch (Exception e) {
-                        log.error("获取当前用户id失败", e);
-                        notesVO.setIsLike(false);
-                    }
-                    return notesVO;
-                }).collect(Collectors.toList());
+        SearchHits<NotesEsDO> searchHits = elasticsearchRestTemplate.search(nativeSearchQueryBuilder.build(), NotesEsDO.class);
+        List<NotesVO> list = searchHits.get().map(hit -> {
+            NotesEsDO content = hit.getContent();
+            NotesVO notesVO = new NotesVO();
+            BeanUtils.copyProperties(content, notesVO);
+            Result<?> result = userFeign.getUserInfo(content.getBelongUserId());
+            if (result.getCode() == 20010) {
+                Map<String, Object> userInfo = (Map<String, Object>) result.getData();
+                notesVO.setNickname((String) userInfo.get("nickname"));
+                notesVO.setAvatarUrl((String) userInfo.get("avatarUrl"));
+            }
+            Object notesLikeNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, content.getId().toString()), "notesLikeNum");
+            if (Objects.isNull(notesLikeNum)) {
+                notesVO.setNotesLikeNum(content.getNotesLikeNum());
+                redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, content.getId().toString()), "notesLikeNum", content.getNotesLikeNum());
+            } else {
+                notesVO.setNotesLikeNum((Integer) notesLikeNum);
+            }
+            // 判断当前用户是否点赞
+            String token = request.getHeader("token");
+            try {
+                if (StringUtils.hasText(token)) {
+                    Map<String, Object> map = JWTUtil.parseToken(token);
+                    Long userId = (Long) map.get("userId");
+                    String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, userId.toString());
+                    Boolean isLike = Objects.nonNull(redisCache.zSetScore(key, content.getId()));
+                    notesVO.setIsLike(isLike);
+                } else {
+                    notesVO.setIsLike(false);
+                }
+            } catch (Exception e) {
+                log.error("获取当前用户id失败", e);
+                notesVO.setIsLike(false);
+            }
+            return notesVO;
+        }).collect(Collectors.toList());
         NotesPageVO notesPageVO = new NotesPageVO();
         notesPageVO.setList(list);
         notesPageVO.setPage(pageParam.getPage());

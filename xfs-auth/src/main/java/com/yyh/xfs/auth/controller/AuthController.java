@@ -54,6 +54,18 @@ public class AuthController {
         };
         return userService.login(phoneNumber, password);
     }
+
+    /**
+     * 退出登录
+     * @return 退出登录结果
+     */
+    @PostMapping("/logout")
+    public Result<?> logout(Long userId) {
+        if (userId == null) {
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+        }
+        return userService.logout(userId);
+    }
     /**
      * 手机号注册
      * @param registerInfoVO 注册信息

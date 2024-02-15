@@ -83,7 +83,7 @@ public class SampleXxlJob {
     }
 
     /**
-     * 更新笔记的点赞数和收藏数
+     * 更新笔记的点赞数，收藏数和浏览数
      */
     @XxlJob("updateNotesCount")
     public void updateNotesCount() {
@@ -99,6 +99,7 @@ public class SampleXxlJob {
                     Long notesId = Long.valueOf(key.substring(RedisConstant.REDIS_KEY_NOTES_COUNT.length()));
                     Object notesLikeNum = redisCache.hget(key, "notesLikeNum");
                     Object notesCollectionNum = redisCache.hget(key, "notesCollectionNum");
+                    Object notesViewNum = redisCache.hget(key, "notesViewNum");
                     if (Objects.nonNull(notesLikeNum)) {
                         Integer likeNum = (Integer) notesLikeNum;
                         boolean r = notesMapper.updateNotesLikeNum(notesId, likeNum);
@@ -117,6 +118,16 @@ public class SampleXxlJob {
                         } else {
                             // TODO 进行相应的处理，如rocketmq发送消息
                             log.error("update notesCollectionNum error,notesId:{},collectNum:{}", notesId, collectNum);
+                        }
+                    }
+                    if (Objects.nonNull(notesViewNum)) {
+                        Integer viewNum = (Integer) notesViewNum;
+                        boolean r = notesMapper.updateNotesViewNum(notesId, viewNum);
+                        if (r) {
+                            redisCache.hdel(key, "notesViewNum");
+                        } else {
+                            // TODO 进行相应的处理，如rocketmq发送消息
+                            log.error("update notesViewNum error,notesId:{},viewNum:{}", notesId, viewNum);
                         }
                     }
                 });

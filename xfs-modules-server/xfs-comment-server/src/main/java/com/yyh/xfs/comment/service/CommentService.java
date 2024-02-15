@@ -20,4 +20,8 @@ public interface CommentService {
     Result<List<CommentVO>> getCommentSecondList(Long notesId,String parentId, Integer page, Integer pageSize);
 
     Result<Boolean> praiseComment(String commentId, Long userId, Long targetUserId);
+
+    Result<Boolean> setTopComment(String commentId);
+
+    Result<Boolean> deleteComment(String commentId);
 }

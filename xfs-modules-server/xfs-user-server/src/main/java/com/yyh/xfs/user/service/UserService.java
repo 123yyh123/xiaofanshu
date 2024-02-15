@@ -97,4 +97,6 @@ public interface UserService extends IService<UserDO> {
     Result<?> updateArea(UserVO userVO);
 
     Result<ViewUserVO> viewUserInfo(Long userId);
+
+    Result<?> logout(Long userId);
 }

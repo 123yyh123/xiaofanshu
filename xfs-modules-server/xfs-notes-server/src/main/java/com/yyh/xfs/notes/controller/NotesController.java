@@ -3,6 +3,7 @@ package com.yyh.xfs.notes.controller;
 import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.web.exception.BusinessException;
+import com.yyh.xfs.notes.domain.NotesDO;
 import com.yyh.xfs.notes.service.NotesService;
 import com.yyh.xfs.notes.vo.NotesPageVO;
 import com.yyh.xfs.notes.vo.NotesPublishVO;
@@ -100,5 +101,30 @@ public class NotesController {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
         }
         return notesService.collectNotes(notesId,userId,targetUserId);
+    }
+
+    /**
+     * 查看笔记
+     *
+     * @param notesId 笔记id
+     * @return 笔记内容
+     */
+    @PostMapping("/viewNotes")
+    public Result<?> viewNotes(Long notesId) {
+        if (notesId == null) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        return notesService.viewNotes(notesId);
+    }
+    /**
+     * 获取笔记所属用户
+     *
+     * @param notesId 笔记id
+     * @return 笔记所属用户id
+     */
+    @GetMapping("/getNotesBelongUser")
+    public Long getNotesBelongUser(@RequestParam("notesId") Long notesId) {
+        NotesDO notesDO = notesService.getById(notesId);
+        return notesDO.getBelongUserId();
     }
 }

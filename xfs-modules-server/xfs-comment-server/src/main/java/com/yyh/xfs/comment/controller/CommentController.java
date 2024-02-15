@@ -117,4 +117,31 @@ public class CommentController {
         return commentService.praiseComment(commentId, userId,targetUserId);
     }
 
+    /**
+     * 置顶或取消置顶评论
+     *
+     * @param commentId 评论id
+     * @return 是否置顶成功
+     */
+    @PostMapping("/setTopComment")
+    public Result<Boolean> setTopComment(String commentId) {
+        if (!StringUtils.hasText(commentId)) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        return commentService.setTopComment(commentId);
+    }
+
+    /**
+     * 删除评论
+     *
+     * @param commentId 评论id
+     * @return 是否删除成功
+     */
+    @DeleteMapping("/deleteComment")
+    public Result<Boolean> deleteComment(String commentId) {
+        if (!StringUtils.hasText(commentId)) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        return commentService.deleteComment(commentId);
+    }
 }

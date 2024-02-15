@@ -1,6 +1,8 @@
 package com.yyh.xfs.comment.service.impl;
 
+import com.mongodb.client.result.DeleteResult;
 import com.yyh.xfs.comment.domain.CommentDO;
+import com.yyh.xfs.comment.feign.NotesFeign;
 import com.yyh.xfs.comment.feign.UserFeign;
 import com.yyh.xfs.comment.service.CommentService;
 import com.yyh.xfs.comment.vo.CommentVO;
@@ -10,12 +12,15 @@ import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.common.redis.utils.RedisKey;
 import com.yyh.xfs.common.utils.ResultUtil;
 import com.yyh.xfs.common.web.utils.IPUtils;
+import com.yyh.xfs.common.web.utils.JWTUtil;
+import org.bson.types.ObjectId;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.repository.DeleteQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -23,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
@@ -37,17 +43,19 @@ public class CommentServiceImpl implements CommentService {
     private final UserFeign userFeign;
     private final RedisCache redisCache;
     private final Executor asyncThreadExecutor;
+    private final NotesFeign notesFeign;
 
     public CommentServiceImpl(MongoTemplate mongoTemplate,
                               HttpServletRequest request,
                               UserFeign userFeign,
                               RedisCache redisCache,
-                              Executor asyncThreadExecutor) {
+                              Executor asyncThreadExecutor, NotesFeign notesFeign) {
         this.mongoTemplate = mongoTemplate;
         this.request = request;
         this.userFeign = userFeign;
         this.redisCache = redisCache;
         this.asyncThreadExecutor = asyncThreadExecutor;
+        this.notesFeign = notesFeign;
     }
 
     @Override
@@ -262,8 +270,74 @@ public class CommentServiceImpl implements CommentService {
             redisCache.sSetAndTime(key, 60 * 60 * 24 * 7, userId);
             redisCache.incr(count, 1);
         }
-        // TODO 定时任务，每天凌晨0点将redis中的点赞数更新到数据库
         // TODO rocketMQ异步通知targetUserId用户
+        return ResultUtil.successPost(true);
+    }
+
+    @Override
+    public Result<Boolean> setTopComment(String commentId) {
+        ObjectId objectId = new ObjectId(commentId);
+        Query query = new Query(Criteria.where("_id").is(objectId));
+        CommentDO commentDO = mongoTemplate.findOne(query, CommentDO.class);
+        Map<String, Object> map = JWTUtil.parseToken(request.getHeader("token"));
+        Long userId = Long.parseLong(map.get("userId").toString());
+        if (commentDO == null) {
+            return ResultUtil.errorPost("评论不存在");
+        }
+        if(!Objects.equals(commentDO.getParentId(), "0")){
+            return ResultUtil.errorPost("不是主评论");
+        }
+        Long notesId = commentDO.getNotesId();
+        Long notesBelongUser = notesFeign.getNotesBelongUser(notesId);
+        if (!userId.equals(notesBelongUser)) {
+            return ResultUtil.errorPost("无权限");
+        }
+        commentDO.setIsTop(!commentDO.getIsTop());
+        mongoTemplate.save(commentDO);
+        // 其他置顶评论取消置顶
+        if (commentDO.getIsTop()) {
+            Query query1 = new Query();
+            query1.addCriteria(new Criteria("notesId").is(notesId));
+            query1.addCriteria(new Criteria("parentId").is("0"));
+            query1.addCriteria(new Criteria("isTop").is(true));
+            query1.addCriteria(new Criteria("_id").ne(objectId));
+            List<CommentDO> commentDOList = mongoTemplate.find(query1, CommentDO.class);
+            if (!commentDOList.isEmpty()) {
+                commentDOList.forEach(commentDO1 -> {
+                    commentDO1.setIsTop(false);
+                    mongoTemplate.save(commentDO1);
+                });
+            }
+        }
+        return ResultUtil.successPost(true);
+    }
+
+    @Override
+    public Result<Boolean> deleteComment(String commentId) {
+        ObjectId objectId = new ObjectId(commentId);
+        Query query = new Query(Criteria.where("_id").is(objectId));
+        CommentDO commentDO = mongoTemplate.findOne(query, CommentDO.class);
+        Map<String, Object> map = JWTUtil.parseToken(request.getHeader("token"));
+        Long userId = Long.parseLong(map.get("userId").toString());
+        if (commentDO == null) {
+            return ResultUtil.errorPost("评论不存在");
+        }
+        Long notesBelongUser = notesFeign.getNotesBelongUser(commentDO.getNotesId());
+        if((!Objects.equals(commentDO.getCommentUserId(), userId)) && (!Objects.equals(notesBelongUser, userId))){
+            return ResultUtil.errorPost("无权限");
+        }
+        DeleteResult remove = mongoTemplate.remove(query, CommentDO.class);
+        if (remove.getDeletedCount() == 0) {
+            return ResultUtil.errorPost("删除失败");
+        }
+        if(Objects.equals(commentDO.getParentId(), "0")){
+            // 删除所有二级评论
+            Query query1 = new Query();
+            query1.addCriteria(new Criteria("parentId").is(commentId));
+            mongoTemplate.remove(query1, CommentDO.class);
+        }
+        redisCache.del(RedisKey.build(RedisConstant.REDIS_KEY_COMMENT_LIKE, commentId));
+        redisCache.del(RedisKey.build(RedisConstant.REDIS_KEY_COMMENT_COUNT, commentId));
         return ResultUtil.successPost(true);
     }
 }

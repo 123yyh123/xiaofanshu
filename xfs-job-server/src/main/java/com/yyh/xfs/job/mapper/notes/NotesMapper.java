@@ -46,4 +46,11 @@ public interface NotesMapper {
      * @param userCollectNotesDO 用户收藏笔记
      */
     void deleteUserCollectNotes(UserCollectNotesDO userCollectNotesDO);
+
+    /**
+     * 更新笔记浏览数
+     * @param notesId 笔记id
+     * @param viewNum 浏览数
+     */
+    boolean updateNotesViewNum(Long notesId, Integer viewNum);
 }

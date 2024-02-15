@@ -466,6 +466,37 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         return ResultUtil.successGet("获取用户信息成功", viewUserVO);
     }
 
+    @Override
+    public Result<?> logout(Long userId) {
+        // 先检查userId与token是否匹配
+        Map<String, Object> token = JWTUtil.parseToken(request.getHeader("token"));
+        Long id = Long.valueOf(String.valueOf(token.get("userId")));
+        if (!id.equals(userId)) {
+            throw new BusinessException(ExceptionMsgEnum.TOKEN_INVALID);
+        }
+        // 先判断是否需要更新用户信息
+        if (redisCache.sHasKey(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userId)) {
+            Map<String, Object> map = redisCache.hmget(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userId)));
+            UserVO userVO = new UserVO(map);
+            UserDO userDO = new UserDO();
+            userDO.setBirthday(Date.valueOf(userVO.getBirthday()));
+            userDO.setArea(userVO.getArea());
+            userDO.setAvatarUrl(userVO.getAvatarUrl());
+            userDO.setPhoneNumber(userVO.getPhoneNumber());
+            userDO.setSex(userVO.getSex());
+            userDO.setSelfIntroduction(userVO.getSelfIntroduction());
+            userDO.setAge(userVO.getAge());
+            userDO.setNickname(userVO.getNickname());
+            userDO.setHomePageBackground(userVO.getHomePageBackground());
+            this.updateById(userDO);
+            redisCache.del(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userId)));
+            redisCache.setRemove(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userId);
+            redisCache.del(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_EXPIRE, String.valueOf(userId)));
+            redisCache.del(RedisKey.build(RedisConstant.REDIS_KEY_USER_ONLINE, String.valueOf(userId)));
+        }
+        return ResultUtil.successPost("退出登录成功", null);
+    }
+
     /**
      * 检验验证码是否正确
      *
