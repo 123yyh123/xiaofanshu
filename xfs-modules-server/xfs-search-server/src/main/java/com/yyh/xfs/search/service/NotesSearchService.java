@@ -13,4 +13,8 @@ public interface NotesSearchService {
     void addNotes(NotesDO notesDO);
 
     Result<NotesPageVO> getNotesNearBy(PageParam pageParam);
+
+    void updateNotes(NotesDO notesDO);
+
+    void deleteNotes(Long notesId);
 }

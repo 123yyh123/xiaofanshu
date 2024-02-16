@@ -30,4 +30,10 @@ public interface NotesService extends IService<NotesDO> {
     Result<?> collectNotes(Long notesId, Long userId, Long targetUserId);
 
     Result<?> viewNotes(Long notesId);
+
+    Result<?> updateNotes(NotesPublishVO notesPublishVO);
+
+    Result<?> deleteNotes(Long notesId);
+
+    Result<?> changeNotesAuthority(Long notesId, Integer authority);
 }

@@ -31,4 +31,8 @@ public class JWTUtil {
     public static Map<String,Object> parseToken(String token){
         return Jwts.parser().setSigningKey(jwtProperties.getSecret()).parseClaimsJws(token).getBody();
     }
+
+    public static Long getCurrentUserId(String token){
+        return (Long) parseToken(token).get("userId");
+    }
 }

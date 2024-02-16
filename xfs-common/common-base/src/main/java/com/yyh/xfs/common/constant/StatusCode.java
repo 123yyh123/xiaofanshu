@@ -52,6 +52,8 @@ public class StatusCode {
     public static final Integer ELASTICSEARCH_INIT_ERROR = 10081;
     //获取地理信息失败
     public static final Integer GET_GEOGRAPHIC_INFORMATION_ERROR = 10090;
+    //无权限
+    public static final Integer NO_PERMISSION = 10100;
     //参数错误
     public static final Integer PARAMETER_ERROR = 40010;
     //服务器异常

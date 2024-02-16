@@ -28,6 +28,7 @@ import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
@@ -137,5 +138,27 @@ public class NotesSearchServiceImpl implements NotesSearchService {
         long count = elasticsearchRestTemplate.count(nativeSearchQueryBuilder.build(), NotesEsDO.class);
         notesPageVO.setTotal((int) count);
         return ResultUtil.successGet(notesPageVO);
+    }
+
+    @Override
+    public void updateNotes(NotesDO notesDO) {
+        NotesEsDO notesEsDO = new NotesEsDO();
+        BeanUtils.copyProperties(notesDO, notesEsDO);
+        // 重新设置时间，因为es中的时间会自动减去8小时，时区问题
+        Date updateTime = notesDO.getUpdateTime();
+        updateTime.setTime(updateTime.getTime() + 8 * 60 * 60 * 1000);
+        notesEsDO.setUpdateTime(updateTime);
+        GeoPoint geoPoint = new GeoPoint(notesDO.getLatitude(), notesDO.getLongitude());
+        notesEsDO.setLocation(geoPoint);
+        // 先删除再添加
+        Query query = new NativeSearchQueryBuilder().withQuery(QueryBuilders.termQuery("id", notesDO.getId())).build();
+        elasticsearchRestTemplate.delete(query, NotesEsDO.class);
+        elasticsearchRestTemplate.save(notesEsDO);
+    }
+
+    @Override
+    public void deleteNotes(Long notesId) {
+        Query query = new NativeSearchQueryBuilder().withQuery(QueryBuilders.termQuery("id", notesId)).build();
+        elasticsearchRestTemplate.delete(query, NotesEsDO.class);
     }
 }

@@ -33,6 +33,7 @@ public enum ExceptionMsgEnum {
     FILE_NOT_NULL(StatusCode.FILE_NOT_NULL,"文件不能为空"),
     ELASTICSEARCH_INIT_ALREADY(StatusCode.ELASTICSEARCH_INIT_ALREADY,"ElasticSearch已初始化"),
     SMS_CODE_SEND_FREQUENTLY(StatusCode.SMS_CODE_SEND_FREQUENTLY,"短信发送频繁,请稍后再试"),
+    NO_PERMISSION(StatusCode.NO_PERMISSION,"无权限"),
     /**
      * 系统异常
      */
@@ -41,8 +42,7 @@ public enum ExceptionMsgEnum {
     ALIYUN_OSS_INIT_ERROR(StatusCode.ALIYUN_OSS_INIT_ERROR,"OSS服务初始化异常"),
     ELASTICSEARCH_INIT_ERROR(StatusCode.ELASTICSEARCH_INIT_ERROR,"ElasticSearch初始化异常"),
     REDIS_ERROR(StatusCode.REDIS_ERROR,"redis操作异常"),
-    DB_ERROR(StatusCode.DB_ERROR,"数据库操作异常"),
-    SERVER_ERROR(StatusCode.SERVER_ERROR,"服务器异常");
+    DB_ERROR(StatusCode.DB_ERROR,"数据库操作异常");
     private Integer code;
     private String msg;
 

@@ -24,4 +24,6 @@ public interface CommentService {
     Result<Boolean> setTopComment(String commentId);
 
     Result<Boolean> deleteComment(String commentId);
+
+    void deleteCommentByNotesId(Long notesId);
 }

@@ -10,6 +10,8 @@ import com.yyh.xfs.notes.vo.NotesPublishVO;
 import com.yyh.xfs.notes.vo.NotesVO;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 /**
  * @author yyh
  * @date 2024-01-19
@@ -127,4 +129,45 @@ public class NotesController {
         NotesDO notesDO = notesService.getById(notesId);
         return notesDO.getBelongUserId();
     }
+
+    /**
+     * 更新笔记
+     * @param notesPublishVO 笔记信息
+     * @return 更新结果
+     */
+    @PutMapping("/updateNotes")
+    public Result<?> updateNotes(@RequestBody NotesPublishVO notesPublishVO) {
+        if(Objects.isNull(notesPublishVO) || Objects.isNull(notesPublishVO.getNotesId())) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        return notesService.updateNotes(notesPublishVO);
+    }
+
+    /**
+     * 删除笔记
+     * @param notesId 笔记id
+     * @return 删除结果
+     */
+    @DeleteMapping("/deleteNotes")
+    public Result<?> deleteNotes(@RequestParam("notesId") Long notesId) {
+        if(Objects.isNull(notesId)) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        return notesService.deleteNotes(notesId);
+    }
+
+    /**
+     * 更改笔记公开状态
+     * @param notesId 笔记id
+     * @param authority 公开状态
+     * @return 更改结果
+     */
+    @PostMapping("/changeNotesAuthority")
+    public Result<?> changeNotesAuthority(@RequestParam("notesId") Long notesId,@RequestParam("authority") Integer authority) {
+        if(Objects.isNull(notesId) || Objects.isNull(authority)) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        return notesService.changeNotesAuthority(notesId,authority);
+    }
+
 }

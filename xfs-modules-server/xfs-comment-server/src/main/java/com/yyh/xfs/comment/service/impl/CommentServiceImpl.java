@@ -340,4 +340,15 @@ public class CommentServiceImpl implements CommentService {
         redisCache.del(RedisKey.build(RedisConstant.REDIS_KEY_COMMENT_COUNT, commentId));
         return ResultUtil.successPost(true);
     }
+
+    /**
+     * 删除笔记下的所有评论
+     * @param notesId 笔记id
+     */
+    @Override
+    public void deleteCommentByNotesId(Long notesId) {
+        Query query = new Query();
+        query.addCriteria(new Criteria("notesId").is(notesId));
+        mongoTemplate.remove(query, CommentDO.class);
+    }
 }

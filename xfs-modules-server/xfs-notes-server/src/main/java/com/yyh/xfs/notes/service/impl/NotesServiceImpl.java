@@ -289,7 +289,8 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             if (collect.isEmpty()) {
                 notes = new ArrayList<>();
             } else {
-                notes = this.baseMapper.selectBatchIds(collect);
+                // 去除空值
+                notes = this.baseMapper.selectBatchIds(collect).stream().filter(Objects::nonNull).collect(Collectors.toList());
             }
             total= Math.toIntExact(redisCache.zSetSize(RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES, userId.toString())));
         } else if (type == 2) {
@@ -299,7 +300,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             if (collect.isEmpty()) {
                 notes = new ArrayList<>();
             } else {
-                notes = this.baseMapper.selectBatchIds(collect);
+                notes = this.baseMapper.selectBatchIds(collect).stream().filter(Objects::nonNull).collect(Collectors.toList());
             }
             total= Math.toIntExact(redisCache.zSetSize(RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, userId.toString())));
         } else {
@@ -514,6 +515,199 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
     @Override
     public Result<?> viewNotes(Long notesId) {
         redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesViewNum", 1);
+        return ResultUtil.successPost(null);
+    }
+
+    @Override
+    public Result<?> updateNotes(NotesPublishVO notesPublishVO) {
+        NotesDO notesDO = this.getById(notesPublishVO.getNotesId());
+        if (Objects.isNull(notesDO)) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        if(!notesDO.getBelongUserId().equals(notesPublishVO.getBelongUserId())){
+            throw new BusinessException(ExceptionMsgEnum.NO_PERMISSION);
+        }
+        // 获取当前用户id
+        String token = request.getHeader("token");
+        Long currentUserId = null;
+        try {
+            if (StringUtils.hasText(token)) {
+                currentUserId=JWTUtil.getCurrentUserId(token);
+            }
+        } catch (Exception e) {
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+        }
+        if (!notesDO.getBelongUserId().equals(currentUserId)) {
+            throw new BusinessException(ExceptionMsgEnum.NO_PERMISSION);
+        }
+        List<String> notesResources = JSON.parseObject(notesPublishVO.getNotesResources(), List.class);
+        notesParameterCheck(notesPublishVO, notesResources);
+        // 更新不一样的字段
+        if (StringUtils.hasText(notesPublishVO.getTitle())) {
+            notesDO.setTitle(notesPublishVO.getTitle());
+        }
+        if (StringUtils.hasText(notesPublishVO.getContent())) {
+            notesDO.setContent(notesPublishVO.getContent());
+        }
+        if(notesPublishVO.getNotesType()==0){
+            notesDO.setCoverPicture(notesResources.get(0));
+        }else {
+            if (!StringUtils.hasText(notesPublishVO.getCoverPicture())) {
+                notesDO.setCoverPicture(notesResources.get(0) + "?x-oss-process=video/snapshot,t_0,f_jpg,w_0,h_0,m_fast");
+            }else {
+                notesDO.setCoverPicture(notesPublishVO.getCoverPicture());
+            }
+        }
+        notesDO.setNotesResources(notesPublishVO.getNotesResources());
+        notesDO.setNotesType(notesPublishVO.getNotesType());
+        // 设置省份
+        try {
+            String p = AddressUtil.getAddress(notesPublishVO.getLongitude(), notesPublishVO.getLatitude());
+            notesDO.setProvince(p);
+        } catch (Exception e) {
+            log.error("获取省份失败", e);
+            notesDO.setProvince("未知");
+        }
+        notesDO.setUpdateTime(new Date());
+        this.updateById(notesDO);
+        //利用rocketMQ异步将笔记更新到ES中
+        rocketMQTemplate.asyncSend("notes-update-es-topic", JSON.toJSONString(notesDO), new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("更新笔记到ES成功");
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("更新笔记到ES失败", throwable);
+            }
+        });
+        // 找到所有的"#话题#"
+        List<String> topics = findTopic(notesPublishVO);
+        log.info("topics:{}", topics);
+        // 查询话题是否存在，不存在则创建
+        topics.forEach(topic -> {
+            NotesTopicDO notesTopicDO = notesTopicMapper.selectOne(new QueryWrapper<NotesTopicDO>().lambda().eq(NotesTopicDO::getTopicName, topic));
+            if (Objects.isNull(notesTopicDO)) {
+                notesTopicDO = new NotesTopicDO();
+                notesTopicDO.setTopicName(topic);
+                notesTopicDO.setCreateUser(notesPublishVO.getBelongUserId());
+                notesTopicMapper.insert(notesTopicDO);
+                log.info("notesTopicDO:{}", notesTopicDO);
+            }
+            NotesTopicRelationDO notesTopicRelationDO = new NotesTopicRelationDO();
+            notesTopicRelationDO.setNotesId(notesDO.getId());
+            notesTopicRelationDO.setTopicId(notesTopicDO.getId());
+            notesTopicRelationMapper.insert(notesTopicRelationDO);
+        });
+        // 解除之前的关联关系
+        notesTopicRelationMapper.delete(new QueryWrapper<NotesTopicRelationDO>().lambda().eq(NotesTopicRelationDO::getNotesId, notesDO.getId()));
+        // 找到所以@人
+        List<Long> userIds = findUserId(notesPublishVO);
+        log.info("userIds:{}", userIds);
+        // TODO 利用rocketMQ异步发送通知
+        userIds.forEach(userId -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("belongUserId", notesPublishVO.getBelongUserId().toString());
+            map.put("toUserId", userId.toString());
+            map.put("coverPicture", notesPublishVO.getCoverPicture());
+            rocketMQTemplate.asyncSend("notes-remind-target-topic", JSON.toJSONString(map), new SendCallback() {
+                @Override
+                public void onSuccess(SendResult sendResult) {
+                    log.info("发送通知成功");
+                }
+
+                @Override
+                public void onException(Throwable throwable) {
+                    log.error("发送通知失败", throwable);
+                }
+            });
+        });
+        return ResultUtil.successPut(null);
+    }
+
+    @Override
+    public Result<?> deleteNotes(Long notesId) {
+        NotesDO notesDO = this.baseMapper.selectById(notesId);
+        if (Objects.isNull(notesDO)) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        // 判断当前用户是否有权限删除
+        String token = request.getHeader("token");
+        Long currentUserId = null;
+        try {
+            if (StringUtils.hasText(token)) {
+                currentUserId=JWTUtil.getCurrentUserId(token);
+            }
+        } catch (Exception e) {
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+        }
+        if (!notesDO.getBelongUserId().equals(currentUserId)) {
+            throw new BusinessException(ExceptionMsgEnum.NO_PERMISSION);
+        }
+        this.baseMapper.deleteById(notesId);
+        // 删除笔记的点赞，收藏，浏览量
+        redisCache.del(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()));
+        // 删除笔记的评论
+        rocketMQTemplate.asyncSend("notes-delete-comment-topic", notesId.toString(), new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("删除笔记的评论成功");
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("删除笔记的评论失败", throwable);
+            }
+        });
+        //利用rocketMQ异步将笔记从ES中删除
+        rocketMQTemplate.asyncSend("notes-delete-es-topic", notesId.toString(), new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("删除笔记从ES成功");
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("删除笔记从ES失败", throwable);
+            }
+        });
+        return ResultUtil.successDelete(null);
+    }
+
+    @Override
+    public Result<?> changeNotesAuthority(Long notesId, Integer authority) {
+        NotesDO notesDO = this.baseMapper.selectById(notesId);
+        if (Objects.isNull(notesDO)) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        // 判断当前用户是否有权限修改
+        String token = request.getHeader("token");
+        Long currentUserId = null;
+        try {
+            if (StringUtils.hasText(token)) {
+                currentUserId=JWTUtil.getCurrentUserId(token);
+            }
+        } catch (Exception e) {
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+        }
+        if (!notesDO.getBelongUserId().equals(currentUserId)) {
+            throw new BusinessException(ExceptionMsgEnum.NO_PERMISSION);
+        }
+        notesDO.setAuthority(authority);
+        this.updateById(notesDO);
+        //利用rocketMQ异步将笔记更新到ES中
+        rocketMQTemplate.asyncSend("notes-update-es-topic", JSON.toJSONString(notesDO), new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("更新笔记到ES成功");
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("更新笔记到ES失败", throwable);
+            }
+        });
         return ResultUtil.successPost(null);
     }
 
