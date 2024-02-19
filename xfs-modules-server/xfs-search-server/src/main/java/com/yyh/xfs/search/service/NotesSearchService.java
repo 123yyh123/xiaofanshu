@@ -5,6 +5,8 @@ import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.notes.domain.NotesDO;
 import com.yyh.xfs.notes.vo.NotesPageVO;
 
+import java.util.Map;
+
 /**
  * @author yyh
  * @date 2024-01-24
@@ -17,4 +19,8 @@ public interface NotesSearchService {
     void updateNotes(NotesDO notesDO);
 
     void deleteNotes(Long notesId);
+
+    Result<NotesPageVO> getNotesByKeyword(String keyword, Integer page, Integer pageSize, Integer noteType, Integer hot);
+
+    void updateCount(Map<String, String> map);
 }

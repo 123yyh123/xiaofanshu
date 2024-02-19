@@ -25,14 +25,20 @@ public class NotesEsDO {
     /**
      * 笔记标题
      */
-    @Field(type = FieldType.Text, analyzer = "ik_max_word",searchAnalyzer = "ik_max_word")
+    @Field(type = FieldType.Text, analyzer = "ik_smart",searchAnalyzer = "ik_smart")
     private String title;
 
     /**
      * 笔记内容
      */
-    @Field(type = FieldType.Text, analyzer = "ik_max_word",searchAnalyzer = "ik_max_word")
+    @Field(type = FieldType.Text, analyzer = "ik_smart",searchAnalyzer = "ik_smart")
     private String content;
+
+    /**
+     * 将笔记内容的html标签去掉后的纯文本内容，用于搜索
+     */
+    @Field(type = FieldType.Text, analyzer = "ik_smart",searchAnalyzer = "ik_smart")
+    private String textContent;
 
     /**
      * 所属用户id
@@ -89,7 +95,7 @@ public class NotesEsDO {
     private String address;
 
     @GeoPointField
-    private GeoPoint location;
+    private GeoPoint geoPoint;
     /**
      * 是否公开，0为公开，1为私密
      */
@@ -99,12 +105,12 @@ public class NotesEsDO {
     /**
      * 创建时间
      */
-    @Field(type = FieldType.Date,format = DateFormat.custom,pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
+    @Field(type = FieldType.Long)
+    private Long createTime;
 
     /**
      * 更新时间
      */
-    @Field(type = FieldType.Date,format = DateFormat.custom,pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date updateTime;
+    @Field(type = FieldType.Long)
+    private Long updateTime;
 }

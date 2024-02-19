@@ -11,12 +11,14 @@ import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.common.redis.utils.RedisKey;
 import com.yyh.xfs.job.mapper.notes.NotesMapper;
 import com.yyh.xfs.job.mapper.user.UserMapper;
+import com.yyh.xfs.job.service.NotesService;
 import com.yyh.xfs.notes.domain.UserCollectNotesDO;
 import com.yyh.xfs.notes.domain.UserLikeNotesDO;
 import com.yyh.xfs.user.domain.UserDO;
 import com.yyh.xfs.user.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -40,17 +42,19 @@ public class SampleXxlJob {
     private final RedisCache redisCache;
     private final NotesMapper notesMapper;
     private final MongoTemplate mongoTemplate;
+    private final NotesService notesService;
 
     public SampleXxlJob(RedisCache redisCache,
                         @Qualifier("asyncThreadExecutor") Executor jobThreadPool,
                         NotesMapper notesMapper,
                         MongoTemplate mongoTemplate,
-                        UserMapper userMapper) {
+                        UserMapper userMapper, NotesService notesService) {
         this.redisCache = redisCache;
         this.jobThreadPool = jobThreadPool;
         this.notesMapper = notesMapper;
         this.mongoTemplate = mongoTemplate;
         this.userMapper = userMapper;
+        this.notesService = notesService;
     }
 
     /**
@@ -101,34 +105,13 @@ public class SampleXxlJob {
                     Object notesCollectionNum = redisCache.hget(key, "notesCollectionNum");
                     Object notesViewNum = redisCache.hget(key, "notesViewNum");
                     if (Objects.nonNull(notesLikeNum)) {
-                        Integer likeNum = (Integer) notesLikeNum;
-                        boolean r = notesMapper.updateNotesLikeNum(notesId, likeNum);
-                        if (r) {
-                            redisCache.hdel(key, "notesLikeNum");
-                        } else {
-                            // TODO 进行相应的处理，如rocketmq发送消息
-                            log.error("update notesLikeNum error,notesId:{},likeNum:{}", notesId, likeNum);
-                        }
+                        notesService.updateNotesLikeNum(key,notesId, (Integer) notesLikeNum);
                     }
                     if (Objects.nonNull(notesCollectionNum)) {
-                        Integer collectNum = (Integer) notesCollectionNum;
-                        boolean r = notesMapper.updateNotesCollectionNum(notesId, collectNum);
-                        if (r) {
-                            redisCache.hdel(key, "notesCollectionNum");
-                        } else {
-                            // TODO 进行相应的处理，如rocketmq发送消息
-                            log.error("update notesCollectionNum error,notesId:{},collectNum:{}", notesId, collectNum);
-                        }
+                        notesService.updateNotesCollectionNum(key,notesId, (Integer) notesCollectionNum);
                     }
                     if (Objects.nonNull(notesViewNum)) {
-                        Integer viewNum = (Integer) notesViewNum;
-                        boolean r = notesMapper.updateNotesViewNum(notesId, viewNum);
-                        if (r) {
-                            redisCache.hdel(key, "notesViewNum");
-                        } else {
-                            // TODO 进行相应的处理，如rocketmq发送消息
-                            log.error("update notesViewNum error,notesId:{},viewNum:{}", notesId, viewNum);
-                        }
+                        notesService.updateNotesViewNum(key,notesId, (Integer) notesViewNum);
                     }
                 });
             });

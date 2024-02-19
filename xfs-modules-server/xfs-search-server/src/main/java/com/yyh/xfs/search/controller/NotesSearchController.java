@@ -40,4 +40,26 @@ public class NotesSearchController {
         return notesSearchService.getNotesNearBy(pageParam);
     }
 
+    @GetMapping("/getNotesByKeyword")
+    public Result<NotesPageVO> getNotesByKeyword(String keyword, Integer page, Integer pageSize,Integer notesType,Integer hot){
+        if (page == null || pageSize == null) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        // 0：图片笔记，1：视频笔记，2：全部
+        if (notesType == null||notesType < 0||notesType > 2) {
+            notesType = 2;
+        }
+        // 0：最新，1：最热，2：全部
+        if (hot == null||hot < 0||hot > 2) {
+            hot = 2;
+        }
+        if (page < 1) {
+            page = 1;
+        }
+        if (pageSize < 1) {
+            pageSize = 10;
+        }
+        return notesSearchService.getNotesByKeyword(keyword, page, pageSize,notesType,hot);
+    }
+
 }

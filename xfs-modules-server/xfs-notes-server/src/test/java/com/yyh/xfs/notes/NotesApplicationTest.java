@@ -1,8 +1,14 @@
 package com.yyh.xfs.notes;
 
+import com.alibaba.fastjson.JSON;
 import com.yyh.xfs.notes.domain.NotesCategoryDO;
+import com.yyh.xfs.notes.domain.NotesDO;
 import com.yyh.xfs.notes.mapper.NotesCategoryMapper;
+import com.yyh.xfs.notes.service.NotesService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.client.producer.SendCallback;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -23,6 +29,11 @@ import java.util.List;
 public class NotesApplicationTest {
     @Autowired
     private NotesCategoryMapper notesCategoryMapper;
+
+    @Autowired
+    private NotesService notesService;
+    @Autowired
+    private RocketMQTemplate rocketMQTemplate;
 
     @Test
     void test1() {
@@ -84,5 +95,27 @@ public class NotesApplicationTest {
         log.info("userId2.hashCode() = {}", Long.hashCode(userId2));
         log.info("userId1.hashCode() = {}", Long.hashCode(userId1) % 10);
         log.info("userId2.hashCode() = {}", Long.hashCode(userId2) % 10);
+    }
+
+    /**
+     * 将mysql中的数据导入到es中
+     */
+    @Test
+    void test5() {
+//        // 1、查询mysql中的数据
+//        List<NotesDO> list = notesService.list();
+//        // 2、将数据导入到es中
+//        list.forEach(notesDO -> {
+//            rocketMQTemplate.asyncSend("notes-add-es-topic", JSON.toJSONString(notesDO), new SendCallback() {
+//                @Override
+//                public void onSuccess(SendResult sendResult) {
+//                    log.info("消息发送成功：{}", sendResult);
+//                }
+//                @Override
+//                public void onException(Throwable throwable) {
+//                    log.error("消息发送失败", throwable);
+//                }
+//            });
+//        });
     }
 }
