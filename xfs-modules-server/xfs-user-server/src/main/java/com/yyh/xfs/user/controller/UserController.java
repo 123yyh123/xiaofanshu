@@ -4,10 +4,14 @@ import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.utils.FieldValidationUtil;
 import com.yyh.xfs.common.utils.ResultUtil;
 import com.yyh.xfs.user.service.UserService;
+import com.yyh.xfs.user.vo.PasswordVO;
+import com.yyh.xfs.user.vo.UserBindThirdStateVO;
 import com.yyh.xfs.user.vo.UserVO;
 import com.yyh.xfs.user.vo.ViewUserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * @author yyh
@@ -124,5 +128,41 @@ public class UserController {
     @GetMapping("/viewUserInfo")
     public Result<ViewUserVO> viewUserInfo(Long userId) {
         return userService.viewUserInfo(userId);
+    }
+
+    /**
+     * 获取用户是否绑定第三方
+     * @return 用户绑定状态
+     */
+    @GetMapping("/getUserIsBindThird")
+    public Result<UserBindThirdStateVO> getUserIsBindThird() {
+        return userService.getUserIsBindThird();
+    }
+
+    /**
+     * 更新手机号
+     * @param phoneNumber 手机号
+     * @param smsCode 短信验证码
+     * @return 更新结果
+     */
+    @PostMapping("/updatePhoneNumber")
+    public Result<Boolean> updatePhoneNumber(String phoneNumber, String smsCode) {
+        if(!FieldValidationUtil.isPhoneNumber(phoneNumber)){
+            return ResultUtil.errorPost("手机号格式不正确");
+        }
+        if(!FieldValidationUtil.isSmsCode(smsCode)){
+            return ResultUtil.errorPost("验证码格式不正确");
+        }
+        return userService.updatePhoneNumber(phoneNumber, smsCode);
+    }
+
+    /**
+     * 通过旧密码重置密码
+     * @param passwordVO 密码信息
+     * @return 重置结果
+     */
+    @PostMapping("/resetPasswordByOld")
+    public Result<?> resetPasswordByOld(@RequestBody PasswordVO passwordVO) {
+        return userService.resetPasswordByOld(passwordVO);
     }
 }

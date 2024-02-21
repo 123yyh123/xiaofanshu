@@ -8,6 +8,8 @@ import com.yyh.xfs.notes.vo.NotesPageVO;
 import com.yyh.xfs.notes.vo.NotesPublishVO;
 import com.yyh.xfs.notes.vo.NotesVO;
 
+import java.util.Map;
+
 /**
  * @author yyh
  * @date 2024-01-19
@@ -36,4 +38,6 @@ public interface NotesService extends IService<NotesDO> {
     Result<?> deleteNotes(Long notesId);
 
     Result<?> changeNotesAuthority(Long notesId, Integer authority);
+
+    Result<Map<String, Integer>> getAllNotesCountAndPraiseCountAndCollectCount();
 }

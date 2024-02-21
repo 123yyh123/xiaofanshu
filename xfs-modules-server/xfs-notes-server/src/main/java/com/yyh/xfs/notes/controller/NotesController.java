@@ -10,6 +10,7 @@ import com.yyh.xfs.notes.vo.NotesPublishVO;
 import com.yyh.xfs.notes.vo.NotesVO;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -168,6 +169,15 @@ public class NotesController {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
         }
         return notesService.changeNotesAuthority(notesId,authority);
+    }
+
+    /**
+     * 获取笔记总数和点赞总数和收藏总数
+     * @return 笔记总数和点赞总数和收藏总数
+     */
+    @GetMapping("/getAllNotesCountAndPraiseCountAndCollectCount")
+    public Result<Map<String,Integer>> getAllNotesCountAndPraiseCountAndCollectCount() {
+        return notesService.getAllNotesCountAndPraiseCountAndCollectCount();
     }
 
 }

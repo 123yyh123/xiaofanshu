@@ -2,10 +2,7 @@ package com.yyh.xfs.user.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.user.domain.UserDO;
-import com.yyh.xfs.user.vo.RegisterInfoVO;
-import com.yyh.xfs.user.vo.UserTrtcVO;
-import com.yyh.xfs.user.vo.UserVO;
-import com.yyh.xfs.user.vo.ViewUserVO;
+import com.yyh.xfs.user.vo.*;
 
 /**
  * @author yyh
@@ -96,7 +93,27 @@ public interface UserService extends IService<UserDO> {
      */
     Result<?> updateArea(UserVO userVO);
 
+    /**
+     * 查看用户信息
+     * @param userId 用户id
+     * @return 用户信息
+     */
     Result<ViewUserVO> viewUserInfo(Long userId);
 
+    /**
+     * 退出登录
+     * @param userId 用户id
+     * @return 退出结果
+     */
     Result<?> logout(Long userId);
+
+    /**
+     * 获取用户是否绑定第三方
+     * @return 用户绑定状态
+     */
+    Result<UserBindThirdStateVO> getUserIsBindThird();
+
+    Result<Boolean> updatePhoneNumber(String phoneNumber, String smsCode);
+
+    Result<?> resetPasswordByOld(PasswordVO passwordVO);
 }

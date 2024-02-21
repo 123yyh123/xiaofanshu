@@ -65,6 +65,18 @@ public class AliyunSmsServiceImpl implements AliyunSmsService {
         return sendSms(sendSmsRequest, phoneNumber, smsCode,RedisConstant.REDIS_KEY_SMS_REGISTER_PHONE_CODE);
     }
 
+    @Override
+    public Result<Boolean> checkResetSmsCode(String phoneNumber, String smsCode) {
+        String redisKey = RedisKey.build(RedisConstant.REDIS_KEY_SMS_RESET_PASSWORD_PHONE_CODE, phoneNumber);
+        return ResultUtil.successPost("验证短信验证码成功", smsCode.equals(redisCache.get(redisKey)));
+    }
+
+    @Override
+    public Result<Boolean> checkBindSmsCode(String phoneNumber, String smsCode) {
+        String redisKey = RedisKey.build(RedisConstant.REDIS_KEY_SMS_BIND_PHONE_CODE, phoneNumber);
+        return ResultUtil.successPost("验证短信验证码成功", smsCode.equals(redisCache.get(redisKey)));
+    }
+
     /**
      * 发送短信
      * @param sendSmsRequest 短信请求

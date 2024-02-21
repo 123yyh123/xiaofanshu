@@ -8,10 +8,7 @@ import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
 import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.common.redis.utils.RedisKey;
-import com.yyh.xfs.common.utils.CodeUtil;
-import com.yyh.xfs.common.utils.Md5Util;
-import com.yyh.xfs.common.utils.ResultUtil;
-import com.yyh.xfs.common.utils.TimeUtil;
+import com.yyh.xfs.common.utils.*;
 import com.yyh.xfs.common.web.exception.BusinessException;
 import com.yyh.xfs.common.web.exception.SystemException;
 import com.yyh.xfs.common.web.properties.JwtProperties;
@@ -23,10 +20,7 @@ import com.yyh.xfs.user.mapper.UserAttentionMapper;
 import com.yyh.xfs.user.mapper.UserFansMapper;
 import com.yyh.xfs.user.service.UserService;
 import com.yyh.xfs.user.mapper.UserMapper;
-import com.yyh.xfs.user.vo.RegisterInfoVO;
-import com.yyh.xfs.user.vo.UserTrtcVO;
-import com.yyh.xfs.user.vo.UserVO;
-import com.yyh.xfs.user.vo.ViewUserVO;
+import com.yyh.xfs.user.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -495,6 +489,61 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             redisCache.del(RedisKey.build(RedisConstant.REDIS_KEY_USER_ONLINE, String.valueOf(userId)));
         }
         return ResultUtil.successPost("退出登录成功", null);
+    }
+
+    @Override
+    public Result<UserBindThirdStateVO> getUserIsBindThird() {
+        Long userId = JWTUtil.getCurrentUserId(request.getHeader("token"));
+        UserDO userDO = this.getById(userId);
+        UserBindThirdStateVO userBindThirdStateVO = new UserBindThirdStateVO();
+        userBindThirdStateVO.setWechatBind(StringUtils.hasText(userDO.getWxOpenId()));
+        userBindThirdStateVO.setQqBind(StringUtils.hasText(userDO.getQqOpenId()));
+        userBindThirdStateVO.setFacebookBind(StringUtils.hasText(userDO.getFacebookOpenId()));
+        return ResultUtil.successGet(userBindThirdStateVO);
+    }
+
+    @Override
+    public Result<Boolean> updatePhoneNumber(String phoneNumber, String smsCode) {
+        Long userId = JWTUtil.getCurrentUserId(request.getHeader("token"));
+        boolean b = checkSmsCode(
+                RedisKey.build(RedisConstant.REDIS_KEY_SMS_BIND_PHONE_CODE, phoneNumber),
+                smsCode);
+        if (!b) {
+            throw new BusinessException(ExceptionMsgEnum.SMS_CODE_ERROR);
+        }
+        QueryWrapper<UserDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(UserDO::getPhoneNumber, phoneNumber);
+        UserDO userDO = this.getOne(queryWrapper);
+        if (Objects.nonNull(userDO)) {
+            throw new BusinessException(ExceptionMsgEnum.PHONE_NUMBER_EXIST);
+        }
+        UserDO user = new UserDO();
+        user.setId(userId);
+        user.setPhoneNumber(phoneNumber);
+        this.updateById(user);
+        redisCache.hset(
+                RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userId)),
+                "phoneNumber",
+                phoneNumber
+        );
+        return ResultUtil.successPost("修改手机号成功", true);
+    }
+
+    @Override
+    public Result<?> resetPasswordByOld(PasswordVO passwordVO) {
+        if (!FieldValidationUtil.isPassword(passwordVO.getOldPassword())||!FieldValidationUtil.isPassword(passwordVO.getNewPassword())) {
+            return ResultUtil.errorPost("密码格式不正确");
+        }
+        Long userId = JWTUtil.getCurrentUserId(request.getHeader("token"));
+        UserDO userDO = this.getById(userId);
+        String md5 = Md5Util.getMd5(userDO.getPhoneNumber() + passwordVO.getOldPassword());
+        if (!md5.equals(userDO.getPassword())) {
+            throw new BusinessException(ExceptionMsgEnum.PASSWORD_ERROR);
+        }
+        String md52 = Md5Util.getMd5(userDO.getPhoneNumber() + passwordVO.getNewPassword());
+        userDO.setPassword(md52);
+        this.updateById(userDO);
+        return ResultUtil.successPost("修改密码成功", null);
     }
 
     /**

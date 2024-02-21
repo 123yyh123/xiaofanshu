@@ -12,4 +12,8 @@ public interface AliyunSmsService {
     Result<?> sendResetPhoneSms(String phoneNumber);
 
     Result<?> sendRegisterPhoneSms(String phoneNumber);
+
+    Result<Boolean> checkResetSmsCode(String phoneNumber, String smsCode);
+
+    Result<Boolean> checkBindSmsCode(String phoneNumber, String smsCode);
 }

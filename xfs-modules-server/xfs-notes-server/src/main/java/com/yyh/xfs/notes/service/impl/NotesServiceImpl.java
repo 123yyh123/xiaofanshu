@@ -711,6 +711,30 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         return ResultUtil.successPost(null);
     }
 
+    @Override
+    public Result<Map<String, Integer>> getAllNotesCountAndPraiseCountAndCollectCount() {
+        String token = request.getHeader("token");
+        Long userId = null;
+        try {
+            if (StringUtils.hasText(token)) {
+                Map<String, Object> map = JWTUtil.parseToken(token);
+                userId = (Long) map.get("userId");
+            }
+        } catch (Exception e) {
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+        }
+        Map<String, Integer> map = new HashMap<>();
+        Integer notesCount = this.baseMapper.selectCount(new QueryWrapper<NotesDO>().lambda().eq(NotesDO::getBelongUserId, userId));
+        // 获取自己发布的所有笔记的点赞数
+        Integer praiseCount=this.baseMapper.getPraiseCountByUserId(userId);
+        // 获取自己发布的所有笔记的收藏数
+        Integer collectCount=this.baseMapper.getCollectCountByUserId(userId);
+        map.put("notesCount", notesCount);
+        map.put("praiseCount", praiseCount);
+        map.put("collectCount", collectCount);
+        return ResultUtil.successGet(map);
+    }
+
     private List<Long> findUserId(NotesPublishVO notesPublishVO) {
         List<Long> userIds = new ArrayList<>();
         Document document = Jsoup.parse(notesPublishVO.getContent());
