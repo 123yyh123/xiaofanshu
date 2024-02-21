@@ -42,6 +42,7 @@ public enum ExceptionMsgEnum {
     ALIYUN_OSS_INIT_ERROR(StatusCode.ALIYUN_OSS_INIT_ERROR,"OSS服务初始化异常"),
     ELASTICSEARCH_INIT_ERROR(StatusCode.ELASTICSEARCH_INIT_ERROR,"ElasticSearch初始化异常"),
     REDIS_ERROR(StatusCode.REDIS_ERROR,"redis操作异常"),
+    SERVER_ERROR(StatusCode.SERVER_ERROR,"服务器异常"),
     DB_ERROR(StatusCode.DB_ERROR,"数据库操作异常");
     private Integer code;
     private String msg;

@@ -471,6 +471,49 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesLikeNum", 1);
         }
         // TODO 利用rocketMQ异步给发送targetUserId通知
+        if (isLike) {
+            return ResultUtil.successPost(null);
+        }
+        Map<String, Object> messageMap = new HashMap<>();
+        String nickname = (String) redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, userId.toString()), "nickname");
+        String avatarUrl = (String) redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, userId.toString()), "avatarUrl");
+        if (!StringUtils.hasText(avatarUrl)||!StringUtils.hasText(nickname)) {
+            Result<?> result = userFeign.getUserInfo(userId);
+            if (result.getCode() == 20010) {
+                Map<String, Object> userInfo = (Map<String, Object>) result.getData();
+                if (!StringUtils.hasText(nickname)) {
+                    nickname = (String) userInfo.get("nickname");
+                }
+                if (!StringUtils.hasText(avatarUrl)) {
+                    avatarUrl = (String) userInfo.get("avatarUrl");
+                }
+            }
+        }
+        Map<String,String> contentMap = new HashMap<>();
+        contentMap.put("text","点赞了你的笔记");
+        contentMap.put("notesId",notesId.toString());
+        contentMap.put("notesType",notesDO.getNotesType().toString());
+        contentMap.put("notesCoverPicture",notesDO.getCoverPicture());
+        messageMap.put("from", userId);
+        messageMap.put("fromName", nickname);
+        messageMap.put("fromAvatar", avatarUrl);
+        messageMap.put("to", targetUserId);
+        messageMap.put("time", System.currentTimeMillis());
+        messageMap.put("messageType",8);
+        messageMap.put("chatType",0);
+        messageMap.put("friendType",1);
+        messageMap.put("content",JSON.toJSONString(contentMap));
+        rocketMQTemplate.asyncSend("notes-praiseAndCollect-remind-topic", JSON.toJSONString(messageMap), new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("发送点赞通知成功");
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("发送点赞通知失败", throwable);
+            }
+        });
         return ResultUtil.successPost(null);
     }
 
@@ -509,6 +552,49 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesCollectionNum", 1);
         }
         // TODO 利用rocketMQ异步给发送targetUserId通知
+        if (isCollect) {
+            return ResultUtil.successPost(null);
+        }
+        Map<String, Object> messageMap = new HashMap<>();
+        String nickname = (String) redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, userId.toString()), "nickname");
+        String avatarUrl = (String) redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, userId.toString()), "avatarUrl");
+        Map<String,String> contentMap = new HashMap<>();
+        if (!StringUtils.hasText(avatarUrl)||!StringUtils.hasText(nickname)) {
+            Result<?> result = userFeign.getUserInfo(userId);
+            if (result.getCode() == 20010) {
+                Map<String, Object> userInfo = (Map<String, Object>) result.getData();
+                if (!StringUtils.hasText(nickname)) {
+                    nickname = (String) userInfo.get("nickname");
+                }
+                if (!StringUtils.hasText(avatarUrl)) {
+                    avatarUrl = (String) userInfo.get("avatarUrl");
+                }
+            }
+        }
+        contentMap.put("text","收藏了你的笔记");
+        contentMap.put("notesId",notesId.toString());
+        contentMap.put("notesType",notesDO.getNotesType().toString());
+        contentMap.put("notesCoverPicture",notesDO.getCoverPicture());
+        messageMap.put("from", userId);
+        messageMap.put("fromName", nickname);
+        messageMap.put("fromAvatar", avatarUrl);
+        messageMap.put("to", targetUserId);
+        messageMap.put("time", System.currentTimeMillis());
+        messageMap.put("messageType",8);
+        messageMap.put("chatType",0);
+        messageMap.put("friendType",1);
+        messageMap.put("content",JSON.toJSONString(contentMap));
+        rocketMQTemplate.asyncSend("notes-praiseAndCollect-remind-topic", JSON.toJSONString(messageMap), new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("发送收藏通知成功");
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("发送收藏通知失败", throwable);
+            }
+        });
         return ResultUtil.successPost(null);
     }
 
