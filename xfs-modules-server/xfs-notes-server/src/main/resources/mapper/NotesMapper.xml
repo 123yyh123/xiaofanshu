@@ -75,4 +75,16 @@
         FROM notes
         WHERE belong_user_id = #{userId}
     </select>
+    <select id="selectPageByAttentionUserId" resultType="com.yyh.xfs.notes.domain.NotesDO">
+        select
+        <include refid="Base_Column_List"/>
+        from notes
+        where authority = 0
+        and belong_user_id in
+        <foreach collection="attentionUserId" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        order by create_time desc
+        limit #{pageSize} offset #{offset}
+    </select>
 </mapper>

@@ -5,6 +5,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 /**
  * @author yyh
  * @date 2024-01-26
@@ -17,4 +19,7 @@ public interface UserFeign {
 
     @GetMapping("/user/relation/isAttention")
     Result<Boolean> selectOneByUserIdAndAttentionIdIsExist(@RequestParam("toId") Long toId, @RequestParam("fromId") Long fromId);
+
+    @GetMapping("/user/relation/getAttentionUserId")
+    Result<List<Long>> getAttentionUserId(@RequestParam("userId") Long userId);
 }

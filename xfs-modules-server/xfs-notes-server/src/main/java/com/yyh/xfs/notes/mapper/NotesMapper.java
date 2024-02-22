@@ -25,4 +25,6 @@ public interface NotesMapper extends BaseMapper<NotesDO> {
     Integer getPraiseCountByUserId(Long userId);
 
     Integer getCollectCountByUserId(Long userId);
+
+    List<NotesDO> selectPageByAttentionUserId(Integer offset, Integer pageSize, List<Long> attentionUserId);
 }

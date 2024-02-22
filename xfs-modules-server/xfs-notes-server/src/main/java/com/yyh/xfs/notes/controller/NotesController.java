@@ -66,6 +66,23 @@ public class NotesController {
         return notesService.getNotesByUserId(page, pageSize,authority,type);
     }
 
+    @GetMapping("/getNotesByView")
+    public Result<NotesPageVO> getNotesByView(Integer page, Integer pageSize,Integer type,Long userId) {
+        if (page == null || pageSize == null||userId == null) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        if (page < 1) {
+            page = 1;
+        }
+        if (pageSize < 1) {
+            pageSize = 10;
+        }
+        if (type == null||type < 0||type > 1) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        return notesService.getNotesByView(page, pageSize,type,userId);
+    }
+
     @GetMapping("/getNotesByNotesId")
     public Result<NotesVO> getNotesByNotesId(Long notesId) {
         if (notesId == null) {
@@ -180,4 +197,18 @@ public class NotesController {
         return notesService.getAllNotesCountAndPraiseCountAndCollectCount();
     }
 
+    /**
+     * 获取关注用户的笔记
+     * @param userId 用户id
+     * @param page 页码
+     * @param pageSize 每页数量
+     * @return 笔记列表
+     */
+    @GetMapping("/getAttentionUserNotes")
+    public Result<NotesPageVO> getAttentionUserNotes(Integer page,Integer pageSize) {
+        if(Objects.isNull(page) || Objects.isNull(pageSize)) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        return notesService.getAttentionUserNotes(page,pageSize);
+    }
 }

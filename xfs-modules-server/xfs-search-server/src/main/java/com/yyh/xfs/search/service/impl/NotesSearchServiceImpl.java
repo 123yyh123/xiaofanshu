@@ -175,7 +175,7 @@ public class NotesSearchServiceImpl implements NotesSearchService {
         } else {
             keyword = keyword.replaceAll(" ", "");
         }
-        if (keyword.length() > 12) {
+        if (keyword.length() > 20) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
         }
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();

@@ -1,4 +1,4 @@
-package com.yyh.xfs.search.consumer;
+package com.yyh.xfs.search.consumer.notes;
 
 import com.alibaba.fastjson.JSON;
 import com.yyh.xfs.search.service.NotesSearchService;

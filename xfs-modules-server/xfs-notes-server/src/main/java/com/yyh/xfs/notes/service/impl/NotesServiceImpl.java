@@ -172,41 +172,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         NotesPageVO notesPageVO = new NotesPageVO();
         Integer offset = (page - 1) * pageSize;
         List<NotesDO> notes = this.baseMapper.selectPageByTime(offset, pageSize);
-        List<NotesVO> collect = notes.stream().map(notesDO -> {
-            NotesVO notesVO = new NotesVO();
-            BeanUtils.copyProperties(notesDO, notesVO);
-            Result<?> result = userFeign.getUserInfo(notesDO.getBelongUserId());
-            if (result.getCode() == 20010) {
-                Map<String, Object> userInfo = (Map<String, Object>) result.getData();
-                notesVO.setNickname((String) userInfo.get("nickname"));
-                notesVO.setAvatarUrl((String) userInfo.get("avatarUrl"));
-            }
-            Object notesLikeNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesDO.getId().toString()), "notesLikeNum");
-            if (Objects.isNull(notesLikeNum)) {
-                notesVO.setNotesLikeNum(notesDO.getNotesLikeNum());
-                redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesDO.getId().toString()), "notesLikeNum", notesDO.getNotesLikeNum());
-            } else {
-                notesVO.setNotesLikeNum((Integer) notesLikeNum);
-            }
-            // 判断当前用户是否点赞
-            String token = request.getHeader("token");
-            try {
-                if (StringUtils.hasText(token)) {
-                    Map<String, Object> map = JWTUtil.parseToken(token);
-                    Long userId = (Long) map.get("userId");
-                    String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, userId.toString());
-                    Boolean isLike = Objects.nonNull(redisCache.zSetScore(key, notesDO.getId()));
-                    notesVO.setIsLike(isLike);
-                } else {
-                    notesVO.setIsLike(false);
-                }
-            } catch (Exception e) {
-                log.error("获取当前用户id失败", e);
-                notesVO.setIsLike(false);
-            }
-            return notesVO;
-        }).collect(Collectors.toList());
-        notesPageVO.setList(collect);
+        buildNotesVo(notesPageVO, notes);
         notesPageVO.setTotal(this.baseMapper.selectCount(null));
         notesPageVO.setPage(page);
         notesPageVO.setPageSize(pageSize);
@@ -292,7 +258,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
                 // 去除空值
                 notes = this.baseMapper.selectBatchIds(collect).stream().filter(Objects::nonNull).collect(Collectors.toList());
             }
-            total= Math.toIntExact(redisCache.zSetSize(RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES, userId.toString())));
+            total = Math.toIntExact(redisCache.zSetSize(RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES, userId.toString())));
         } else if (type == 2) {
             List<Long> collect = redisCache.rangeZSet(
                             RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, userId.toString()), offset, offset + pageSize)
@@ -302,7 +268,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             } else {
                 notes = this.baseMapper.selectBatchIds(collect).stream().filter(Objects::nonNull).collect(Collectors.toList());
             }
-            total= Math.toIntExact(redisCache.zSetSize(RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, userId.toString())));
+            total = Math.toIntExact(redisCache.zSetSize(RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, userId.toString())));
         } else {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
 
@@ -312,7 +278,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         List<NotesVO> collect = notes.stream().map(notesDO -> {
             NotesVO notesVO = new NotesVO();
             BeanUtils.copyProperties(notesDO, notesVO);
-            if(type!=0){
+            if (type != 0) {
                 notesVO.setNotesViewNum(null);
             }
             Result<?> result = userFeign.getUserInfo(notesDO.getBelongUserId());
@@ -354,6 +320,112 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
     }
 
     @Override
+    public Result<NotesPageVO> getNotesByView(Integer page, Integer pageSize, Integer type, Long userId) {
+        NotesPageVO notesPageVO = new NotesPageVO();
+        Integer offset = (page - 1) * pageSize;
+        List<NotesDO> notes = null;
+        if (type == 0) {
+            notes = this.baseMapper.selectPageByUserId(offset, pageSize, userId, 0);
+        } else if (type == 1) {
+            List<Long> collect = redisCache.rangeZSet(
+                            RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES, userId.toString()), offset, offset + pageSize)
+                    .stream().map(s -> Long.valueOf(s.toString())).collect(Collectors.toList());
+            if (collect.isEmpty()) {
+                notes = new ArrayList<>();
+            } else {
+                // 去除空值
+                notes = this.baseMapper.selectBatchIds(collect).stream().filter(Objects::nonNull).collect(Collectors.toList());
+            }
+        } else if (type == 2) {
+            List<Long> collect = redisCache.rangeZSet(
+                            RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, userId.toString()), offset, offset + pageSize)
+                    .stream().map(s -> Long.valueOf(s.toString())).collect(Collectors.toList());
+            if (collect.isEmpty()) {
+                notes = new ArrayList<>();
+            } else {
+                notes = this.baseMapper.selectBatchIds(collect).stream().filter(Objects::nonNull).collect(Collectors.toList());
+            }
+        } else {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        buildNotesVo(notesPageVO, notes);
+        notesPageVO.setPage(page);
+        notesPageVO.setPageSize(pageSize);
+        return ResultUtil.successGet(notesPageVO);
+    }
+
+    @Override
+    public Result<NotesPageVO> getAttentionUserNotes(Integer page, Integer pageSize) {
+        String token=request.getHeader("token");
+        Long userId;
+        try {
+            userId = JWTUtil.getCurrentUserId(token);
+        } catch (Exception e) {
+            throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+        }
+        Result<List<Long>> result = userFeign.getAttentionUserId(userId);
+        if (result.getCode() != 20010) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        List<Long> attentionUserId = result.getData();
+        if (attentionUserId.isEmpty()) {
+            return ResultUtil.successGet(new NotesPageVO());
+        }
+        NotesPageVO notesPageVO = new NotesPageVO();
+        Integer offset = (page - 1) * pageSize;
+        List<NotesDO> notes = this.baseMapper.selectPageByAttentionUserId(offset, pageSize, attentionUserId);
+        buildNotesVo(notesPageVO, notes);
+        notesPageVO.setPage(page);
+        notesPageVO.setPageSize(pageSize);
+        return ResultUtil.successGet(notesPageVO);
+    }
+
+    private void buildNotesVo(NotesPageVO notesPageVO, List<NotesDO> notes) {
+        List<NotesVO> collect = notes.stream().map(notesDO -> {
+            NotesVO notesVO = new NotesVO();
+            BeanUtils.copyProperties(notesDO, notesVO);
+            Result<?> result = userFeign.getUserInfo(notesDO.getBelongUserId());
+            if (result.getCode() == 20010) {
+                Map<String, Object> userInfo = (Map<String, Object>) result.getData();
+                notesVO.setNickname((String) userInfo.get("nickname"));
+                notesVO.setAvatarUrl((String) userInfo.get("avatarUrl"));
+            }
+            Object notesLikeNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesDO.getId().toString()), "notesLikeNum");
+            if (Objects.isNull(notesLikeNum)) {
+                notesVO.setNotesLikeNum(notesDO.getNotesLikeNum());
+                redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesDO.getId().toString()), "notesLikeNum", notesDO.getNotesLikeNum());
+            } else {
+                notesVO.setNotesLikeNum((Integer) notesLikeNum);
+            }
+            Object notesCollectionNum = redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesDO.getId().toString()), "notesCollectionNum");
+            if (Objects.isNull(notesCollectionNum)) {
+                notesVO.setNotesCollectNum(notesDO.getNotesCollectionNum());
+                redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesDO.getId().toString()), "notesCollectionNum", notesDO.getNotesCollectionNum());
+            } else {
+                notesVO.setNotesCollectNum((Integer) notesCollectionNum);
+            }
+            String token = request.getHeader("token");
+            try {
+                    Long currentUserId = JWTUtil.getCurrentUserId(token);
+                    // 判断当前用户是否点赞
+                    String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, currentUserId.toString());
+                    Boolean isLike = Objects.nonNull(redisCache.zSetScore(key, notesDO.getId()));
+                    notesVO.setIsLike(isLike);
+                    // 判断当前用户是否收藏
+                    String key1 = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES, currentUserId.toString());
+                    Boolean isCollect = Objects.nonNull(redisCache.zSetScore(key1, notesDO.getId()));
+                    notesVO.setIsCollect(isCollect);
+            } catch (Exception e) {
+                log.error("获取当前用户id失败", e);
+                notesVO.setIsLike(false);
+                notesVO.setIsCollect(false);
+            }
+            return notesVO;
+        }).collect(Collectors.toList());
+        notesPageVO.setList(collect);
+    }
+
+    @Override
     public Result<NotesVO> getNotesByNotesId(Long notesId) {
         NotesDO notesDO = this.baseMapper.selectById(notesId);
         if (Objects.isNull(notesDO)) {
@@ -392,10 +464,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         String token = request.getHeader("token");
         Long userId = null;
         try {
-            if (StringUtils.hasText(token)) {
-                Map<String, Object> map = JWTUtil.parseToken(token);
-                userId = (Long) map.get("userId");
-            }
+            userId = JWTUtil.getCurrentUserId(token);
         } catch (Exception e) {
             log.error("获取当前用户id失败", e);
             notesVO.setIsLike(false);
@@ -453,12 +522,12 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         // 便于定时任务更新数据库，不能直接删除键，避免不能删除数据库中的点赞记录，定时任务判断isLike字段操作数据库，如果为false则删除
         String userLikeNotesKey = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES_RECENT, i + "");
         // 先判断有记录没有，若与之前相反，则删除之前的记录，否则直接新增覆盖
-        Map<String,Object> map= new HashMap<>();
-        map.put("userId",userId);
-        map.put("notesId",notesId);
-        map.put("isLike",isLike);
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("notesId", notesId);
+        map.put("isLike", isLike);
         Double v = redisCache.zSetScore(userLikeNotesKey, JSON.toJSONString(map));
-        if(Objects.nonNull(v)){
+        if (Objects.nonNull(v)) {
             redisCache.removeZSet(userLikeNotesKey, JSON.toJSONString(map));
         }
         redisCache.addZSet(userLikeNotesKey, JSON.toJSONString(userLikeNotesMap), System.currentTimeMillis());
@@ -477,7 +546,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         Map<String, Object> messageMap = new HashMap<>();
         String nickname = (String) redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, userId.toString()), "nickname");
         String avatarUrl = (String) redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, userId.toString()), "avatarUrl");
-        if (!StringUtils.hasText(avatarUrl)||!StringUtils.hasText(nickname)) {
+        if (!StringUtils.hasText(avatarUrl) || !StringUtils.hasText(nickname)) {
             Result<?> result = userFeign.getUserInfo(userId);
             if (result.getCode() == 20010) {
                 Map<String, Object> userInfo = (Map<String, Object>) result.getData();
@@ -489,20 +558,20 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
                 }
             }
         }
-        Map<String,String> contentMap = new HashMap<>();
-        contentMap.put("text","点赞了你的笔记");
-        contentMap.put("notesId",notesId.toString());
-        contentMap.put("notesType",notesDO.getNotesType().toString());
-        contentMap.put("notesCoverPicture",notesDO.getCoverPicture());
+        Map<String, String> contentMap = new HashMap<>();
+        contentMap.put("text", "点赞了你的笔记");
+        contentMap.put("notesId", notesId.toString());
+        contentMap.put("notesType", notesDO.getNotesType().toString());
+        contentMap.put("notesCoverPicture", notesDO.getCoverPicture());
         messageMap.put("from", userId);
         messageMap.put("fromName", nickname);
         messageMap.put("fromAvatar", avatarUrl);
         messageMap.put("to", targetUserId);
         messageMap.put("time", System.currentTimeMillis());
-        messageMap.put("messageType",8);
-        messageMap.put("chatType",0);
-        messageMap.put("friendType",1);
-        messageMap.put("content",JSON.toJSONString(contentMap));
+        messageMap.put("messageType", 8);
+        messageMap.put("chatType", 0);
+        messageMap.put("friendType", 1);
+        messageMap.put("content", JSON.toJSONString(contentMap));
         rocketMQTemplate.asyncSend("notes-praiseAndCollect-remind-topic", JSON.toJSONString(messageMap), new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
@@ -534,12 +603,12 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         // 便于定时任务更新数据库，不能直接删除键，避免不能删除数据库中的收藏记录，定时任务判断isCollect字段操作数据库，如果为false则删除
         String userCollectNotesKey = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES_RECENT, i + "");
         // 先判断有记录没有，若与之前相反，则删除之前的记录，否则直接新增覆盖
-        Map<String,Object> map= new HashMap<>();
-        map.put("userId",userId);
-        map.put("notesId",notesId);
-        map.put("isCollect",isCollect);
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("notesId", notesId);
+        map.put("isCollect", isCollect);
         Double v = redisCache.zSetScore(userCollectNotesKey, JSON.toJSONString(map));
-        if(Objects.nonNull(v)){
+        if (Objects.nonNull(v)) {
             redisCache.removeZSet(userCollectNotesKey, JSON.toJSONString(map));
         }
         redisCache.addZSet(userCollectNotesKey, JSON.toJSONString(userCollectNotesMap), System.currentTimeMillis());
@@ -558,8 +627,8 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         Map<String, Object> messageMap = new HashMap<>();
         String nickname = (String) redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, userId.toString()), "nickname");
         String avatarUrl = (String) redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, userId.toString()), "avatarUrl");
-        Map<String,String> contentMap = new HashMap<>();
-        if (!StringUtils.hasText(avatarUrl)||!StringUtils.hasText(nickname)) {
+        Map<String, String> contentMap = new HashMap<>();
+        if (!StringUtils.hasText(avatarUrl) || !StringUtils.hasText(nickname)) {
             Result<?> result = userFeign.getUserInfo(userId);
             if (result.getCode() == 20010) {
                 Map<String, Object> userInfo = (Map<String, Object>) result.getData();
@@ -571,19 +640,19 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
                 }
             }
         }
-        contentMap.put("text","收藏了你的笔记");
-        contentMap.put("notesId",notesId.toString());
-        contentMap.put("notesType",notesDO.getNotesType().toString());
-        contentMap.put("notesCoverPicture",notesDO.getCoverPicture());
+        contentMap.put("text", "收藏了你的笔记");
+        contentMap.put("notesId", notesId.toString());
+        contentMap.put("notesType", notesDO.getNotesType().toString());
+        contentMap.put("notesCoverPicture", notesDO.getCoverPicture());
         messageMap.put("from", userId);
         messageMap.put("fromName", nickname);
         messageMap.put("fromAvatar", avatarUrl);
         messageMap.put("to", targetUserId);
         messageMap.put("time", System.currentTimeMillis());
-        messageMap.put("messageType",8);
-        messageMap.put("chatType",0);
-        messageMap.put("friendType",1);
-        messageMap.put("content",JSON.toJSONString(contentMap));
+        messageMap.put("messageType", 8);
+        messageMap.put("chatType", 0);
+        messageMap.put("friendType", 1);
+        messageMap.put("content", JSON.toJSONString(contentMap));
         rocketMQTemplate.asyncSend("notes-praiseAndCollect-remind-topic", JSON.toJSONString(messageMap), new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
@@ -610,7 +679,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         if (Objects.isNull(notesDO)) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
         }
-        if(!notesDO.getBelongUserId().equals(notesPublishVO.getBelongUserId())){
+        if (!notesDO.getBelongUserId().equals(notesPublishVO.getBelongUserId())) {
             throw new BusinessException(ExceptionMsgEnum.NO_PERMISSION);
         }
         // 获取当前用户id
@@ -618,7 +687,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         Long currentUserId = null;
         try {
             if (StringUtils.hasText(token)) {
-                currentUserId=JWTUtil.getCurrentUserId(token);
+                currentUserId = JWTUtil.getCurrentUserId(token);
             }
         } catch (Exception e) {
             throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
@@ -635,12 +704,12 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         if (StringUtils.hasText(notesPublishVO.getContent())) {
             notesDO.setContent(notesPublishVO.getContent());
         }
-        if(notesPublishVO.getNotesType()==0){
+        if (notesPublishVO.getNotesType() == 0) {
             notesDO.setCoverPicture(notesResources.get(0));
-        }else {
+        } else {
             if (!StringUtils.hasText(notesPublishVO.getCoverPicture())) {
                 notesDO.setCoverPicture(notesResources.get(0) + "?x-oss-process=video/snapshot,t_0,f_jpg,w_0,h_0,m_fast");
-            }else {
+            } else {
                 notesDO.setCoverPicture(notesPublishVO.getCoverPicture());
             }
         }
@@ -723,7 +792,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         Long currentUserId = null;
         try {
             if (StringUtils.hasText(token)) {
-                currentUserId=JWTUtil.getCurrentUserId(token);
+                currentUserId = JWTUtil.getCurrentUserId(token);
             }
         } catch (Exception e) {
             throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
@@ -772,7 +841,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         Long currentUserId = null;
         try {
             if (StringUtils.hasText(token)) {
-                currentUserId=JWTUtil.getCurrentUserId(token);
+                currentUserId = JWTUtil.getCurrentUserId(token);
             }
         } catch (Exception e) {
             throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
@@ -812,9 +881,9 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         Map<String, Integer> map = new HashMap<>();
         Integer notesCount = this.baseMapper.selectCount(new QueryWrapper<NotesDO>().lambda().eq(NotesDO::getBelongUserId, userId));
         // 获取自己发布的所有笔记的点赞数
-        Integer praiseCount=this.baseMapper.getPraiseCountByUserId(userId);
+        Integer praiseCount = this.baseMapper.getPraiseCountByUserId(userId);
         // 获取自己发布的所有笔记的收藏数
-        Integer collectCount=this.baseMapper.getCollectCountByUserId(userId);
+        Integer collectCount = this.baseMapper.getCollectCountByUserId(userId);
         map.put("notesCount", notesCount);
         map.put("praiseCount", praiseCount);
         map.put("collectCount", collectCount);

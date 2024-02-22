@@ -40,4 +40,8 @@ public interface NotesService extends IService<NotesDO> {
     Result<?> changeNotesAuthority(Long notesId, Integer authority);
 
     Result<Map<String, Integer>> getAllNotesCountAndPraiseCountAndCollectCount();
+
+    Result<NotesPageVO> getNotesByView(Integer page, Integer pageSize, Integer type, Long userId);
+
+    Result<NotesPageVO> getAttentionUserNotes(Integer page, Integer pageSize);
 }

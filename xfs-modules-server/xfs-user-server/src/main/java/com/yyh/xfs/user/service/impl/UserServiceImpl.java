@@ -1,5 +1,6 @@
 package com.yyh.xfs.user.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -22,6 +23,9 @@ import com.yyh.xfs.user.service.UserService;
 import com.yyh.xfs.user.mapper.UserMapper;
 import com.yyh.xfs.user.vo.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.client.producer.SendCallback;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,12 +55,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     private final UserAttentionMapper userAttentionMapper;
     private final UserFansMapper userFansMapper;
 
-    public UserServiceImpl(RedisCache redisCache, JwtProperties jwtProperties, HttpServletRequest request, UserAttentionMapper userAttentionMapper, UserFansMapper userFansMapper) {
+    private final RocketMQTemplate rocketMQTemplate;
+
+    public UserServiceImpl(RedisCache redisCache, JwtProperties jwtProperties, HttpServletRequest request, UserAttentionMapper userAttentionMapper, UserFansMapper userFansMapper, RocketMQTemplate rocketMQTemplate) {
         this.redisCache = redisCache;
         this.jwtProperties = jwtProperties;
         this.request = request;
         this.userAttentionMapper = userAttentionMapper;
         this.userFansMapper = userFansMapper;
+        this.rocketMQTemplate = rocketMQTemplate;
     }
 
     /**
@@ -198,9 +205,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         UserDO newUserDO = initAccount(registerInfoVO);
         try {
             this.save(newUserDO);
+            rocketMQTemplate.asyncSend("user-add-es-topic", JSON.toJSONString(newUserDO),new SendCallback() {
+                @Override
+                public void onSuccess(SendResult sendResult) {
+                    log.info("发送成功");
+                }
+
+                @Override
+                public void onException(Throwable e) {
+                    log.error("发送失败",e);
+                }
+            });
         } catch (Exception e) {
             throw new SystemException(ExceptionMsgEnum.DB_ERROR, e);
         }
+
         return ResultUtil.successPost("注册成功", null);
     }
     /**
@@ -266,6 +285,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 "avatarUrl",
                 userVO.getAvatarUrl()
         );
+        rocketMQTemplate.asyncSend("user-update-es-topic", JSON.toJSONString(userVO),new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("发送成功");
+            }
+            @Override
+            public void onException(Throwable e) {
+                log.error("发送失败",e);
+            }
+        });
         redisCache.sSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
         return ResultUtil.successPost("修改头像成功", null);
     }
@@ -305,6 +334,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 userVO.getNickname()
         );
         redisCache.sSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
+        rocketMQTemplate.asyncSend("user-update-es-topic", JSON.toJSONString(userVO),new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("发送成功");
+            }
+            @Override
+            public void onException(Throwable e) {
+                log.error("发送失败",e);
+            }
+        });
         return ResultUtil.successPost("修改昵称成功", null);
     }
 
@@ -433,6 +472,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
         }
         UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(userDO, userVO);
         if(Objects.nonNull(userDO.getBirthday())){
             userVO.setBirthday(userDO.getBirthday().toString());
         }
@@ -647,6 +687,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         }
         try {
             this.save(newUserDO);
+            rocketMQTemplate.asyncSend("user-add-es-topic", JSON.toJSONString(newUserDO),new SendCallback() {
+                @Override
+                public void onSuccess(SendResult sendResult) {
+                    log.info("发送成功");
+                }
+
+                @Override
+                public void onException(Throwable e) {
+                    log.error("发送失败",e);
+                }
+            });
         } catch (Exception e) {
             throw new SystemException(ExceptionMsgEnum.DB_ERROR, e);
         }

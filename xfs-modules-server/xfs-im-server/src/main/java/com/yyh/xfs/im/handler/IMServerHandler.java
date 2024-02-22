@@ -108,7 +108,7 @@ public class IMServerHandler extends SimpleChannelInboundHandler<TextWebSocketFr
         if(evt instanceof IdleStateEvent){
             IdleStateEvent event = (IdleStateEvent) evt;
             if (Objects.requireNonNull(event.state()) == IdleState.READER_IDLE) {
-                log.warn("服务器已超过20秒未收到数据，关闭连接");
+                log.warn("服务器已超过5秒未收到数据，关闭连接");
                 ctx.channel().close();
             }
         }

@@ -131,4 +131,10 @@ public class UserRelationServiceImpl implements UserRelationService {
         userAttentionMapper.updateById(userAttentionDO);
         return ResultUtil.successPost(null);
     }
+
+    @Override
+    public Result<List<Long>> getAttentionUserId(Long userId) {
+        List<Long> list= userAttentionMapper.getAttentionUserId(userId);
+        return ResultUtil.successGet(list);
+    }
 }

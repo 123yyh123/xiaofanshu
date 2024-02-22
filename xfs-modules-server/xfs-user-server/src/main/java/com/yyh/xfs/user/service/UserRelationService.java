@@ -22,4 +22,6 @@ public interface UserRelationService {
     Result<Boolean> attention(Long userId, Long targetUserId);
 
     Result<?> updateRemarkName(Long userId, Long targetUserId, String remarkName);
+
+    Result<List<Long>> getAttentionUserId(Long userId);
 }

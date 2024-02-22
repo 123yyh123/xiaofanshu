@@ -23,4 +23,12 @@ public interface UserAttentionMapper extends BaseMapper<UserAttentionDO> {
 
     @Select("select * from user_attention where user_id=#{userId} and attention_id=#{targetUserId}")
     UserAttentionDO getExist(Long userId, Long targetUserId);
+
+    /**
+     * 获取用户关注的用户id
+     * @param userId 用户id
+     * @return 用户关注的用户id
+     */
+    @Select("select attention_id from user_attention where user_id=#{userId}")
+    List<Long> getAttentionUserId(Long userId);
 }

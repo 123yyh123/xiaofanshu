@@ -1,6 +1,9 @@
 package com.yyh.xfs.user.controller;
 
 import com.yyh.xfs.common.domain.Result;
+import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
+import com.yyh.xfs.common.utils.ResultUtil;
+import com.yyh.xfs.common.web.exception.BusinessException;
 import com.yyh.xfs.user.service.UserRelationService;
 import com.yyh.xfs.user.vo.UserRelationVO;
 import com.yyh.xfs.user.vo.ViewUserVO;
@@ -61,5 +64,18 @@ public class UserRelationController {
     @PostMapping("/updateRemarkName")
     public Result<?> updateRemarkName(Long userId, Long targetUserId, String remarkName) {
         return userRelationService.updateRemarkName(userId,targetUserId,remarkName);
+    }
+
+    /**
+     * 获取用户关注的用户id
+     * @param userId 用户id
+     * @return 用户关注的用户id
+     */
+    @GetMapping("/getAttentionUserId")
+    public Result<List<Long>> getAttentionUserId(@RequestParam("userId") Long userId) {
+        if (userId == null) {
+            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+        }
+        return userRelationService.getAttentionUserId(userId);
     }
 }
