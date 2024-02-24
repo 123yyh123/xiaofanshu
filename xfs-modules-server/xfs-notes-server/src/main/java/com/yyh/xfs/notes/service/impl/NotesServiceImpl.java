@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
+import com.yyh.xfs.common.redis.constant.BloomFilterMap;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
+import com.yyh.xfs.common.redis.utils.BloomFilterUtils;
 import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.common.redis.utils.RedisKey;
 import com.yyh.xfs.common.utils.ResultUtil;
@@ -55,6 +57,8 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
     private final UserFeign userFeign;
     private final HttpServletRequest request;
 
+    private final BloomFilterUtils bloomFilterUtils;
+
     public NotesServiceImpl(NotesTopicMapper notesTopicMapper,
                             NotesTopicRelationMapper notesTopicRelationMapper,
                             NotesCategoryMapper notesCategoryMapper,
@@ -63,7 +67,8 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
                             UserLikeNotesMapper userLikeNotesMapper,
                             UserCollectNotesMapper userCollectNotesMapper,
                             RedisCache redisCache,
-                            HttpServletRequest request) {
+                            HttpServletRequest request,
+                            BloomFilterUtils bloomFilterUtils) {
         this.notesTopicMapper = notesTopicMapper;
         this.notesTopicRelationMapper = notesTopicRelationMapper;
         this.notesCategoryMapper = notesCategoryMapper;
@@ -73,6 +78,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         this.userCollectNotesMapper = userCollectNotesMapper;
         this.redisCache = redisCache;
         this.request = request;
+        this.bloomFilterUtils = bloomFilterUtils;
     }
 
     @Override
@@ -93,15 +99,17 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         log.info("coverPicture:{}", notesPublishVO.getCoverPicture());
         NotesDO notesDO = new NotesDO();
         BeanUtils.copyProperties(notesPublishVO, notesDO);
-        // 利用百度AI接口进行文章分类
-        String category = NotesUtils.createCategory(notesPublishVO.getTitle(), notesPublishVO.getRealContent());
-        log.info("category:{}", category);
-        NotesCategoryDO notesCategoryDO = notesCategoryMapper.selectOne(new QueryWrapper<NotesCategoryDO>().lambda().eq(NotesCategoryDO::getCategoryName, category));
-        if (Objects.isNull(notesCategoryDO)) {
-            // 默认分类
-            notesDO.setBelongCategory(27);
-        } else {
-            notesDO.setBelongCategory(notesCategoryDO.getId());
+        if (notesPublishVO.getBelongCategory() == null) {
+            // 利用百度AI接口进行文章分类
+            String category = NotesUtils.createCategory(notesPublishVO.getTitle(), notesPublishVO.getRealContent());
+            log.info("category:{}", category);
+            NotesCategoryDO notesCategoryDO = notesCategoryMapper.selectOne(new QueryWrapper<NotesCategoryDO>().lambda().eq(NotesCategoryDO::getCategoryName, category));
+            if (Objects.isNull(notesCategoryDO)) {
+                // 默认分类
+                notesDO.setBelongCategory(1);
+            } else {
+                notesDO.setBelongCategory(notesCategoryDO.getId());
+            }
         }
         // 设置省份
         try {
@@ -113,6 +121,8 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         }
         // 保存笔记
         this.baseMapper.insert(notesDO);
+        // 将笔记id添加到布隆过滤器中
+        bloomFilterUtils.addBloomFilter(BloomFilterMap.NOTES_ID_BLOOM_FILTER, notesDO.getId().toString());
         //利用rocketMQ异步将笔记保存到ES中
         rocketMQTemplate.asyncSend("notes-add-es-topic", JSON.toJSONString(notesDO), new SendCallback() {
             @Override
@@ -164,16 +174,25 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
                 }
             });
         });
+        // 删除redis中的缓存
+        rocketMQTemplate.syncSend("notes-remove-redis-topic",RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
+        rocketMQTemplate.syncSend("notes-remove-redis-topic",RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
         return ResultUtil.successPost(null);
     }
 
     @Override
     public Result<NotesPageVO> getLastNotesByPage(Integer page, Integer pageSize) {
+        String notesJson = (String) redisCache.get(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_LAST_PAGE, pageSize + "_" + page));
+        List<NotesDO> notes = null;
+        if (StringUtils.hasText(notesJson)) {
+            notes = JSON.parseArray(notesJson, NotesDO.class);
+        }else {
+            Integer offset = (page - 1) * pageSize;
+            notes = this.baseMapper.selectPageByTime(offset, pageSize);
+            redisCache.set(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_LAST_PAGE, pageSize + "_" + page), JSON.toJSONString(notes));
+        }
         NotesPageVO notesPageVO = new NotesPageVO();
-        Integer offset = (page - 1) * pageSize;
-        List<NotesDO> notes = this.baseMapper.selectPageByTime(offset, pageSize);
         buildNotesVo(notesPageVO, notes);
-        notesPageVO.setTotal(this.baseMapper.selectCount(null));
         notesPageVO.setPage(page);
         notesPageVO.setPageSize(pageSize);
         return ResultUtil.successGet(notesPageVO);
@@ -356,7 +375,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
 
     @Override
     public Result<NotesPageVO> getAttentionUserNotes(Integer page, Integer pageSize) {
-        String token=request.getHeader("token");
+        String token = request.getHeader("token");
         Long userId;
         try {
             userId = JWTUtil.getCurrentUserId(token);
@@ -374,6 +393,28 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         NotesPageVO notesPageVO = new NotesPageVO();
         Integer offset = (page - 1) * pageSize;
         List<NotesDO> notes = this.baseMapper.selectPageByAttentionUserId(offset, pageSize, attentionUserId);
+        buildNotesVo(notesPageVO, notes);
+        notesPageVO.setPage(page);
+        notesPageVO.setPageSize(pageSize);
+        return ResultUtil.successGet(notesPageVO);
+    }
+
+    @Override
+    public Result<NotesPageVO> getNotesByCategoryId(Integer page, Integer pageSize, Integer categoryId, Integer type, Integer notesType) {
+        String notesJson = (String) redisCache.get(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, categoryId + "_" + type + "_" + notesType + "_" + pageSize + "_" + page));
+        List<NotesDO> notes = null;
+        if (StringUtils.hasText(notesJson)) {
+            notes = JSON.parseArray(notesJson, NotesDO.class);
+        }else {
+            Integer offset = (page - 1) * pageSize;
+            if (type == 0) {
+                notes = this.baseMapper.selectPageByCategoryIdByUpdateTime(offset, pageSize, categoryId, notesType);
+            } else {
+                notes = this.baseMapper.selectPageByCategoryIdOrderByPraise(offset, pageSize, categoryId, notesType);
+            }
+            redisCache.set(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, categoryId + "_" + type + "_" + notesType + "_" + pageSize + "_" + page), JSON.toJSONString(notes));
+        }
+        NotesPageVO notesPageVO = new NotesPageVO();
         buildNotesVo(notesPageVO, notes);
         notesPageVO.setPage(page);
         notesPageVO.setPageSize(pageSize);
@@ -406,15 +447,15 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             }
             String token = request.getHeader("token");
             try {
-                    Long currentUserId = JWTUtil.getCurrentUserId(token);
-                    // 判断当前用户是否点赞
-                    String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, currentUserId.toString());
-                    Boolean isLike = Objects.nonNull(redisCache.zSetScore(key, notesDO.getId()));
-                    notesVO.setIsLike(isLike);
-                    // 判断当前用户是否收藏
-                    String key1 = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES, currentUserId.toString());
-                    Boolean isCollect = Objects.nonNull(redisCache.zSetScore(key1, notesDO.getId()));
-                    notesVO.setIsCollect(isCollect);
+                Long currentUserId = JWTUtil.getCurrentUserId(token);
+                // 判断当前用户是否点赞
+                String key = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES, currentUserId.toString());
+                Boolean isLike = Objects.nonNull(redisCache.zSetScore(key, notesDO.getId()));
+                notesVO.setIsLike(isLike);
+                // 判断当前用户是否收藏
+                String key1 = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES, currentUserId.toString());
+                Boolean isCollect = Objects.nonNull(redisCache.zSetScore(key1, notesDO.getId()));
+                notesVO.setIsCollect(isCollect);
             } catch (Exception e) {
                 log.error("获取当前用户id失败", e);
                 notesVO.setIsLike(false);
@@ -531,6 +572,9 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             redisCache.removeZSet(userLikeNotesKey, JSON.toJSONString(map));
         }
         redisCache.addZSet(userLikeNotesKey, JSON.toJSONString(userLikeNotesMap), System.currentTimeMillis());
+        if (redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesLikeNum") == null) {
+            redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesLikeNum", notesDO.getNotesLikeNum());
+        }
         // 根据用户维度存储点赞记录
         if (isLike) {
             redisCache.removeZSet(key, notesId);
@@ -612,6 +656,9 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             redisCache.removeZSet(userCollectNotesKey, JSON.toJSONString(map));
         }
         redisCache.addZSet(userCollectNotesKey, JSON.toJSONString(userCollectNotesMap), System.currentTimeMillis());
+        if (redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesCollectionNum") == null) {
+            redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesCollectionNum", notesDO.getNotesCollectionNum());
+        }
         // 根据用户维度存储收藏记录
         if (isCollect) {
             redisCache.removeZSet(key, notesId);
@@ -669,6 +716,13 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
 
     @Override
     public Result<?> viewNotes(Long notesId) {
+        if (redisCache.hget(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesViewNum") == null) {
+            NotesDO notesDO = this.getById(notesId);
+            if (Objects.isNull(notesDO)) {
+                throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
+            }
+            redisCache.hset(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesViewNum", notesDO.getNotesViewNum());
+        }
         redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()), "notesViewNum", 1);
         return ResultUtil.successPost(null);
     }
@@ -778,6 +832,9 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
                 }
             });
         });
+        // 删除redis缓存
+        rocketMQTemplate.syncSend("notes-remove-redis-topic",RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
+        rocketMQTemplate.syncSend("notes-remove-redis-topic",RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
         return ResultUtil.successPut(null);
     }
 
@@ -827,6 +884,9 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
                 log.error("删除笔记从ES失败", throwable);
             }
         });
+        // 删除redis缓存
+        rocketMQTemplate.syncSend("notes-remove-redis-topic",RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
+        rocketMQTemplate.syncSend("notes-remove-redis-topic",RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
         return ResultUtil.successDelete(null);
     }
 
@@ -863,6 +923,9 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
                 log.error("更新笔记到ES失败", throwable);
             }
         });
+        // 删除redis缓存
+        rocketMQTemplate.syncSend("notes-remove-redis-topic",RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
+        rocketMQTemplate.syncSend("notes-remove-redis-topic",RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
         return ResultUtil.successPost(null);
     }
 

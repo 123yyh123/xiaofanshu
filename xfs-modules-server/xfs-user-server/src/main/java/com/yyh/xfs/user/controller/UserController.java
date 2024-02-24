@@ -1,8 +1,10 @@
 package com.yyh.xfs.user.controller;
 
 import com.yyh.xfs.common.domain.Result;
+import com.yyh.xfs.common.redis.constant.BloomFilterMap;
 import com.yyh.xfs.common.utils.FieldValidationUtil;
 import com.yyh.xfs.common.utils.ResultUtil;
+import com.yyh.xfs.common.web.aop.bloomFilter.BloomFilterProcessing;
 import com.yyh.xfs.user.service.UserService;
 import com.yyh.xfs.user.vo.PasswordVO;
 import com.yyh.xfs.user.vo.UserBindThirdStateVO;
@@ -52,6 +54,7 @@ public class UserController {
      * @return 用户信息
      */
     @GetMapping("/getUserInfo")
+    @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userId"})
     public Result<UserVO> getUserInfo(Long userId) {
         log.info("userId:{}",userId);
         return userService.getUserInfo(userId);
@@ -62,6 +65,7 @@ public class UserController {
      * @return 更新结果
      */
     @PostMapping("/updateAvatarUrl")
+    @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userVO.id"})
     public Result<?> updateAvatarUrl(@RequestBody UserVO userVO) {
         return userService.updateAvatarUrl(userVO);
     }
@@ -71,6 +75,7 @@ public class UserController {
      * @return 更新结果
      */
     @PostMapping("/updateBackgroundImage")
+    @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userVO.id"})
     public Result<?> updateBackgroundImage(@RequestBody UserVO userVO) {
         return userService.updateBackgroundImage(userVO);
     }
@@ -80,6 +85,7 @@ public class UserController {
      * @return 用户信息
      */
     @PostMapping("/updateNickname")
+    @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userVO.id"})
     public Result<?> updateNickname(@RequestBody UserVO userVO) {
         return userService.updateNickname(userVO);
     }
@@ -89,6 +95,7 @@ public class UserController {
      * @return 用户信息
      */
     @PostMapping("/updateIntroduction")
+    @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userVO.id"})
     public Result<?> updateIntroduction(@RequestBody UserVO userVO) {
         return userService.updateIntroduction(userVO);
     }
@@ -98,6 +105,7 @@ public class UserController {
      * @return 用户信息
      */
     @PostMapping("/updateSex")
+    @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userVO.id"})
     public Result<?> updateSex(@RequestBody UserVO userVO) {
         return userService.updateSex(userVO);
     }
@@ -107,6 +115,7 @@ public class UserController {
      * @return 用户信息
      */
     @PostMapping("/updateBirthday")
+    @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userVO.id"})
     public Result<Integer> updateBirthday(@RequestBody UserVO userVO) {
         return userService.updateBirthday(userVO);
     }
@@ -116,6 +125,7 @@ public class UserController {
      * @return 用户信息
      */
     @PostMapping("/updateArea")
+    @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userVO.id"})
     public Result<?> updateArea(@RequestBody UserVO userVO) {
         return userService.updateArea(userVO);
     }
@@ -126,6 +136,7 @@ public class UserController {
      * @return 用户信息
      */
     @GetMapping("/viewUserInfo")
+    @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userId"})
     public Result<ViewUserVO> viewUserInfo(Long userId) {
         return userService.viewUserInfo(userId);
     }

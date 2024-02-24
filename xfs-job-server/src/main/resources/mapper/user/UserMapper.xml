@@ -40,4 +40,7 @@
         </set>
         where id = #{id}
     </update>
+    <select id="getAllUserId" resultType="java.lang.Long">
+        select id from user
+    </select>
 </mapper>

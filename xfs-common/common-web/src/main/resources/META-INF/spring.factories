@@ -8,4 +8,5 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.yyh.xfs.common.web.properties.JwtProperties,\
   com.yyh.xfs.common.web.properties.TrtcProperties,\
   com.yyh.xfs.common.web.properties.GaoDeMapProperties,\
+  com.yyh.xfs.common.web.aop.bloomFilter.BloomFilterAspect,\
   com.yyh.xfs.common.web.exception.handler.GlobalExceptionHandler

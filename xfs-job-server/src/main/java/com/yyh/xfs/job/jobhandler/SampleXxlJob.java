@@ -6,7 +6,9 @@ import com.mongodb.client.result.UpdateResult;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import com.yyh.xfs.comment.domain.CommentDO;
+import com.yyh.xfs.common.redis.constant.BloomFilterMap;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
+import com.yyh.xfs.common.redis.utils.BloomFilterUtils;
 import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.common.redis.utils.RedisKey;
 import com.yyh.xfs.job.mapper.notes.NotesMapper;
@@ -28,6 +30,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.concurrent.Executor;
+import java.util.stream.Collectors;
 
 /**
  * @author yyh
@@ -44,24 +47,28 @@ public class SampleXxlJob {
     private final MongoTemplate mongoTemplate;
     private final NotesService notesService;
 
+    private final BloomFilterUtils bloomFilterUtils;
+
     public SampleXxlJob(RedisCache redisCache,
                         @Qualifier("asyncThreadExecutor") Executor jobThreadPool,
                         NotesMapper notesMapper,
                         MongoTemplate mongoTemplate,
-                        UserMapper userMapper, NotesService notesService) {
+                        UserMapper userMapper, NotesService notesService,
+                        BloomFilterUtils bloomFilterUtils) {
         this.redisCache = redisCache;
         this.jobThreadPool = jobThreadPool;
         this.notesMapper = notesMapper;
         this.mongoTemplate = mongoTemplate;
         this.userMapper = userMapper;
         this.notesService = notesService;
+        this.bloomFilterUtils = bloomFilterUtils;
     }
 
     /**
      * 更新用户信息
      */
     @XxlJob("userInfoJobHandler")
-    public void updateUserInfoJobHandler(){
+    public void updateUserInfoJobHandler() {
         XxlJobHelper.log("start update userInfo");
         // 从redis中获取要更新用户的id
         Set<Object> objects = redisCache.sGet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST);
@@ -105,13 +112,13 @@ public class SampleXxlJob {
                     Object notesCollectionNum = redisCache.hget(key, "notesCollectionNum");
                     Object notesViewNum = redisCache.hget(key, "notesViewNum");
                     if (Objects.nonNull(notesLikeNum)) {
-                        notesService.updateNotesLikeNum(key,notesId, (Integer) notesLikeNum);
+                        notesService.updateNotesLikeNum(key, notesId, (Integer) notesLikeNum);
                     }
                     if (Objects.nonNull(notesCollectionNum)) {
-                        notesService.updateNotesCollectionNum(key,notesId, (Integer) notesCollectionNum);
+                        notesService.updateNotesCollectionNum(key, notesId, (Integer) notesCollectionNum);
                     }
                     if (Objects.nonNull(notesViewNum)) {
-                        notesService.updateNotesViewNum(key,notesId, (Integer) notesViewNum);
+                        notesService.updateNotesViewNum(key, notesId, (Integer) notesViewNum);
                     }
                 });
             });
@@ -221,5 +228,45 @@ public class SampleXxlJob {
                 notesMapper.deleteUserCollectNotes(userCollectNotesDO);
             }
         })));
+    }
+
+    /**
+     * 检查布隆过滤器元素是否超过预期，不能超过3/4，超过则重新初始化
+     */
+    @XxlJob("checkBloomFilter")
+    public void checkBloomFilter() {
+        XxlJobHelper.log("start checkBloomFilter");
+        // 获取笔记id的布隆过滤器
+        long currentNotesIdNum = bloomFilterUtils.getBloomFilterSize(BloomFilterMap.NOTES_ID_BLOOM_FILTER);
+        // 获取笔记id的数量
+        long expectedNotesInsertNum = bloomFilterUtils.getExpectedInsertionsBloomFilter(BloomFilterMap.NOTES_ID_BLOOM_FILTER);
+        if (expectedNotesInsertNum==0||currentNotesIdNum >= expectedNotesInsertNum * 3 / 4) {
+            // 重新初始化布隆过滤器
+            List<String> ids = notesMapper.getAllNotesId().stream().map(String::valueOf).collect(Collectors.toList());
+            bloomFilterUtils.initBloomFilter(BloomFilterMap.NOTES_ID_BLOOM_FILTER, ids.isEmpty() ? 10000 : ids.size() * 4L, 0.01);
+            // 多线程初始化，每个线程初始化1000个id
+            for (int i = 0; i < ids.size() / 1000 + 1; i++) {
+                int finalI = i;
+                jobThreadPool.execute(() -> {
+                    List<String> subList = ids.subList(finalI * 1000, Math.min((finalI + 1) * 1000, ids.size()));
+                    bloomFilterUtils.addAllBloomFilter(BloomFilterMap.NOTES_ID_BLOOM_FILTER, subList);
+                });
+            }
+        }
+        long currentUserIdNum = bloomFilterUtils.getBloomFilterSize(BloomFilterMap.USER_ID_BLOOM_FILTER);
+        long expectedUserInsertNum = bloomFilterUtils.getExpectedInsertionsBloomFilter(BloomFilterMap.USER_ID_BLOOM_FILTER);
+        if (expectedUserInsertNum==0||currentUserIdNum >= expectedUserInsertNum * 3 / 4) {
+            // 重新初始化布隆过滤器
+            List<String> ids = userMapper.getAllUserId().stream().map(String::valueOf).collect(Collectors.toList());
+            bloomFilterUtils.initBloomFilter(BloomFilterMap.USER_ID_BLOOM_FILTER, ids.isEmpty() ? 10000 : ids.size() * 4L, 0.01);
+            // 多线程初始化，每个线程初始化1000个id
+            for (int i = 0; i < ids.size() / 1000 + 1; i++) {
+                int finalI = i;
+                jobThreadPool.execute(() -> {
+                    List<String> subList = ids.subList(finalI * 1000, Math.min((finalI + 1) * 1000, ids.size()));
+                    bloomFilterUtils.addAllBloomFilter(BloomFilterMap.USER_ID_BLOOM_FILTER, subList);
+                });
+            }
+        }
     }
 }

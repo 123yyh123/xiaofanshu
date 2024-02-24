@@ -39,4 +39,7 @@
         delete from user_collect_notes
         where notes_id = #{notesId} and user_id = #{userId}
     </delete>
+    <select id="getAllNotesId" resultType="java.lang.Long">
+        select id from notes
+    </select>
 </mapper>

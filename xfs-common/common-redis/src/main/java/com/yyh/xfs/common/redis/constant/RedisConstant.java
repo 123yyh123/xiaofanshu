@@ -92,4 +92,14 @@ public class RedisConstant {
      * redis key 已经更新热门评论的笔记id集合
      */
     public static final String REDIS_KEY_NOTES_COMMENT_HOT = "notes:comment:hot";
+
+    /**
+     * redis key 分页查询最近笔记缓存前缀
+     */
+    public static final String REDIS_KEY_NOTES_LAST_PAGE = "notes:last:page";
+
+    /**
+     * redis key 分页查询通过分类id的笔记缓存前缀
+     */
+    public static final String REDIS_KEY_NOTES_CATEGORY_PAGE = "notes:category:page";
 }

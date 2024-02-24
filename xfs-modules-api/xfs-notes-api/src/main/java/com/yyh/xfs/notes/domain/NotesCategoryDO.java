@@ -36,4 +36,9 @@ public class NotesCategoryDO implements Serializable {
      * 排序，越大越靠前
      */
     private Integer categorySort;
+
+    /**
+     * 图标
+     */
+    private String icon;
 }

@@ -3,6 +3,8 @@ package com.yyh.xfs.job.mapper.notes;
 import com.yyh.xfs.notes.domain.UserCollectNotesDO;
 import com.yyh.xfs.notes.domain.UserLikeNotesDO;
 
+import java.util.List;
+
 /**
  * 笔记mapper
  * @author yyh
@@ -53,4 +55,9 @@ public interface NotesMapper {
      * @param viewNum 浏览数
      */
     boolean updateNotesViewNum(Long notesId, Integer viewNum);
+
+    /**
+     * 获取所有笔记id
+     */
+    List<Long> getAllNotesId();
 }

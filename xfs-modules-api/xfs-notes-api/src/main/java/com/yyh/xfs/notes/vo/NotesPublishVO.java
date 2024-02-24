@@ -15,6 +15,7 @@ public class NotesPublishVO implements Serializable {
     private String title;
     private String realContent;
     private String content;
+    private Integer belongCategory;
     private Long belongUserId;
     private Integer notesType;
     private String coverPicture;

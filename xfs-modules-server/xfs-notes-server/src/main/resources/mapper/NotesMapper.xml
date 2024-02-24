@@ -87,4 +87,28 @@
         order by create_time desc
         limit #{pageSize} offset #{offset}
     </select>
+    <select id="selectPageByCategoryIdByUpdateTime" resultType="com.yyh.xfs.notes.domain.NotesDO">
+        select
+        <include refid="Base_Column_List"/>
+        from notes
+        where belong_category = #{categoryId}
+        and authority = 0
+        <if test="notesType != 2">
+            and notes_type = #{notesType}
+        </if>
+        order by update_time desc
+        limit #{pageSize} offset #{offset}
+    </select>
+    <select id="selectPageByCategoryIdOrderByPraise" resultType="com.yyh.xfs.notes.domain.NotesDO">
+        select
+        <include refid="Base_Column_List"/>
+        from notes
+        where belong_category = #{categoryId}
+        and authority = 0
+        <if test="notesType != 2">
+            and notes_type = #{notesType}
+        </if>
+        order by notes_like_num desc
+        limit #{pageSize} offset #{offset}
+    </select>
 </mapper>

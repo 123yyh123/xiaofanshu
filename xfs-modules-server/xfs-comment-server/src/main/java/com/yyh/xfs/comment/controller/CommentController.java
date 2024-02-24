@@ -5,6 +5,8 @@ import com.yyh.xfs.comment.service.CommentService;
 import com.yyh.xfs.comment.vo.CommentVO;
 import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
+import com.yyh.xfs.common.redis.constant.BloomFilterMap;
+import com.yyh.xfs.common.web.aop.bloomFilter.BloomFilterProcessing;
 import com.yyh.xfs.common.web.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -49,6 +51,7 @@ public class CommentController {
      * @return 评论数量
      */
     @GetMapping("/getCommentCount")
+    @BloomFilterProcessing(map = BloomFilterMap.NOTES_ID_BLOOM_FILTER,keys = {"#notesId"})
     public Result<Integer> getCommentList(Long notesId) {
         if (notesId == null) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
@@ -65,6 +68,7 @@ public class CommentController {
      * @return 一级评论列表
      */
     @GetMapping("/getCommentFirstList")
+    @BloomFilterProcessing(map = BloomFilterMap.NOTES_ID_BLOOM_FILTER,keys = {"#notesId"})
     public Result<List<CommentVO>> getCommentFirstList(Long notesId, Integer page, Integer pageSize) {
         if (notesId == null) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
@@ -88,6 +92,7 @@ public class CommentController {
      * @return 二级评论列表
      */
     @GetMapping("/getCommentSecondList")
+    @BloomFilterProcessing(map = BloomFilterMap.NOTES_ID_BLOOM_FILTER,keys = {"#notesId"})
     public Result<List<CommentVO>> getCommentSecondList(Long notesId, String parentId, Integer page, Integer pageSize) {
         if (notesId == null || !StringUtils.hasText(parentId)) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
@@ -110,6 +115,7 @@ public class CommentController {
      * @return 是否点赞成功
      */
     @PostMapping("/praiseComment")
+    @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userId","#targetUserId"})
     public Result<Boolean> praiseComment(String commentId, Long userId,Long targetUserId) {
         if (!StringUtils.hasText(commentId) || userId == null) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);

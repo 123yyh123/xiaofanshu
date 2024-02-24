@@ -41,7 +41,7 @@
         <hutool-http.version>5.8.11</hutool-http.version>
         <jjwt.version>0.9.1</jjwt.version>
         <jsoup.version>1.15.4</jsoup.version>
-        <knife4j.version>3.0.3</knife4j.version>
+        <knife4j.version>4.4.0</knife4j.version>
         <rocketmq.version>2.2.2</rocketmq.version>
         <dynamic.datasource.version>3.4.1</dynamic.datasource.version>
         <xxl.job.core.version>2.3.0</xxl.job.core.version>
@@ -111,7 +111,7 @@
             </dependency>
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
             </dependency>
         </dependencies>

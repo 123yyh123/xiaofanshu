@@ -81,6 +81,17 @@ public class RedisCache {
         }
     }
 
+    /**
+     * 根据前缀删除缓存
+     * @param prefix 前缀
+     */
+    public void delAllPrefix(String prefix) {
+        Set<String> keys = redisTemplate.keys(prefix + "*");
+        if (keys != null) {
+            redisTemplate.delete(keys);
+        }
+    }
+
     //============================String=============================
 
     /**

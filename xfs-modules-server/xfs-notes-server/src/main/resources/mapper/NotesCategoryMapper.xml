@@ -7,8 +7,9 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="category_name" property="categoryName" jdbcType="VARCHAR"/>
         <result column="category_sort" property="categorySort" jdbcType="INTEGER"/>
+        <result column="icon" property="icon" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, category_name, category_sort
+        id, category_name, category_sort, icon
     </sql>
 </mapper>

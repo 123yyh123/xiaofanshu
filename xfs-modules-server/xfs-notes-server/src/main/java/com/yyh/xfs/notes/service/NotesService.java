@@ -44,4 +44,6 @@ public interface NotesService extends IService<NotesDO> {
     Result<NotesPageVO> getNotesByView(Integer page, Integer pageSize, Integer type, Long userId);
 
     Result<NotesPageVO> getAttentionUserNotes(Integer page, Integer pageSize);
+
+    Result<NotesPageVO> getNotesByCategoryId(Integer page, Integer pageSize, Integer categoryId, Integer type,Integer notesType);
 }
