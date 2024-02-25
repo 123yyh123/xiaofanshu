@@ -8,10 +8,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -40,7 +37,7 @@ public class BloomFilterAspect {
      * @return Object
      * @throws Throwable 异常
      */
-    @Around("bloomFilterPointcut(bloomFilterProcessing)")
+    @Around(value = "bloomFilterPointcut(bloomFilterProcessing)", argNames = "point,bloomFilterProcessing")
     public Object around(ProceedingJoinPoint point, BloomFilterProcessing bloomFilterProcessing) throws Throwable {
         // 获取注解中的布隆过滤器名称
         String map = bloomFilterProcessing.map();

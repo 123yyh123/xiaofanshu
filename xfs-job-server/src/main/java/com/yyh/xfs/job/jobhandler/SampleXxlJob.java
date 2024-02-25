@@ -253,6 +253,7 @@ public class SampleXxlJob {
                 });
             }
         }
+        // 获取用户id的布隆过滤器
         long currentUserIdNum = bloomFilterUtils.getBloomFilterSize(BloomFilterMap.USER_ID_BLOOM_FILTER);
         long expectedUserInsertNum = bloomFilterUtils.getExpectedInsertionsBloomFilter(BloomFilterMap.USER_ID_BLOOM_FILTER);
         if (expectedUserInsertNum==0||currentUserIdNum >= expectedUserInsertNum * 3 / 4) {
@@ -267,6 +268,20 @@ public class SampleXxlJob {
                     bloomFilterUtils.addAllBloomFilter(BloomFilterMap.USER_ID_BLOOM_FILTER, subList);
                 });
             }
+        }
+    }
+
+    /**
+     * 检查rocketmq幂等布隆过滤器元素是否超过预期，不能超过3/4，超过则重新初始化
+     */
+    @XxlJob("checkRocketMqIdempotentBloomFilter")
+    public void checkRocketMqIdempotentBloomFilter() {
+        XxlJobHelper.log("start checkRocketMqIdempotentBloomFilter");
+        long currentRocketMqIdempotentNum = bloomFilterUtils.getBloomFilterSize(BloomFilterMap.ROCKETMQ_IDEMPOTENT_BLOOM_FILTER);
+        long expectedRocketMqIdempotentInsertNum = bloomFilterUtils.getExpectedInsertionsBloomFilter(BloomFilterMap.ROCKETMQ_IDEMPOTENT_BLOOM_FILTER);
+        if (expectedRocketMqIdempotentInsertNum==0||currentRocketMqIdempotentNum >= expectedRocketMqIdempotentInsertNum * 3 / 4) {
+            // 重新初始化布隆过滤器
+            bloomFilterUtils.initBloomFilter(BloomFilterMap.ROCKETMQ_IDEMPOTENT_BLOOM_FILTER, 1000000, 0.01);
         }
     }
 }

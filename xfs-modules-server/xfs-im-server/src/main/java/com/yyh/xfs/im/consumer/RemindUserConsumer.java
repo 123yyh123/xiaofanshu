@@ -1,13 +1,16 @@
 package com.yyh.xfs.im.consumer;
 
 import com.alibaba.fastjson.JSON;
+import com.yyh.xfs.common.redis.constant.BloomFilterMap;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
+import com.yyh.xfs.common.redis.utils.BloomFilterUtils;
 import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.common.redis.utils.RedisKey;
 import com.yyh.xfs.im.handler.types.ChatHandler;
 import com.yyh.xfs.im.vo.MessageVO;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +27,27 @@ import static com.yyh.xfs.im.handler.IMServerHandler.USER_CHANNEL_MAP;
 @Component
 @Slf4j
 @RocketMQMessageListener(topic = "notes-remind-target-topic", consumerGroup = "notes-remind-target-consumer-group")
-public class RemindUserConsumer implements RocketMQListener<String> {
+public class RemindUserConsumer implements RocketMQListener<MessageExt> {
 
     private final ChatHandler chatHandler;
     private final RedisCache redisCache;
+    private final BloomFilterUtils bloomFilterUtils;
 
-    public RemindUserConsumer(RedisCache redisCache, ChatHandler chatHandler) {
+    public RemindUserConsumer(RedisCache redisCache,
+                              ChatHandler chatHandler,
+                              BloomFilterUtils bloomFilterUtils) {
         this.redisCache = redisCache;
         this.chatHandler = chatHandler;
+        this.bloomFilterUtils = bloomFilterUtils;
     }
 
     @Override
-    public void onMessage(String s) {
+    public void onMessage(MessageExt messageExt) {
+        if (bloomFilterUtils.mightContainBloomFilter(BloomFilterMap.ROCKETMQ_IDEMPOTENT_BLOOM_FILTER, messageExt.getMsgId())) {
+            log.info("消息已经消费过：{}", messageExt.getMsgId());
+            return;
+        }
+        String s = new String(messageExt.getBody());
         log.info("收到消息：{}", s);
         Map<String,Object> map = JSON.parseObject(s, Map.class);
         String userId = (String) map.get("belongUserId");
@@ -57,5 +69,6 @@ public class RemindUserConsumer implements RocketMQListener<String> {
         messageVO.setChatType(0);
         Channel channel = USER_CHANNEL_MAP.get(messageVO.getTo());
         chatHandler.sendMessage(channel, messageVO);
+        bloomFilterUtils.addBloomFilter(BloomFilterMap.ROCKETMQ_IDEMPOTENT_BLOOM_FILTER, messageExt.getMsgId());
     }
 }
