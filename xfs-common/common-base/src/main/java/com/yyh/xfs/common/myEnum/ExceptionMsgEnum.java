@@ -34,6 +34,7 @@ public enum ExceptionMsgEnum {
     ELASTICSEARCH_INIT_ALREADY(StatusCode.ELASTICSEARCH_INIT_ALREADY,"ElasticSearch已初始化"),
     SMS_CODE_SEND_FREQUENTLY(StatusCode.SMS_CODE_SEND_FREQUENTLY,"短信发送频繁,请稍后再试"),
     NO_PERMISSION(StatusCode.NO_PERMISSION,"无权限"),
+    REPEAT_OPERATION(StatusCode.REPEAT_OPERATION,"操作太过频繁"),
     /**
      * 系统异常
      */

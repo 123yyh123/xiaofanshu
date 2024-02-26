@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yyh.xfs.common.constant.RocketMQTopicConstant;
 import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
@@ -51,7 +52,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     private final JwtProperties jwtProperties;
     private final RedisCache redisCache;
     private final HttpServletRequest request;
-
     private final UserAttentionMapper userAttentionMapper;
     private final UserFansMapper userFansMapper;
 
@@ -205,7 +205,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         UserDO newUserDO = initAccount(registerInfoVO);
         try {
             this.save(newUserDO);
-            rocketMQTemplate.asyncSend("user-add-es-topic", JSON.toJSONString(newUserDO),new SendCallback() {
+            rocketMQTemplate.asyncSend(RocketMQTopicConstant.USER_ADD_ES_TOPIC, JSON.toJSONString(newUserDO),new SendCallback() {
                 @Override
                 public void onSuccess(SendResult sendResult) {
                     log.info("发送成功");
@@ -285,7 +285,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 "avatarUrl",
                 userVO.getAvatarUrl()
         );
-        rocketMQTemplate.asyncSend("user-update-es-topic", JSON.toJSONString(userVO),new SendCallback() {
+        rocketMQTemplate.asyncSend(RocketMQTopicConstant.USER_UPDATE_ES_TOPIC, JSON.toJSONString(userVO),new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("发送成功");
@@ -334,7 +334,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 userVO.getNickname()
         );
         redisCache.sSet(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userVO.getId());
-        rocketMQTemplate.asyncSend("user-update-es-topic", JSON.toJSONString(userVO),new SendCallback() {
+        rocketMQTemplate.asyncSend(RocketMQTopicConstant.USER_UPDATE_ES_TOPIC, JSON.toJSONString(userVO),new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("发送成功");
@@ -687,7 +687,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         }
         try {
             this.save(newUserDO);
-            rocketMQTemplate.asyncSend("user-add-es-topic", JSON.toJSONString(newUserDO),new SendCallback() {
+            rocketMQTemplate.asyncSend(RocketMQTopicConstant.USER_ADD_ES_TOPIC, JSON.toJSONString(newUserDO),new SendCallback() {
                 @Override
                 public void onSuccess(SendResult sendResult) {
                     log.info("发送成功");

@@ -1,6 +1,8 @@
 package com.yyh.xfs.im.consumer;
 
 import com.alibaba.fastjson.JSON;
+import com.yyh.xfs.common.constant.RocketMQConsumerGroupConstant;
+import com.yyh.xfs.common.constant.RocketMQTopicConstant;
 import com.yyh.xfs.common.redis.constant.BloomFilterMap;
 import com.yyh.xfs.common.redis.utils.BloomFilterUtils;
 import com.yyh.xfs.im.vo.MessageVO;
@@ -22,8 +24,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RocketMQMessageListener(
-        topic = "find-user-topic",
-        consumerGroup = "find-user-consumer-group",
+        topic = RocketMQTopicConstant.FIND_USER_TOPIC,
+        consumerGroup = RocketMQConsumerGroupConstant.FIND_USER_CONSUMER_GROUP,
         messageModel = MessageModel.BROADCASTING)
 public class FindUserConsumer implements RocketMQListener<MessageExt>{
 

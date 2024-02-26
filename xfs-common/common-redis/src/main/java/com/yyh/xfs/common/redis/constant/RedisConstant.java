@@ -102,4 +102,13 @@ public class RedisConstant {
      * redis key 分页查询通过分类id的笔记缓存前缀
      */
     public static final String REDIS_KEY_NOTES_CATEGORY_PAGE = "notes:category:page";
+
+
+
+
+
+    /**
+     * redis key 接口幂等性前缀
+     */
+    public static final String REDIS_KEY_IDEMPOTENT = "idempotent:";
 }

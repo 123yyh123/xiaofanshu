@@ -7,6 +7,7 @@ import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.redis.constant.BloomFilterMap;
 import com.yyh.xfs.common.web.aop.bloomFilter.BloomFilterProcessing;
+import com.yyh.xfs.common.web.aop.idempotent.Idempotent;
 import com.yyh.xfs.common.web.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -34,6 +35,7 @@ public class CommentController {
      * @return 评论信息
      */
     @PostMapping("/addComment")
+    @Idempotent(value = "/comment/addComment", expireTime = 3000)
     public Result<CommentVO> addComment(@RequestBody CommentDO commentDO) {
         if (commentDO == null || commentDO.getCommentUserId() == null || commentDO.getNotesId() == null) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
@@ -115,6 +117,7 @@ public class CommentController {
      * @return 是否点赞成功
      */
     @PostMapping("/praiseComment")
+    @Idempotent(value = "/comment/praiseComment", expireTime = 500)
     @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userId","#targetUserId"})
     public Result<Boolean> praiseComment(String commentId, Long userId,Long targetUserId) {
         if (!StringUtils.hasText(commentId) || userId == null) {
@@ -130,6 +133,7 @@ public class CommentController {
      * @return 是否置顶成功
      */
     @PostMapping("/setTopComment")
+    @Idempotent(value = "/comment/setTopComment", expireTime = 3000)
     public Result<Boolean> setTopComment(String commentId) {
         if (!StringUtils.hasText(commentId)) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);

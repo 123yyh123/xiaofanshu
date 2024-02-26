@@ -1,5 +1,7 @@
 package com.yyh.xfs.notes.consumer;
 
+import com.yyh.xfs.common.constant.RocketMQConsumerGroupConstant;
+import com.yyh.xfs.common.constant.RocketMQTopicConstant;
 import com.yyh.xfs.common.redis.utils.RedisCache;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -13,7 +15,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-@RocketMQMessageListener(topic = "notes-remove-redis-topic", consumerGroup = "notes-remove-redis-consumer")
+@RocketMQMessageListener(topic = RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC,
+        consumerGroup = RocketMQConsumerGroupConstant.NOTES_REMOVE_REDIS_CONSUMER_GROUP)
 public class RemoveCacheConsumer implements RocketMQListener<String> {
 
     private final RedisCache redisCache;

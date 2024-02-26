@@ -1,6 +1,7 @@
 package com.yyh.xfs.im.handler.types;
 
 import com.alibaba.fastjson.JSON;
+import com.yyh.xfs.common.constant.RocketMQTopicConstant;
 import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
@@ -166,7 +167,7 @@ public class ChatHandler {
         if (b) {
             log.info("双方不在一个服务，发送广播消息");
             // 利用rocketmq发送广播消息，让所有的服务都能收到消息，然后再发送给用户
-            rocketMQTemplate.convertAndSend("find-user-topic", JSON.toJSONString(messageVO));
+            rocketMQTemplate.convertAndSend(RocketMQTopicConstant.FIND_USER_TOPIC, JSON.toJSONString(messageVO));
             return;
         }
         log.info("对方不在线，发送离线消息");

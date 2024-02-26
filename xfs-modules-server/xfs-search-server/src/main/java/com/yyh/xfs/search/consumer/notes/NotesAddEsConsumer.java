@@ -1,6 +1,8 @@
 package com.yyh.xfs.search.consumer.notes;
 
 import com.alibaba.fastjson.JSON;
+import com.yyh.xfs.common.constant.RocketMQConsumerGroupConstant;
+import com.yyh.xfs.common.constant.RocketMQTopicConstant;
 import com.yyh.xfs.notes.domain.NotesDO;
 import com.yyh.xfs.search.service.NotesSearchService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +16,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-@RocketMQMessageListener(topic = "notes-add-es-topic", consumerGroup = "notes-add-es-consumer-group")
+@RocketMQMessageListener(topic = RocketMQTopicConstant.NOTES_ADD_ES_TOPIC,
+        consumerGroup = RocketMQConsumerGroupConstant.NOTES_ADD_ES_CONSUMER_GROUP)
 public class NotesAddEsConsumer implements RocketMQListener<String> {
 
     private final NotesSearchService notesSearchService;

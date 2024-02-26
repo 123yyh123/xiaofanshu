@@ -1,6 +1,8 @@
 package com.yyh.xfs.search.consumer.user;
 
 import com.alibaba.fastjson.JSON;
+import com.yyh.xfs.common.constant.RocketMQConsumerGroupConstant;
+import com.yyh.xfs.common.constant.RocketMQTopicConstant;
 import com.yyh.xfs.search.domain.UserEsDO;
 import com.yyh.xfs.search.service.UserSearchService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +17,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-@RocketMQMessageListener(topic = "user-add-es-topic", consumerGroup = "user-add-es-consumer-group")
+@RocketMQMessageListener(topic = RocketMQTopicConstant.USER_ADD_ES_TOPIC,
+        consumerGroup = RocketMQConsumerGroupConstant.USER_ADD_ES_CONSUMER_GROUP)
 public class UserAddEsConsumer implements RocketMQListener<String> {
     private final UserSearchService userSearchService;
 

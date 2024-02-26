@@ -1,6 +1,8 @@
 package com.yyh.xfs.im.consumer;
 
 import com.alibaba.fastjson.JSON;
+import com.yyh.xfs.common.constant.RocketMQConsumerGroupConstant;
+import com.yyh.xfs.common.constant.RocketMQTopicConstant;
 import com.yyh.xfs.common.redis.constant.BloomFilterMap;
 import com.yyh.xfs.common.redis.utils.BloomFilterUtils;
 import com.yyh.xfs.common.redis.utils.RedisCache;
@@ -23,8 +25,8 @@ import static com.yyh.xfs.im.handler.IMServerHandler.USER_CHANNEL_MAP;
 @Component
 @Slf4j
 @RocketMQMessageListener(
-        topic = "notes-praiseAndCollect-remind-topic",
-        consumerGroup = "praise-and-collect-notification-consumer-group")
+        topic = RocketMQTopicConstant.PRAISE_AND_COLLECT_REMIND_TOPIC,
+        consumerGroup = RocketMQConsumerGroupConstant.PRAISE_AND_COLLECT_REMIND_CONSUMER_GROUP)
 public class PraiseAndCollectNotificationConsumer implements RocketMQListener<MessageExt> {
     private final ChatHandler chatHandler;
     private final BloomFilterUtils bloomFilterUtils;

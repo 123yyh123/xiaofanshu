@@ -5,6 +5,7 @@ import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.utils.FieldValidationUtil;
 import com.yyh.xfs.common.utils.ResultUtil;
+import com.yyh.xfs.common.web.aop.idempotent.Idempotent;
 import com.yyh.xfs.common.web.exception.BusinessException;
 import com.yyh.xfs.common.web.properties.TrtcProperties;
 import com.yyh.xfs.user.service.UserService;

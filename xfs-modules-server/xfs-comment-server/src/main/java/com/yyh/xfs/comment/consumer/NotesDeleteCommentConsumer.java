@@ -1,6 +1,8 @@
 package com.yyh.xfs.comment.consumer;
 
 import com.yyh.xfs.comment.service.CommentService;
+import com.yyh.xfs.common.constant.RocketMQConsumerGroupConstant;
+import com.yyh.xfs.common.constant.RocketMQTopicConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-@RocketMQMessageListener(topic = "notes-delete-comment-topic", consumerGroup = "notes-delete-comment-consumer-group")
+@RocketMQMessageListener(topic = RocketMQTopicConstant.NOTES_DELETE_COMMENT_TOPIC, consumerGroup = RocketMQConsumerGroupConstant.NOTES_DELETE_COMMENT_CONSUMER_GROUP)
 public class NotesDeleteCommentConsumer implements RocketMQListener<String> {
 
     private final CommentService commentService;

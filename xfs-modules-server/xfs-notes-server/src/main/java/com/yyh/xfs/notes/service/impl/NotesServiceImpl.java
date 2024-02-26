@@ -3,6 +3,7 @@ package com.yyh.xfs.notes.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yyh.xfs.common.constant.RocketMQTopicConstant;
 import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.redis.constant.BloomFilterMap;
@@ -124,7 +125,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         // 将笔记id添加到布隆过滤器中
         bloomFilterUtils.addBloomFilter(BloomFilterMap.NOTES_ID_BLOOM_FILTER, notesDO.getId().toString());
         //利用rocketMQ异步将笔记保存到ES中
-        rocketMQTemplate.asyncSend("notes-add-es-topic", JSON.toJSONString(notesDO), new SendCallback() {
+        rocketMQTemplate.asyncSend(RocketMQTopicConstant.NOTES_ADD_ES_TOPIC, JSON.toJSONString(notesDO), new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("保存笔记到ES成功");
@@ -162,7 +163,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             map.put("belongUserId", notesPublishVO.getBelongUserId().toString());
             map.put("toUserId", userId.toString());
             map.put("coverPicture", notesPublishVO.getCoverPicture());
-            rocketMQTemplate.asyncSend("notes-remind-target-topic", JSON.toJSONString(map), new SendCallback() {
+            rocketMQTemplate.asyncSend(RocketMQTopicConstant.NOTES_REMIND_TARGET_TOPIC, JSON.toJSONString(map), new SendCallback() {
                 @Override
                 public void onSuccess(SendResult sendResult) {
                     log.info("发送通知成功");
@@ -175,8 +176,8 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             });
         });
         // 删除redis中的缓存
-        rocketMQTemplate.syncSend("notes-remove-redis-topic",RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
-        rocketMQTemplate.syncSend("notes-remove-redis-topic",RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
+        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC,RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
+        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC,RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
         return ResultUtil.successPost(null);
     }
 
@@ -616,7 +617,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         messageMap.put("chatType", 0);
         messageMap.put("friendType", 1);
         messageMap.put("content", JSON.toJSONString(contentMap));
-        rocketMQTemplate.asyncSend("notes-praiseAndCollect-remind-topic", JSON.toJSONString(messageMap), new SendCallback() {
+        rocketMQTemplate.asyncSend(RocketMQTopicConstant.PRAISE_AND_COLLECT_REMIND_TOPIC, JSON.toJSONString(messageMap), new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("发送点赞通知成功");
@@ -700,7 +701,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         messageMap.put("chatType", 0);
         messageMap.put("friendType", 1);
         messageMap.put("content", JSON.toJSONString(contentMap));
-        rocketMQTemplate.asyncSend("notes-praiseAndCollect-remind-topic", JSON.toJSONString(messageMap), new SendCallback() {
+        rocketMQTemplate.asyncSend(RocketMQTopicConstant.PRAISE_AND_COLLECT_REMIND_TOPIC, JSON.toJSONString(messageMap), new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("发送收藏通知成功");
@@ -780,7 +781,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         notesDO.setUpdateTime(new Date());
         this.updateById(notesDO);
         //利用rocketMQ异步将笔记更新到ES中
-        rocketMQTemplate.asyncSend("notes-update-es-topic", JSON.toJSONString(notesDO), new SendCallback() {
+        rocketMQTemplate.asyncSend(RocketMQTopicConstant.NOTES_UPDATE_ES_TOPIC, JSON.toJSONString(notesDO), new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("更新笔记到ES成功");
@@ -820,7 +821,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             map.put("belongUserId", notesPublishVO.getBelongUserId().toString());
             map.put("toUserId", userId.toString());
             map.put("coverPicture", notesPublishVO.getCoverPicture());
-            rocketMQTemplate.asyncSend("notes-remind-target-topic", JSON.toJSONString(map), new SendCallback() {
+            rocketMQTemplate.asyncSend(RocketMQTopicConstant.NOTES_REMIND_TARGET_TOPIC, JSON.toJSONString(map), new SendCallback() {
                 @Override
                 public void onSuccess(SendResult sendResult) {
                     log.info("发送通知成功");
@@ -833,8 +834,8 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             });
         });
         // 删除redis缓存
-        rocketMQTemplate.syncSend("notes-remove-redis-topic",RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
-        rocketMQTemplate.syncSend("notes-remove-redis-topic",RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
+        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC,RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
+        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC,RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
         return ResultUtil.successPut(null);
     }
 
@@ -861,7 +862,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         // 删除笔记的点赞，收藏，浏览量
         redisCache.del(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_COUNT, notesId.toString()));
         // 删除笔记的评论
-        rocketMQTemplate.asyncSend("notes-delete-comment-topic", notesId.toString(), new SendCallback() {
+        rocketMQTemplate.asyncSend(RocketMQTopicConstant.NOTES_DELETE_COMMENT_TOPIC, notesId.toString(), new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("删除笔记的评论成功");
@@ -873,7 +874,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             }
         });
         //利用rocketMQ异步将笔记从ES中删除
-        rocketMQTemplate.asyncSend("notes-delete-es-topic", notesId.toString(), new SendCallback() {
+        rocketMQTemplate.asyncSend(RocketMQTopicConstant.NOTES_DELETE_ES_TOPIC, notesId.toString(), new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("删除笔记从ES成功");
@@ -885,8 +886,8 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             }
         });
         // 删除redis缓存
-        rocketMQTemplate.syncSend("notes-remove-redis-topic",RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
-        rocketMQTemplate.syncSend("notes-remove-redis-topic",RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
+        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC,RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
+        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC,RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
         return ResultUtil.successDelete(null);
     }
 
@@ -912,7 +913,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         notesDO.setAuthority(authority);
         this.updateById(notesDO);
         //利用rocketMQ异步将笔记更新到ES中
-        rocketMQTemplate.asyncSend("notes-update-es-topic", JSON.toJSONString(notesDO), new SendCallback() {
+        rocketMQTemplate.asyncSend(RocketMQTopicConstant.NOTES_UPDATE_ES_TOPIC, JSON.toJSONString(notesDO), new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("更新笔记到ES成功");
@@ -924,8 +925,8 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             }
         });
         // 删除redis缓存
-        rocketMQTemplate.syncSend("notes-remove-redis-topic",RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
-        rocketMQTemplate.syncSend("notes-remove-redis-topic",RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
+        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC,RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
+        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC,RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
         return ResultUtil.successPost(null);
     }
 

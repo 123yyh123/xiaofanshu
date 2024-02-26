@@ -5,6 +5,7 @@ import com.yyh.xfs.common.redis.constant.BloomFilterMap;
 import com.yyh.xfs.common.utils.FieldValidationUtil;
 import com.yyh.xfs.common.utils.ResultUtil;
 import com.yyh.xfs.common.web.aop.bloomFilter.BloomFilterProcessing;
+import com.yyh.xfs.common.web.aop.idempotent.Idempotent;
 import com.yyh.xfs.user.service.UserService;
 import com.yyh.xfs.user.vo.PasswordVO;
 import com.yyh.xfs.user.vo.UserBindThirdStateVO;
@@ -36,6 +37,7 @@ public class UserController {
      * @return 重置结果
      */
     @PostMapping("/resetPassword")
+    @Idempotent(value = "/user/resetPassword", expireTime = 60000)
     public Result<?> resetPassword(String phoneNumber, String password, String smsCode) {
         if(!FieldValidationUtil.isPhoneNumber(phoneNumber)){
             return ResultUtil.errorPost("手机号格式不正确");
@@ -65,6 +67,7 @@ public class UserController {
      * @return 更新结果
      */
     @PostMapping("/updateAvatarUrl")
+    @Idempotent(value = "/user/updateAvatarUrl", expireTime = 3000)
     @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userVO.id"})
     public Result<?> updateAvatarUrl(@RequestBody UserVO userVO) {
         return userService.updateAvatarUrl(userVO);
@@ -75,6 +78,7 @@ public class UserController {
      * @return 更新结果
      */
     @PostMapping("/updateBackgroundImage")
+    @Idempotent(value = "/user/updateBackgroundImage", expireTime = 3000)
     @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userVO.id"})
     public Result<?> updateBackgroundImage(@RequestBody UserVO userVO) {
         return userService.updateBackgroundImage(userVO);
@@ -85,6 +89,7 @@ public class UserController {
      * @return 用户信息
      */
     @PostMapping("/updateNickname")
+    @Idempotent(value = "/user/updateNickname", expireTime = 3000)
     @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userVO.id"})
     public Result<?> updateNickname(@RequestBody UserVO userVO) {
         return userService.updateNickname(userVO);
@@ -95,6 +100,7 @@ public class UserController {
      * @return 用户信息
      */
     @PostMapping("/updateIntroduction")
+    @Idempotent(value = "/user/updateIntroduction", expireTime = 3000)
     @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userVO.id"})
     public Result<?> updateIntroduction(@RequestBody UserVO userVO) {
         return userService.updateIntroduction(userVO);
@@ -105,6 +111,7 @@ public class UserController {
      * @return 用户信息
      */
     @PostMapping("/updateSex")
+    @Idempotent(value = "/user/updateSex", expireTime = 3000)
     @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userVO.id"})
     public Result<?> updateSex(@RequestBody UserVO userVO) {
         return userService.updateSex(userVO);
@@ -115,6 +122,7 @@ public class UserController {
      * @return 用户信息
      */
     @PostMapping("/updateBirthday")
+    @Idempotent(value = "/user/updateBirthday", expireTime = 3000)
     @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userVO.id"})
     public Result<Integer> updateBirthday(@RequestBody UserVO userVO) {
         return userService.updateBirthday(userVO);
@@ -125,6 +133,7 @@ public class UserController {
      * @return 用户信息
      */
     @PostMapping("/updateArea")
+    @Idempotent(value = "/user/updateArea", expireTime = 3000)
     @BloomFilterProcessing(map = BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userVO.id"})
     public Result<?> updateArea(@RequestBody UserVO userVO) {
         return userService.updateArea(userVO);
@@ -157,6 +166,7 @@ public class UserController {
      * @return 更新结果
      */
     @PostMapping("/updatePhoneNumber")
+    @Idempotent(value = "/user/updatePhoneNumber", expireTime = 60000)
     public Result<Boolean> updatePhoneNumber(String phoneNumber, String smsCode) {
         if(!FieldValidationUtil.isPhoneNumber(phoneNumber)){
             return ResultUtil.errorPost("手机号格式不正确");
@@ -173,6 +183,7 @@ public class UserController {
      * @return 重置结果
      */
     @PostMapping("/resetPasswordByOld")
+    @Idempotent(value = "/user/resetPasswordByOld", expireTime = 60000)
     public Result<?> resetPasswordByOld(@RequestBody PasswordVO passwordVO) {
         return userService.resetPasswordByOld(passwordVO);
     }

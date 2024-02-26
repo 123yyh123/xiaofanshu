@@ -1,5 +1,7 @@
 package com.yyh.xfs.search.consumer.notes;
 
+import com.yyh.xfs.common.constant.RocketMQConsumerGroupConstant;
+import com.yyh.xfs.common.constant.RocketMQTopicConstant;
 import com.yyh.xfs.search.service.NotesSearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -12,7 +14,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-@RocketMQMessageListener(topic = "notes-delete-es-topic", consumerGroup = "notes-delete-es-consumer-group")
+@RocketMQMessageListener(topic = RocketMQTopicConstant.NOTES_DELETE_ES_TOPIC,
+        consumerGroup = RocketMQConsumerGroupConstant.NOTES_DELETE_ES_CONSUMER_GROUP)
 public class NotesDeleteEsConsumer implements RocketMQListener<String> {
 
     private final NotesSearchService notesSearchService;

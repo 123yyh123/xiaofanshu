@@ -638,4 +638,8 @@ public class RedisCache {
     public Boolean setnx(String key) {
         return redisTemplate.opsForValue().setIfAbsent(key, 1);
     }
+
+    public boolean setnxAndExpire(String key, long time, TimeUnit timeUnit) {
+        return Boolean.TRUE.equals(redisTemplate.opsForValue().setIfAbsent(key, 1, time, timeUnit));
+    }
 }

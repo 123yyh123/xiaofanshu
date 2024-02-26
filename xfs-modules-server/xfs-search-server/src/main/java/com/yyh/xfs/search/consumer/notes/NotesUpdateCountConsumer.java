@@ -1,6 +1,8 @@
 package com.yyh.xfs.search.consumer.notes;
 
 import com.alibaba.fastjson.JSON;
+import com.yyh.xfs.common.constant.RocketMQConsumerGroupConstant;
+import com.yyh.xfs.common.constant.RocketMQTopicConstant;
 import com.yyh.xfs.search.service.NotesSearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -15,7 +17,8 @@ import java.util.Map;
  */
 @Component
 @Slf4j
-@RocketMQMessageListener(topic = "notes-update-count-topic", consumerGroup = "notes-update-count-consumer-group")
+@RocketMQMessageListener(topic = RocketMQTopicConstant.NOTES_UPDATE_COUNT_TOPIC,
+        consumerGroup = RocketMQConsumerGroupConstant.NOTES_UPDATE_COUNT_CONSUMER_GROUP)
 public class NotesUpdateCountConsumer implements RocketMQListener<String> {
     private final NotesSearchService notesSearchService;
 

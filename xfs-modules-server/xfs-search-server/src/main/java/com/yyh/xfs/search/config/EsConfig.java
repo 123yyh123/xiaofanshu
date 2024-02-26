@@ -1,6 +1,5 @@
 package com.yyh.xfs.search.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.elasticsearch.annotations.Document;

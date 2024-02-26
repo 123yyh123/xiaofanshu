@@ -17,6 +17,4 @@ public class BloomFilterMap {
      * rocketmq幂等布隆过滤器
      */
     public static final String ROCKETMQ_IDEMPOTENT_BLOOM_FILTER = "rocketmqIdempotentBloomFilter";
-
-
 }

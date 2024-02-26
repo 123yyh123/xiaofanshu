@@ -4,6 +4,7 @@ import com.yyh.xfs.common.domain.Result;
 import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.redis.constant.BloomFilterMap;
 import com.yyh.xfs.common.web.aop.bloomFilter.BloomFilterProcessing;
+import com.yyh.xfs.common.web.aop.idempotent.Idempotent;
 import com.yyh.xfs.common.web.exception.BusinessException;
 import com.yyh.xfs.notes.domain.NotesDO;
 import com.yyh.xfs.notes.service.NotesService;
@@ -30,6 +31,7 @@ public class NotesController {
     }
 
     @PostMapping("/publish")
+    @Idempotent(value = "/notes/publish", expireTime = 5000)
     public Result<?> addNotes(@RequestBody NotesPublishVO notesPublishVO) {
         return notesService.addNotes(notesPublishVO);
     }
@@ -103,11 +105,9 @@ public class NotesController {
      * @return 点赞结果
      */
     @PostMapping("/praiseNotes")
+    @Idempotent(value = "/notes/praiseNotes", expireTime =500)
     @BloomFilterProcessing(map = BloomFilterMap.NOTES_ID_BLOOM_FILTER, keys = {"#notesId"})
     public Result<?> praiseNotes(Long notesId, Long userId, Long targetUserId) {
-        if (notesId == null || userId == null || targetUserId == null) {
-            throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
-        }
         return notesService.praiseNotes(notesId, userId, targetUserId);
     }
 
@@ -120,6 +120,7 @@ public class NotesController {
      * @return 收藏结果
      */
     @PostMapping("/collectNotes")
+    @Idempotent(value = "/notes/collectNotes", expireTime = 500)
     @BloomFilterProcessing(map = BloomFilterMap.NOTES_ID_BLOOM_FILTER, keys = {"#notesId"})
     public Result<?> collectNotes(Long notesId, Long userId, Long targetUserId) {
         if (notesId == null || userId == null || targetUserId == null) {
@@ -163,6 +164,7 @@ public class NotesController {
      * @return 更新结果
      */
     @PutMapping("/updateNotes")
+    @Idempotent(value = "/notes/updateNotes", expireTime = 5000)
     @BloomFilterProcessing(map = BloomFilterMap.NOTES_ID_BLOOM_FILTER, keys = {"#notesPublishVO.getNotesId()"})
     public Result<?> updateNotes(@RequestBody NotesPublishVO notesPublishVO) {
         if (Objects.isNull(notesPublishVO) || Objects.isNull(notesPublishVO.getNotesId())) {
@@ -194,6 +196,7 @@ public class NotesController {
      * @return 更改结果
      */
     @PostMapping("/changeNotesAuthority")
+    @Idempotent(value = "/notes/changeNotesAuthority", expireTime = 5000)
     @BloomFilterProcessing(map = BloomFilterMap.NOTES_ID_BLOOM_FILTER, keys = {"#notesId"})
     public Result<?> changeNotesAuthority(@RequestParam("notesId") Long notesId, @RequestParam("authority") Integer authority) {
         if (Objects.isNull(notesId) || Objects.isNull(authority)) {

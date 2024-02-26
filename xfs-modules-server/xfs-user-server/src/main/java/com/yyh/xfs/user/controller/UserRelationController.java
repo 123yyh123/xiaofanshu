@@ -5,6 +5,7 @@ import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.redis.constant.BloomFilterMap;
 import com.yyh.xfs.common.utils.ResultUtil;
 import com.yyh.xfs.common.web.aop.bloomFilter.BloomFilterProcessing;
+import com.yyh.xfs.common.web.aop.idempotent.Idempotent;
 import com.yyh.xfs.common.web.exception.BusinessException;
 import com.yyh.xfs.user.service.UserRelationService;
 import com.yyh.xfs.user.vo.UserRelationVO;
@@ -50,25 +51,51 @@ public class UserRelationController {
         return userRelationService.selectOneByUserIdAndAttentionIdIsExist(toId, fromId);
     }
 
+    /**
+     * 获取用户关注列表
+     * @param userId 用户id
+     * @param pageNum 页码
+     * @param pageSize 每页数量
+     * @return 用户关注列表
+     */
     @GetMapping("/attentionList")
     @BloomFilterProcessing(map= BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userId"})
     public Result<List<UserRelationVO>> selectAttentionList(Long userId, Integer pageNum, Integer pageSize) {
         return userRelationService.selectAttentionList(userId,pageNum,pageSize);
     }
-
+    /**
+     * 获取用户粉丝列表
+     * @param userId 用户id
+     * @param pageNum 页码
+     * @param pageSize 每页数量
+     * @return 用户粉丝列表
+     */
     @GetMapping("/fansList")
     @BloomFilterProcessing(map= BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userId"})
     public Result<List<UserRelationVO>> selectFansList(Long userId, Integer pageNum, Integer pageSize) {
         return userRelationService.selectFansList(userId,pageNum,pageSize);
     }
-
+    /**
+     * 关注用户
+     * @param userId 用户id
+     * @param targetUserId 关注的用户id
+     * @return 是否关注成功
+     */
     @PostMapping("/attention")
+    @Idempotent(value = "/user/relation/attention", expireTime = 500)
     @BloomFilterProcessing(map= BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userId","#targetUserId"})
     public Result<Boolean> attention(Long userId, Long targetUserId) {
         return userRelationService.attention(userId,targetUserId);
     }
-
+    /**
+     * 更新备注名
+     * @param userId 用户id
+     * @param targetUserId 关注的用户id
+     * @param remarkName 备注名
+     * @return 是否更新成功
+     */
     @PostMapping("/updateRemarkName")
+    @Idempotent(value = "/user/relation/updateRemarkName", expireTime = 500)
     @BloomFilterProcessing(map= BloomFilterMap.USER_ID_BLOOM_FILTER,keys = {"#userId","#targetUserId"})
     public Result<?> updateRemarkName(Long userId, Long targetUserId, String remarkName) {
         return userRelationService.updateRemarkName(userId,targetUserId,remarkName);
