@@ -16,4 +16,5 @@ public class RocketMQTopicConstant {
     public static final String NOTES_UPDATE_COUNT_TOPIC = "notes-update-count-topic";
     public static final String USER_ADD_ES_TOPIC = "user-add-es-topic";
     public static final String USER_UPDATE_ES_TOPIC = "user-update-es-topic";
+    public static final String NOTES_ADD_TRANSACTION_TOPIC = "notes-add-transaction-topic";
 }

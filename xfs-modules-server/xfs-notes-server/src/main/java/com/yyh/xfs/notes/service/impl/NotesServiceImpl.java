@@ -34,7 +34,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -83,6 +85,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Result<?> addNotes(NotesPublishVO notesPublishVO) {
         log.info("notesVO:{}", notesPublishVO);
         List<String> notesResources = JSON.parseObject(notesPublishVO.getNotesResources(), List.class);
@@ -184,7 +187,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
     @Override
     public Result<NotesPageVO> getLastNotesByPage(Integer page, Integer pageSize) {
         String notesJson = (String) redisCache.get(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_LAST_PAGE, pageSize + "_" + page));
-        List<NotesDO> notes = null;
+        List<NotesDO> notes;
         if (StringUtils.hasText(notesJson)) {
             notes = JSON.parseArray(notesJson, NotesDO.class);
         }else {

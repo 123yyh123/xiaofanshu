@@ -1,7 +1,9 @@
 package com.yyh.xfs.user.vo;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -11,8 +13,7 @@ import java.util.Map;
  * @author yyh
  * @date 2023-12-11
  */
-@Getter
-@Setter
+@Data
 public class UserVO implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long id;

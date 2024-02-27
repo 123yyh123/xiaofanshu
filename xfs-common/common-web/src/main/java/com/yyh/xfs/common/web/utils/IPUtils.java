@@ -65,7 +65,7 @@ public class IPUtils {
         }
         String url = "https://sp0.baidu.com/8aQDcjqpAAV3otqbppnN2DJv/api.php?resource_id=6006&format=json&query=" + ip;
         HttpResponse res = HttpRequest.get(url).execute();
-        if (200 != res.getStatus()) {
+        if (0 != res.getStatus()) {
             return null;
         } else {
             JSONObject jsonObject = JSON.parseObject(res.body());
