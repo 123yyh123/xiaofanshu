@@ -526,7 +526,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             redisCache.del(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userId)));
             redisCache.setRemove(RedisConstant.REDIS_KEY_USER_INFO_UPDATE_LIST, userId);
             redisCache.del(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_EXPIRE, String.valueOf(userId)));
-            redisCache.del(RedisKey.build(RedisConstant.REDIS_KEY_USER_ONLINE, String.valueOf(userId)));
+            // 将userId从在线用户中移除
+            int i = CodeUtil.hashIndex(userId);
+            String userSet = RedisKey.build(RedisConstant.REDIS_KEY_USER_ONLINE, String.valueOf(i));
+            redisCache.setRemove(userSet, String.valueOf(userId));
         }
         return ResultUtil.successPost("退出登录成功", null);
     }

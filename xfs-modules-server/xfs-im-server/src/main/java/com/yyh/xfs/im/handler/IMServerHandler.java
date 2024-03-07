@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.yyh.xfs.common.myEnum.MessageTypeEnum;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
 import com.yyh.xfs.common.redis.utils.RedisCache;
+import com.yyh.xfs.common.redis.utils.RedisKey;
+import com.yyh.xfs.common.utils.CodeUtil;
 import com.yyh.xfs.im.handler.types.AttentionHandler;
 import com.yyh.xfs.im.handler.types.AuthenticationHandler;
 import com.yyh.xfs.im.handler.types.ChatHandler;
@@ -123,7 +125,10 @@ public class IMServerHandler extends SimpleChannelInboundHandler<TextWebSocketFr
             for (Map.Entry<String, Channel> entry : USER_CHANNEL_MAP.entrySet()) {
                 if (entry.getValue() == channel) {
                     USER_CHANNEL_MAP.remove(entry.getKey());
-                    redisCache.setRemove(RedisConstant.REDIS_KEY_USER_ONLINE, entry.getKey());
+                    // 从redis中移除
+                    int i = CodeUtil.hashIndex(entry.getKey());
+                    String userSet = RedisKey.build(RedisConstant.REDIS_KEY_USER_ONLINE, String.valueOf(i));
+                    redisCache.setRemove(userSet, entry.getKey());
                     break;
                 }
             }

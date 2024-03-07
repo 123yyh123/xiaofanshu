@@ -1,6 +1,7 @@
 package com.yyh.xfs.job.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.yyh.xfs.common.constant.RocketMQTopicConstant;
 import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.job.mapper.notes.NotesMapper;
 import com.yyh.xfs.job.service.NotesService;
@@ -38,7 +39,7 @@ public class NotesServiceImpl implements NotesService {
         map.put("notesId",notesId.toString());
         map.put("notesLikeNum",notesLikeNum.toString());
         map.put("type","like");
-        rocketMQTemplate.asyncSend("notes-update-count-topic", JSON.toJSONString(map), new SendCallback() {
+        rocketMQTemplate.asyncSend(RocketMQTopicConstant.NOTES_UPDATE_COUNT_TOPIC, JSON.toJSONString(map), new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("send success");
@@ -63,7 +64,7 @@ public class NotesServiceImpl implements NotesService {
         map.put("notesId",notesId.toString());
         map.put("notesCollectionNum",notesCollectionNum.toString());
         map.put("type","collection");
-        rocketMQTemplate.asyncSend("notes-update-count-topic", JSON.toJSONString(map), new SendCallback() {
+        rocketMQTemplate.asyncSend(RocketMQTopicConstant.NOTES_UPDATE_COUNT_TOPIC, JSON.toJSONString(map), new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("send success");

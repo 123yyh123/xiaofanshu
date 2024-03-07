@@ -7,6 +7,7 @@ import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
 import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.common.redis.utils.RedisKey;
+import com.yyh.xfs.common.utils.CodeUtil;
 import com.yyh.xfs.common.web.exception.OnlyWarnException;
 import com.yyh.xfs.im.domain.MessageDO;
 import com.yyh.xfs.im.feign.user.UserFeign;
@@ -163,7 +164,9 @@ public class ChatHandler {
             channel.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(messageVO)));
             return;
         }
-        boolean b = redisCache.sHasKey(RedisConstant.REDIS_KEY_USER_ONLINE, messageVO.getTo());
+        int i = CodeUtil.hashIndex(messageVO.getTo());
+        String userSet = RedisKey.build(RedisConstant.REDIS_KEY_USER_ONLINE, String.valueOf(i));
+        boolean b = redisCache.sHasKey(userSet, messageVO.getTo());
         if (b) {
             log.info("双方不在一个服务，发送广播消息");
             // 利用rocketmq发送广播消息，让所有的服务都能收到消息，然后再发送给用户

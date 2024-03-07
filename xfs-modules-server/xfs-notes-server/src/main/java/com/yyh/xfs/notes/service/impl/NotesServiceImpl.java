@@ -11,6 +11,7 @@ import com.yyh.xfs.common.redis.constant.RedisConstant;
 import com.yyh.xfs.common.redis.utils.BloomFilterUtils;
 import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.common.redis.utils.RedisKey;
+import com.yyh.xfs.common.utils.CodeUtil;
 import com.yyh.xfs.common.utils.ResultUtil;
 import com.yyh.xfs.common.web.exception.BusinessException;
 import com.yyh.xfs.common.web.utils.AddressUtil;
@@ -179,8 +180,8 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             });
         });
         // 删除redis中的缓存
-        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC,RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
-        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC,RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
+        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC, RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
+        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC, RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
         return ResultUtil.successPost(null);
     }
 
@@ -190,7 +191,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         List<NotesDO> notes;
         if (StringUtils.hasText(notesJson)) {
             notes = JSON.parseArray(notesJson, NotesDO.class);
-        }else {
+        } else {
             Integer offset = (page - 1) * pageSize;
             notes = this.baseMapper.selectPageByTime(offset, pageSize);
             redisCache.set(RedisKey.build(RedisConstant.REDIS_KEY_NOTES_LAST_PAGE, pageSize + "_" + page), JSON.toJSONString(notes));
@@ -409,7 +410,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         List<NotesDO> notes = null;
         if (StringUtils.hasText(notesJson)) {
             notes = JSON.parseArray(notesJson, NotesDO.class);
-        }else {
+        } else {
             Integer offset = (page - 1) * pageSize;
             if (type == 0) {
                 notes = this.baseMapper.selectPageByCategoryIdByUpdateTime(offset, pageSize, categoryId, notesType);
@@ -562,8 +563,7 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         userLikeNotesMap.put("userId", userId);
         userLikeNotesMap.put("notesId", notesId);
         userLikeNotesMap.put("isLike", !isLike);
-        // 考虑到由于新增的点赞记录可能过多，分片存储，避免大key，分10片
-        int i = Math.abs(userId.hashCode()) % 10;
+        int i = CodeUtil.hashIndex(userId);
         // 便于定时任务更新数据库，不能直接删除键，避免不能删除数据库中的点赞记录，定时任务判断isLike字段操作数据库，如果为false则删除
         String userLikeNotesKey = RedisKey.build(RedisConstant.REDIS_KEY_USER_LIKE_NOTES_RECENT, i + "");
         // 先判断有记录没有，若与之前相反，则删除之前的记录，否则直接新增覆盖
@@ -646,8 +646,8 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
         userCollectNotesMap.put("userId", userId);
         userCollectNotesMap.put("notesId", notesId);
         userCollectNotesMap.put("isCollect", !isCollect);
-        // 考虑到由于新增的收藏记录可能过多，分片存储，避免大key，分10片
-        int i = Math.abs(userId.hashCode()) % 10;
+        // 考虑到由于新增的收藏记录可能过多，分片存储，避免大key，分16片
+        int i = CodeUtil.hashIndex(userId);
         // 便于定时任务更新数据库，不能直接删除键，避免不能删除数据库中的收藏记录，定时任务判断isCollect字段操作数据库，如果为false则删除
         String userCollectNotesKey = RedisKey.build(RedisConstant.REDIS_KEY_USER_COLLECT_NOTES_RECENT, i + "");
         // 先判断有记录没有，若与之前相反，则删除之前的记录，否则直接新增覆盖
@@ -837,8 +837,8 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             });
         });
         // 删除redis缓存
-        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC,RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
-        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC,RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
+        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC, RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
+        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC, RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
         return ResultUtil.successPut(null);
     }
 
@@ -889,8 +889,8 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             }
         });
         // 删除redis缓存
-        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC,RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
-        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC,RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
+        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC, RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
+        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC, RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
         return ResultUtil.successDelete(null);
     }
 
@@ -928,8 +928,8 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
             }
         });
         // 删除redis缓存
-        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC,RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
-        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC,RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
+        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC, RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
+        rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC, RedisKey.build(RedisConstant.REDIS_KEY_NOTES_CATEGORY_PAGE, notesDO.getBelongCategory().toString()));
         return ResultUtil.successPost(null);
     }
 

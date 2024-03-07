@@ -12,6 +12,7 @@ public class CodeUtil {
 
     /**
      * 生成6位随机数，用于短信验证码
+     *
      * @return 6位随机数
      */
     public static String createSmsCode() {
@@ -24,9 +25,9 @@ public class CodeUtil {
     /**
      * 生成用户uid，6-15位组成，首位不能为0，由数字,英文字母和下划线组成，没有强制要求，三种组合都可以
      * 暂时用手机号码后四位和当前时间戳的3-6位相加，再加3-6为替换掉当前时间戳的3-6位，只能有数字组成
+     *
      * @param phoneNumber 手机号码
      * @return 用户uid
-     *
      */
     public static String createUid(String phoneNumber) {
         long currentTimeMillis = System.currentTimeMillis();
@@ -42,17 +43,45 @@ public class CodeUtil {
         String substring2 = currentTimeMillisStr.substring(6);
         return substring1 + i2Str + substring2;
     }
+
     /**
      * 生成用户昵称，8位随机数，由数字,英文字母组成，用户昵称是可以重复的，不需要唯一
      */
-    public static String createNickname(){
-        String str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    public static String createNickname() {
+        String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         ThreadLocalRandom random = ThreadLocalRandom.current();
-        StringBuilder sb=new StringBuilder();
-        for(int i=0;i<8;i++){
-            int number=random.nextInt(62);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
+            int number = random.nextInt(62);
             sb.append(str.charAt(number));
         }
         return sb.toString();
+    }
+
+    /**
+     * 根据hash生成下标，size必须是2的幂
+     *
+     * @param object 对象
+     * @param size   长度 必须是2的幂
+     * @return 下标
+     */
+    public static int hashIndex(Object object, int size) {
+        // 判断size是否是2的幂
+        if ((size & (size - 1)) != 0) {
+            throw new IllegalArgumentException("size must be a power of 2");
+        }
+        int h;
+        int hash = (h = object.hashCode()) ^ (h >>> size);
+        return hash & (size - 1);
+    }
+
+    /**
+     * 根据hash生成下标，size必须是2的幂
+     *
+     * @param object 对象
+     * @return 下标
+     */
+    public static int hashIndex(Object object) {
+        return hashIndex(object, 16);
     }
 }

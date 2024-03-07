@@ -111,4 +111,13 @@
         order by notes_like_num desc
         limit #{pageSize} offset #{offset}
     </select>
+    <update id="updateNotesLikeNum" parameterType="com.yyh.xfs.notes.domain.NotesDO">
+        update notes
+        <set>
+            <if test="notesLikeNum != null">
+                notes_like_num = notes_like_num + #{notesLikeNum}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>
