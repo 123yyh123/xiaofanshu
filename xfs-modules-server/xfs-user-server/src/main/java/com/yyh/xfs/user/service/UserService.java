@@ -116,4 +116,6 @@ public interface UserService extends IService<UserDO> {
     Result<Boolean> updatePhoneNumber(String phoneNumber, String smsCode);
 
     Result<?> resetPasswordByOld(PasswordVO passwordVO);
+
+    Result<UserVO> loginByCode(String phoneNumber, String smsCode);
 }

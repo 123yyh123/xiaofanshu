@@ -57,6 +57,23 @@ public class AuthController {
     }
 
     /**
+     * 手机号验证码登录
+     * @param phoneNumber 手机号
+     * @param smsCode 验证码
+     * @return 登录结果
+     */
+    @PostMapping("/loginByCode")
+    public Result<UserVO> loginByCode(String phoneNumber, String smsCode) {
+        if(!FieldValidationUtil.isPhoneNumber(phoneNumber)){
+            return ResultUtil.errorPost("手机号格式不正确");
+        };
+        if(!FieldValidationUtil.isSmsCode(smsCode)){
+            return ResultUtil.errorPost("验证码格式不正确");
+        };
+        return userService.loginByCode(phoneNumber, smsCode);
+    }
+
+    /**
      * 退出登录
      * @return 退出登录结果
      */

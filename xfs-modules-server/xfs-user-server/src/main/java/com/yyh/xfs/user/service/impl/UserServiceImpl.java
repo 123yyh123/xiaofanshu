@@ -589,6 +589,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         return ResultUtil.successPost("修改密码成功", null);
     }
 
+    @Override
+    public Result<UserVO> loginByCode(String phoneNumber, String smsCode) {
+        QueryWrapper<UserDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(UserDO::getPhoneNumber, phoneNumber);
+        UserDO userDO = this.getOne(queryWrapper);
+        if (Objects.isNull(userDO)) {
+            throw new BusinessException(ExceptionMsgEnum.PHONE_NUMBER_NOT_REGISTER);
+        }
+        boolean b = checkSmsCode(
+                RedisKey.build(RedisConstant.REDIS_KEY_SMS_LOGIN_PHONE_CODE, phoneNumber),
+                smsCode);
+        if (!b) {
+            throw new BusinessException(ExceptionMsgEnum.SMS_CODE_ERROR);
+        }
+        return generateUserVO(userDO);
+    }
+
     /**
      * 检验验证码是否正确
      *

@@ -38,7 +38,7 @@ public class AliyunSmsServiceImpl implements AliyunSmsService {
                 .setTemplateCode("SMS_154950909")
                 .setPhoneNumbers(phoneNumber)
                 .setTemplateParam("{\"code\":\"" + smsCode + "\"}");
-        return sendSms(sendSmsRequest, phoneNumber, smsCode,RedisConstant.REDIS_KEY_SMS_BIND_PHONE_CODE);
+        return sendSms(sendSmsRequest, phoneNumber, smsCode, RedisConstant.REDIS_KEY_SMS_BIND_PHONE_CODE);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class AliyunSmsServiceImpl implements AliyunSmsService {
                 .setTemplateCode("SMS_154950909")
                 .setPhoneNumbers(phoneNumber)
                 .setTemplateParam("{\"code\":\"" + smsCode + "\"}");
-        return sendSms(sendSmsRequest, phoneNumber, smsCode,RedisConstant.REDIS_KEY_SMS_RESET_PASSWORD_PHONE_CODE);
+        return sendSms(sendSmsRequest, phoneNumber, smsCode, RedisConstant.REDIS_KEY_SMS_RESET_PASSWORD_PHONE_CODE);
     }
 
     @Override
@@ -62,7 +62,19 @@ public class AliyunSmsServiceImpl implements AliyunSmsService {
                 .setTemplateCode("SMS_154950909")
                 .setPhoneNumbers(phoneNumber)
                 .setTemplateParam("{\"code\":\"" + smsCode + "\"}");
-        return sendSms(sendSmsRequest, phoneNumber, smsCode,RedisConstant.REDIS_KEY_SMS_REGISTER_PHONE_CODE);
+        return sendSms(sendSmsRequest, phoneNumber, smsCode, RedisConstant.REDIS_KEY_SMS_REGISTER_PHONE_CODE);
+    }
+
+    @Override
+    public Result<?> sendLoginPhoneSms(String phoneNumber) {
+        String smsCode = CodeUtil.createSmsCode();
+        // TODO:暂时使用一样的短信模板
+        SendSmsRequest sendSmsRequest = new SendSmsRequest()
+                .setSignName("阿里云短信测试")
+                .setTemplateCode("SMS_154950909")
+                .setPhoneNumbers(phoneNumber)
+                .setTemplateParam("{\"code\":\"" + smsCode + "\"}");
+        return sendSms(sendSmsRequest, phoneNumber, smsCode, RedisConstant.REDIS_KEY_SMS_LOGIN_PHONE_CODE);
     }
 
     @Override
@@ -79,16 +91,17 @@ public class AliyunSmsServiceImpl implements AliyunSmsService {
 
     /**
      * 发送短信
+     *
      * @param sendSmsRequest 短信请求
-     * @param phoneNumber 手机号
-     * @param smsCode 短信验证码
-     * @param prefix redis前缀
+     * @param phoneNumber    手机号
+     * @param smsCode        短信验证码
+     * @param prefix         redis前缀
      * @return Result<?> 返回类型
      */
     private Result<?> sendSms(SendSmsRequest sendSmsRequest, String phoneNumber, String smsCode, String prefix) {
         try {
             long expire = redisCache.getExpire(RedisKey.build(prefix, phoneNumber));
-            if(expire>60*4){
+            if (expire > 60 * 4) {
                 throw new BusinessException(ExceptionMsgEnum.SMS_CODE_SEND_FREQUENTLY);
             }
             smsClient.sendSms(sendSmsRequest);

@@ -45,7 +45,8 @@ public class MessageController {
         }
         return aliyunSmsService.sendResetPhoneSms(phoneNumber);
     }
-    @GetMapping("/sendRegisterPhoneSms")
+
+    @GetMapping("/sendLoginPhoneSms")
     public Result<?> sendRegisterPhoneSms(String phoneNumber) {
         if(!StringUtils.hasText(phoneNumber)){
             return ResultUtil.errorGet("手机号不能为空");
@@ -53,7 +54,7 @@ public class MessageController {
         if(!phoneNumber.matches("^1[3-9]\\d{9}$")){
             return ResultUtil.errorGet("手机号格式不正确");
         }
-        return aliyunSmsService.sendRegisterPhoneSms(phoneNumber);
+        return aliyunSmsService.sendLoginPhoneSms(phoneNumber);
     }
 
     /**
