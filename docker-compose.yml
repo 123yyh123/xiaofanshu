@@ -1,0 +1,131 @@
+#version: '2.2'
+#
+#services:
+#  xxl-job:
+#    image: xuxueli/xxl-job-admin:2.4.0
+#    hostname: 15197936b45b
+#    mac_address: 02:42:ac:11:00:09
+#    environment:
+#      PARAMS: "--spring.datasource.url=jdbc:mysql://47.76.243.116:3306/xxl_job?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai --spring.datasource.username=root --spring.datasource.password='@YangYaHao5036'"
+#    volumes:
+#      - /docker/xxl-job:/data/applogs
+#    ports:
+#      - "11000:8080"
+#    restart: always
+#    privileged: true
+#
+#  es:
+#    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.2
+#    hostname: 73884edfa2ff
+#    mac_address: 02:42:ac:11:00:08
+#    environment:
+#      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+#    volumes:
+#      - /docker/es/conf/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+#      - /docker/es/data:/usr/share/elasticsearch/data
+#      - /docker/es/plugins:/usr/share/elasticsearch/plugins
+#    ports:
+#      - "9200:9200"
+#    expose:
+#      - 9300
+#    restart: always
+#    privileged: true
+#    working_dir: /usr/share/elasticsearch
+#
+#  mongo:
+#    image: mongo:4.4
+#    hostname: e5b0826681d1
+#    mac_address: 02:42:ac:11:00:0a
+#    volumes:
+#      - /docker/mongodb/data:/data/db
+#    ports:
+#      - "27017:27017"
+#    restart: always
+#    command: --auth
+#
+#  nacos:
+#    image: nacos/nacos-server:1.4.2
+#    hostname: 9f7ddaee5e6b
+#    mac_address: 02:42:ac:11:00:05
+#    environment:
+#      SPRING_DATASOURCE_PLATFORM: mysql
+#      MYSQL_SERVICE_HOST: 47.76.243.116
+#      MYSQL_SERVICE_PORT: 3306
+#      MYSQL_SERVICE_USER: root
+#      MYSQL_SERVICE_PASSWORD: '@YangYaHao5036'
+#      MYSQL_SERVICE_DB_NAME: nacos_config
+#      MODE: standalone
+#      PREFER_HOST_MODE: hostname
+#    ports:
+#      - "8848:8848"
+#    restart: always
+#    working_dir: /home/nacos
+#
+#  rmqconsole:
+#    image: styletang/rocketmq-console-ng
+#    hostname: ef6a1774da5b
+#    mac_address: 02:42:ac:11:00:0b
+#    environment:
+#      JAVA_OPTS: "-Drocketmq.namesrv.addr=47.76.243.116:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false"
+#    ports:
+#      - "8180:8080"
+#    restart: always
+#
+#  rmqbroker:
+#    image: apache/rocketmq:4.9.2
+#    hostname: 61b3beeb0d69
+#    mac_address: 02:42:ac:11:00:07
+#    user: rocketmq
+#    environment:
+#      JAVA_OPT_EXT: "-server -Xms256m -Xmx256m -Xmn128m"
+#      autoCreateTopicEnable: "true"
+#      NAMESRV_ADDR: 47.76.243.116:9876
+#      MAX_POSSIBLE_HEAP: 200000000
+#    volumes:
+#      - /docker/rocketmq/data/broker/logs:/root/logs
+#      - /docker/rocketmq/data/broker/store:/root/store
+#      - /docker/rocketmq/conf/broker.conf:/opt/rocketmq-4.9.2/conf/broker.conf
+#    ports:
+#      - "10909:10909"
+#      - "10911:10911"
+#    expose:
+#      - 10912
+#      - 9876
+#    restart: always
+#    command: sh mqbroker -c /opt/rocketmq-4.9.2/conf/broker.conf
+#    links:
+#      - rmqnamesrv:namesrv
+#
+#  rmqnamesrv:
+#    image: apache/rocketmq:4.9.2
+#    hostname: 82952e9e7c9e
+#    mac_address: 02:42:ac:11:00:02
+#    user: rocketmq
+#    environment:
+#      MAX_POSSIBLE_HEAP: 100000000
+#      JAVA_OPT_EXT: "-server -Xms256m -Xmx256m -Xmn128m"
+#    volumes:
+#      - /docker/rocketmq/data/namesrv/logs:/root/logs
+#      - /docker/rocketmq/data/namesrv/store:/root/store
+#    ports:
+#      - "9876:9876"
+#    expose:
+#      - 10909
+#      - 10911
+#      - 10912
+#    restart: always
+#    command: sh mqnamesrv
+#
+#  portainer:
+#    image: portainer/portainer
+#    hostname: d9303799c410
+#    mac_address: 02:42:ac:11:00:04
+#    volumes:
+#      - /public:/public
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - portainer_data:/data
+#    ports:
+#      - "9026:9000"
+#    restart: always
+#volumes:
+#  portainer_data:

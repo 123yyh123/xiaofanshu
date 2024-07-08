@@ -16,5 +16,4 @@
         <module>common-mybatis</module>
         <module>common-redis</module>
     </modules>
-
 </project>

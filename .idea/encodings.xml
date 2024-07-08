@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding">
+  <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/xfs-auth/src/main/java" charset="UTF-8" />
@@ -27,6 +28,5 @@
     <file url="file://$PROJECT_DIR$/xfs-modules-server/xfs-search-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/xfs-modules-server/xfs-user-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/xfs-third-server/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/xfs-user/src/main/java" charset="UTF-8" />
   </component>
 </project>
