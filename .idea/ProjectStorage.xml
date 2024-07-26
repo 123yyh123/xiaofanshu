@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectStorage">
+    <option name="path" value="拉刻西斯个人空间-&gt;拉刻西斯个人项目" />
+    <option name="prefixUrlList">
+      <list>
+        <PrefixUrl>
+          <option name="moduleName" value="xfs-auth" />
+          <option name="prefixUrl" value="http://localhost:9000" />
+          <option name="rowIndex" value="0" />
+        </PrefixUrl>
+        <PrefixUrl>
+          <option name="moduleName" value="xfs-user-server" />
+          <option name="prefixUrl" value="http://localhost:9000" />
+          <option name="rowIndex" value="1" />
+        </PrefixUrl>
+        <PrefixUrl>
+          <option name="moduleName" value="xfs-search-server" />
+          <option name="prefixUrl" value="http://localhost:9000" />
+          <option name="rowIndex" value="2" />
+        </PrefixUrl>
+        <PrefixUrl>
+          <option name="moduleName" value="xfs-third-server" />
+          <option name="prefixUrl" value="http://localhost:9000" />
+          <option name="rowIndex" value="3" />
+        </PrefixUrl>
+        <PrefixUrl>
+          <option name="moduleName" value="xfs-notes-server" />
+          <option name="prefixUrl" value="http://localhost:9000" />
+          <option name="rowIndex" value="4" />
+        </PrefixUrl>
+        <PrefixUrl>
+          <option name="moduleName" value="xfs-comment-server" />
+          <option name="prefixUrl" value="http://localhost:9000" />
+          <option name="rowIndex" value="5" />
+        </PrefixUrl>
+      </list>
+    </option>
+    <option name="profile" value="dev" />
+    <option name="projectId" value="2c292fbf3864000" />
+    <option name="uploadType" value="2" />
+  </component>
+</project>
