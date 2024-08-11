@@ -2,6 +2,7 @@ package com.yyh.xfs.job.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.yyh.xfs.common.constant.RocketMQTopicConstant;
+import com.yyh.xfs.common.redis.constant.RedisConstant;
 import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.job.mapper.notes.NotesMapper;
 import com.yyh.xfs.job.service.NotesService;
@@ -51,6 +52,7 @@ public class NotesServiceImpl implements NotesService {
         });
         if (r) {
             redisCache.hdel(key, "notesLikeNum");
+            rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC, RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
         } else {
             // TODO 进行相应的处理，如rocketmq发送消息
             log.error("update notesLikeNum error,notesId:{},likeNum:{}", notesId, notesLikeNum);
@@ -76,6 +78,7 @@ public class NotesServiceImpl implements NotesService {
         });
         if (r) {
             redisCache.hdel(key, "notesCollectionNum");
+            rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC, RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
         } else {
             // TODO 进行相应的处理，如rocketmq发送消息
             log.error("update notesCollectionNum error,notesId:{},collectionNum:{}", notesId, notesCollectionNum);
@@ -87,6 +90,7 @@ public class NotesServiceImpl implements NotesService {
         boolean r = notesMapper.updateNotesViewNum(notesId, notesViewNum);
         if (r) {
             redisCache.hdel(key, "notesViewNum");
+            rocketMQTemplate.syncSend(RocketMQTopicConstant.NOTES_REMOVE_REDIS_TOPIC, RedisConstant.REDIS_KEY_NOTES_LAST_PAGE);
         } else {
             // TODO 进行相应的处理，如rocketmq发送消息
             log.error("update notesViewNum error,notesId:{},viewNum:{}", notesId, notesViewNum);

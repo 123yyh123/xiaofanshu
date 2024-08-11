@@ -30,7 +30,7 @@ docker run  -d \
 --spring.datasource.password=@YangYaHao5036 \
 --spring.mail.username=yahaoyang929@vip.qq.com \
 --spring.mail.from=yahaoyang929@vip.qq.com \
---spring.mail.password=mcbsnkodpjkobdbd" \
+--spring.mail.password=jlliwnqusqozbdeh" \
 --name xxl-job-admin \
 --restart=always \
 xuxueli/xxl-job-admin:2.4.0
@@ -57,7 +57,7 @@ db.users.insert( { name:"test1", age:22} )
 docker run -p 9200:9200 -p 9300:9300 --name elasticsearch \
 --restart=always \
 -e "cluster.name=elasticsearch" \
--e "ES_JAVA_OPTS=-Xms512m -Xmx512m" \
+-e "ES_JAVA_OPTS=-Xms128m -Xmx256m" \
 -v /docker/es/conf/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml \
 -v /docker/es/data:/usr/share/elasticsearch/data \
 -v /docker/es/plugins:/usr/share/elasticsearch/plugins \
@@ -147,5 +147,5 @@ styletang/rocketmq-console-ng:latest
 # xiaofanshu
 ``` sh
 docker build -f xiaofanshu.dockerfile -t xiaofanshu:latest .
-docker run -d --name xiaofanshu-container -p 9000:9000 -v /docker/xiaofanshu/logs:/app/logs xiaofanshu:latest
+docker run -d --name xiaofanshu-container -p 9000:9000 -p 9999:9999 -v /docker/xiaofanshu/logs:/app/logs xiaofanshu:latest
 ```

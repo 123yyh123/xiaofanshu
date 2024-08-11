@@ -2,8 +2,6 @@
 
 #### 介绍
 
-![image-20231216031401488](C:\Users\86131\AppData\Roaming\Typora\typora-user-images\image-20231216031401488.png)
-
 #### 软件架构
 
 基础框架：Spring Boot
