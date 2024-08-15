@@ -7,10 +7,12 @@ import com.yyh.xfs.comment.feign.UserFeign;
 import com.yyh.xfs.comment.service.CommentService;
 import com.yyh.xfs.comment.vo.CommentVO;
 import com.yyh.xfs.common.domain.Result;
+import com.yyh.xfs.common.myEnum.ExceptionMsgEnum;
 import com.yyh.xfs.common.redis.constant.RedisConstant;
 import com.yyh.xfs.common.redis.utils.RedisCache;
 import com.yyh.xfs.common.redis.utils.RedisKey;
 import com.yyh.xfs.common.utils.ResultUtil;
+import com.yyh.xfs.common.web.exception.BusinessException;
 import com.yyh.xfs.common.web.utils.IPUtils;
 import com.yyh.xfs.common.web.utils.JWTUtil;
 import org.bson.types.ObjectId;
@@ -72,16 +74,30 @@ public class CommentServiceImpl implements CommentService {
         } else {
             commentDO.setProvince("未知");
         }
-        if (commentDO.getReplyUserId() != 0) {
+        int isFlutter;
+        String s1 = request.getHeader("isFlutter");
+        if (StringUtils.hasText(s1)) {
+            try {
+                isFlutter = Integer.parseInt(s1);
+            } catch (NumberFormatException e) {
+                isFlutter = 0;
+            }
+        } else {
+            isFlutter = 0;
+        }
+        //前端为uniapp时
+        if (isFlutter == 0) {
+            if (commentDO.getReplyUserId() != 0) {
 //            <a href="#{&quot;userId&quot;:&quot;1675532564583455936&quot;}" rel="noopener noreferrer" target="_blank" style="color: rgb(69, 105, 215); text-decoration: none;">@测试用户1</a>
-            String prefix = "回复 <a href=\"#{" +
-                    "&quot;userId&quot;:&quot;" + commentDO.getReplyUserId() + "&quot;" +
-                    "}\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: #7d7d7d; text-decoration: none;\">" + commentDO.getReplyUserName() + "</a>：";
-            // 添加到content的<p>的最前面
-            if (commentDO.getContent().startsWith("<p>")) {
-                commentDO.setContent("<p>" + prefix + commentDO.getContent().substring(3));
-            } else {
-                commentDO.setContent("<p>" + prefix + commentDO.getContent());
+                String prefix = "回复 <a href=\"#{" +
+                        "&quot;userId&quot;:&quot;" + commentDO.getReplyUserId() + "&quot;" +
+                        "}\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: #7d7d7d; text-decoration: none;\">" + commentDO.getReplyUserName() + "</a>：";
+                // 添加到content的<p>的最前面
+                if (commentDO.getContent().startsWith("<p>")) {
+                    commentDO.setContent("<p>" + prefix + commentDO.getContent().substring(3));
+                } else {
+                    commentDO.setContent("<p>" + prefix + commentDO.getContent());
+                }
             }
         }
         mongoTemplate.insert(commentDO);
@@ -200,7 +216,13 @@ public class CommentServiceImpl implements CommentService {
             }
             String key = RedisKey.build(RedisConstant.REDIS_KEY_COMMENT_LIKE, commentDO.getId());
             String countKey = RedisKey.build(RedisConstant.REDIS_KEY_COMMENT_COUNT, commentDO.getId());
-            commentVO.setIsLike(redisCache.sHasKey(key, commentDO.getCommentUserId()));
+            Long userId;
+            try {
+                userId = JWTUtil.getCurrentUserId(request.getHeader("token"));
+            } catch (Exception e) {
+                throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+            }
+            commentVO.setIsLike(redisCache.sHasKey(key, userId));
             if (redisCache.get(countKey) == null) {
                 redisCache.set(countKey, commentDO.getCommentLikeNum().longValue());
             } else {
@@ -247,7 +269,13 @@ public class CommentServiceImpl implements CommentService {
             }
             String key = RedisKey.build(RedisConstant.REDIS_KEY_COMMENT_LIKE, commentDO.getId());
             String countKey = RedisKey.build(RedisConstant.REDIS_KEY_COMMENT_COUNT, commentDO.getId());
-            commentVO.setIsLike(redisCache.sHasKey(key, commentDO.getCommentUserId()));
+            Long userId;
+            try {
+                userId = JWTUtil.getCurrentUserId(request.getHeader("token"));
+            } catch (Exception e) {
+                throw new BusinessException(ExceptionMsgEnum.NOT_LOGIN);
+            }
+            commentVO.setIsLike(redisCache.sHasKey(key, userId));
             if (redisCache.get(countKey) == null) {
                 redisCache.set(countKey, commentDO.getCommentLikeNum().longValue());
             } else {
@@ -284,7 +312,7 @@ public class CommentServiceImpl implements CommentService {
         if (commentDO == null) {
             return ResultUtil.errorPost("评论不存在");
         }
-        if(!Objects.equals(commentDO.getParentId(), "0")){
+        if (!Objects.equals(commentDO.getParentId(), "0")) {
             return ResultUtil.errorPost("不是主评论");
         }
         Long notesId = commentDO.getNotesId();
@@ -323,14 +351,14 @@ public class CommentServiceImpl implements CommentService {
             return ResultUtil.errorPost("评论不存在");
         }
         Long notesBelongUser = notesFeign.getNotesBelongUser(commentDO.getNotesId());
-        if((!Objects.equals(commentDO.getCommentUserId(), userId)) && (!Objects.equals(notesBelongUser, userId))){
+        if ((!Objects.equals(commentDO.getCommentUserId(), userId)) && (!Objects.equals(notesBelongUser, userId))) {
             return ResultUtil.errorPost("无权限");
         }
         DeleteResult remove = mongoTemplate.remove(query, CommentDO.class);
         if (remove.getDeletedCount() == 0) {
             return ResultUtil.errorPost("删除失败");
         }
-        if(Objects.equals(commentDO.getParentId(), "0")){
+        if (Objects.equals(commentDO.getParentId(), "0")) {
             // 删除所有二级评论
             Query query1 = new Query();
             query1.addCriteria(new Criteria("parentId").is(commentId));
@@ -343,6 +371,7 @@ public class CommentServiceImpl implements CommentService {
 
     /**
      * 删除笔记下的所有评论
+     *
      * @param notesId 笔记id
      */
     @Override
