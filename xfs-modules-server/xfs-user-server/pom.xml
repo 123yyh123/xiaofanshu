@@ -66,11 +66,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-<!--                <configuration>-->
-<!--                    <classifier>exec</classifier>-->
-<!--                    <layout>JAR</layout>-->
-<!--                    <mainClass>com.yyh.xfs.user.UserApplication</mainClass>-->
-<!--                </configuration>-->
+                <configuration>
+                    <classifier>exec</classifier>
+                    <layout>JAR</layout>
+                    <mainClass>com.yyh.xfs.user.UserApplication</mainClass>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

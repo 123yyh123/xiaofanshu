@@ -16,5 +16,3 @@ echo "所有项目已启动。"
 
 # 保持容器运行
 wait
-
-docker build -f xiaofanshu.dockerfile -t xiaofanshu:latest .

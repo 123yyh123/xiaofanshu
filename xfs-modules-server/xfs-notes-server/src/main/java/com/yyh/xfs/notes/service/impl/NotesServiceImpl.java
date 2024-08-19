@@ -42,6 +42,8 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -959,13 +961,46 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
 
     private List<Long> findUserId(NotesPublishVO notesPublishVO) {
         List<Long> userIds = new ArrayList<>();
-        Document document = Jsoup.parse(notesPublishVO.getContent());
-        Elements elements = document.select("a");
-        for (Element element : elements) {
-            String href = element.attr("href");
-            if (href.contains("userId")) {
-                String userId = href.substring(href.indexOf("userId") + 9, href.indexOf("}") - 1);
-                userIds.add(Long.valueOf(userId));
+        int isFlutter;
+        String s1 = request.getHeader("isFlutter");
+        if (StringUtils.hasText(s1)) {
+            try {
+                isFlutter = Integer.parseInt(s1);
+            } catch (NumberFormatException e) {
+                isFlutter = 0;
+            }
+        } else {
+            isFlutter = 0;
+        }
+        if (isFlutter == 0) {
+            Document document = Jsoup.parse(notesPublishVO.getContent());
+            Elements elements = document.select("a");
+            for (Element element : elements) {
+                String href = element.attr("href");
+                if (href.contains("userId")) {
+                    String userId = href.substring(href.indexOf("userId") + 9, href.indexOf("}") - 1);
+                    userIds.add(Long.valueOf(userId));
+                }
+            }
+        } else {
+            // 去除\u200B，再找到所有的    // Map<String, String> map = {
+            //    //   "id": "123456",
+            //    //   "name": "somebody",
+            //    // };
+            //    // String realText='@${jsonEncode(map)} ';
+            String content = notesPublishVO.getContent().replace("\u200B", "");
+            // 找到所有的"@用户 "
+            Pattern pattern = Pattern.compile("@[^@]+ ");
+            Matcher matcher = pattern.matcher(content);
+            while (matcher.find()) {
+                String group = matcher.group();
+                String jsonUserId = group.substring(1, group.length() - 1);
+                try {
+                    String userId = JSON.parseObject(jsonUserId).getString("id");
+                    userIds.add(Long.valueOf(userId));
+                } catch (Exception e) {
+                    log.info("解析json失败", e);
+                }
             }
         }
         return userIds;
@@ -973,13 +1008,35 @@ public class NotesServiceImpl extends ServiceImpl<NotesMapper, NotesDO> implemen
 
     private List<String> findTopic(NotesPublishVO notesPublishVO) {
         List<String> topics = new ArrayList<>();
-        Document document = Jsoup.parse(notesPublishVO.getContent());
-        Elements elements = document.select("a");
-        for (Element element : elements) {
-            String href = element.attr("href");
-            if (href.contains("topicname")) {
-                String topicName = href.substring(href.indexOf("topicname") + 12, href.indexOf("}") - 1);
-                topics.add(topicName);
+        int isFlutter;
+        String s1 = request.getHeader("isFlutter");
+        if (StringUtils.hasText(s1)) {
+            try {
+                isFlutter = Integer.parseInt(s1);
+            } catch (NumberFormatException e) {
+                isFlutter = 0;
+            }
+        } else {
+            isFlutter = 0;
+        }
+        if (isFlutter == 0) {
+            Document document = Jsoup.parse(notesPublishVO.getContent());
+            Elements elements = document.select("a");
+            for (Element element : elements) {
+                String href = element.attr("href");
+                if (href.contains("topicname")) {
+                    String topicName = href.substring(href.indexOf("topicname") + 12, href.indexOf("}") - 1);
+                    topics.add(topicName);
+                }
+            }
+        } else {
+            // 去除\u200B，再找到所有的"#话题 "
+            Pattern pattern = Pattern.compile("#[^#]+ ");
+            String content = notesPublishVO.getContent().replace("\u200B", "");
+            Matcher matcher = pattern.matcher(content);
+            while (matcher.find()) {
+                String group = matcher.group();
+                topics.add(group.substring(1, group.length() - 1));
             }
         }
         return topics;
