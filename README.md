@@ -35,35 +35,35 @@ MVC框架：Spring MVC
 
 #### 项目部分截图
 
-<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/Screenshot_20240910_165224.png" width="200"/>
+<img alt="屏幕截图" src="https://gitee.com/123yyh123/xiaofanshu/blob/master/project-screenshot/Screenshot_20240910_165224.png" width="200"/>
 
-<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165649.jpg" width="200"/>
+<img alt="屏幕截图" src="https://gitee.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165649.jpg" width="200"/>
 
-<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165704.jpg" width="200"/>
+<img alt="屏幕截图" src="https://gitee.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165704.jpg" width="200"/>
 
-<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165709.jpg" width="200"/>
+<img alt="屏幕截图" src="https://gitee.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165709.jpg" width="200"/>
 
-<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165714.jpg" width="200"/>
+<img alt="屏幕截图" src="https://gitee.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165714.jpg" width="200"/>
 
-<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165718.jpg" width="200"/>
+<img alt="屏幕截图" src="https://gitee.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165718.jpg" width="200"/>
 
-<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165723.jpg" width="200"/>
+<img alt="屏幕截图" src="https://gitee.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165723.jpg" width="200"/>
 
-<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165728.jpg" width="200"/>
+<img alt="屏幕截图" src="https://gitee.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165728.jpg" width="200"/>
 
-<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165733.jpg" width="200"/>
+<img alt="屏幕截图" src="https://gitee.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165733.jpg" width="200"/>
 
-<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165738.jpg" width="200"/>
+<img alt="屏幕截图" src="https://gitee.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165738.jpg" width="200"/>
 
-<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165743.jpg" width="200"/>
+<img alt="屏幕截图" src="https://gitee.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165743.jpg" width="200"/>
 
-<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165942.jpg" width="200"/>
+<img alt="屏幕截图" src="https://gitee.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165942.jpg" width="200"/>
 
 
 #### 安装教程
 按照机器的架构选择对应的步骤
-- arm架构，可以参考[xiaofanshu-docker-arm.md](https://github.com/123yyh123/xiaofanshu/blob/master/xiaofanshu-docker-arm.md)----[xiaofanshu-arm.dockerfile](https://github.com/123yyh123/xiaofanshu/blob/master/xiaofanshu-arm.dockerfile)，适用于树莓派等arm架构的设备
-- amd64架构，可以参考[xiaofanshu-docker-amd64.md](https://github.com/123yyh123/xiaofanshu/blob/master/xiaofanshu-docker-amd.md)----[xiaofanshu-amd64.dockerfile](https://github.com/123yyh123/xiaofanshu/blob/master/xiaofanshu-amd64.dockerfile)，适用于普通的服务器
+- arm架构，可以参考[xiaofanshu-docker-arm.md](https://gitee.com/123yyh123/xiaofanshu/blob/master/xiaofanshu-docker-arm.md)----[xiaofanshu-arm.dockerfile](https://gitee.com/123yyh123/xiaofanshu/blob/master/xiaofanshu-arm.dockerfile)，适用于树莓派等arm架构的设备
+- amd64架构，可以参考[xiaofanshu-docker-amd64.md](https://gitee.com/123yyh123/xiaofanshu/blob/master/xiaofanshu-docker-amd.md)----[xiaofanshu-amd64.dockerfile](https://gitee.com/123yyh123/xiaofanshu/blob/master/xiaofanshu-amd64.dockerfile)，适用于普通的服务器
 
 
 
