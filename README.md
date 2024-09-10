@@ -35,6 +35,31 @@ MVC框架：Spring MVC
 
 #### 项目部分截图
 
+![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/Screenshot_20240910_165224.png)
+
+![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165649.jpg)
+
+![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165704.jpg)
+
+![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165709.jpg)
+
+![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165714.jpg)
+
+![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165718.jpg)
+
+![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165723.jpg)
+
+![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165728.jpg)
+
+![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165733.jpg)
+
+![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165738.jpg)
+
+![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165743.jpg)
+
+![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165942.jpg)
+
+
 #### 安装教程
 按照机器的架构选择对应的步骤
 - arm架构，可以参考[xiaofanshu-docker-arm.md](https://github.com/123yyh123/xiaofanshu/blob/master/xiaofanshu-docker-arm.md)----[xiaofanshu-arm.dockerfile](https://github.com/123yyh123/xiaofanshu/blob/master/xiaofanshu-arm.dockerfile)，适用于树莓派等arm架构的设备
