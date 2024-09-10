@@ -35,7 +35,7 @@ MVC框架：Spring MVC
 
 #### 项目部分截图
 
-<img alt="屏幕截图" src="https://gitee.com/yyh12345678/xiaofanshu/blob/master/project-screenshot/Screenshot_20240910_165224.png" width="200"/>
+<img alt="屏幕截图" src="./project-screenshot/Screenshot_20240910_165224.png" width="200"/>
 
 <img alt="屏幕截图" src="https://gitee.com/yyh12345678/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165649.jpg" width="200"/>
 
