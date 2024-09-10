@@ -14,11 +14,11 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="messagedb@192.168.124.100" uuid="7c726e18-4384-4592-8d25-fd778547466c">
+    <data-source source="LOCAL" name="messagedb@192.168.242.157" uuid="7c726e18-4384-4592-8d25-fd778547466c">
       <driver-ref>mongo</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.dbschema.MongoJdbcDriver</jdbc-driver>
-      <jdbc-url>mongodb://192.168.124.100:27017/messagedb</jdbc-url>
+      <jdbc-url>mongodb://192.168.242.157:27017/messagedb</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />

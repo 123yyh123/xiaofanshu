@@ -9,7 +9,7 @@ docker run -d \
 -e MYSQL_SERVICE_HOST=127.0.0.1 \
 -e MYSQL_SERVICE_PORT=3306 \
 -e MYSQL_SERVICE_USER=root \
--e MYSQL_SERVICE_PASSWORD='@YangYaHao5036' \
+-e MYSQL_SERVICE_PASSWORD='password' \
 -e MYSQL_SERVICE_DB_NAME=nacos_config \
 -e NACOS_AUTH_TOKEN=SecretKey012345678901234567890123456789012345678901234567890123456789 \
 -p 8848:8848 \
@@ -27,10 +27,10 @@ docker run  -d \
 -e PARAMS="--server.port=8088 \
 --spring.datasource.url=jdbc:mysql://127.0.0.1:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai \
 --spring.datasource.username=root \
---spring.datasource.password=@YangYaHao5036 \
+--spring.datasource.password=password \
 --spring.mail.username=yahaoyang929@vip.qq.com \
 --spring.mail.from=yahaoyang929@vip.qq.com \
---spring.mail.password=jlliwnqusqozbdeh" \
+--spring.mail.password=1111111111" \
 --name xxl-job-admin \
 --restart=always \
 xuxueli/xxl-job-admin:2.4.0

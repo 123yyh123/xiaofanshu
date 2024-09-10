@@ -60,7 +60,7 @@ public class UserRelationServiceImpl implements UserRelationService {
         if (pageSize == null || pageSize < 1) {
             pageSize = 10;
         }
-        if(userId == null){
+        if (userId == null) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
         }
         Integer offset = (pageNum - 1) * pageSize;
@@ -76,7 +76,7 @@ public class UserRelationServiceImpl implements UserRelationService {
         if (pageSize == null || pageSize < 1) {
             pageSize = 10;
         }
-        if(userId == null){
+        if (userId == null) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
         }
         Integer offset = (pageNum - 1) * pageSize;
@@ -87,44 +87,45 @@ public class UserRelationServiceImpl implements UserRelationService {
     @Override
     @Transactional
     public Result<Boolean> attention(Long userId, Long targetUserId) {
-        if(userId == null || targetUserId == null){
+        if (userId == null || targetUserId == null) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
         }
-        if(userId.equals(targetUserId)){
+        if (userId.equals(targetUserId)) {
             return ResultUtil.errorPost("不能关注自己");
         }
-        UserAttentionDO userAttentionDO=userAttentionMapper.getExist(userId,targetUserId);
-        if(Objects.nonNull(userAttentionDO)){
+        UserAttentionDO userAttentionDO = userAttentionMapper.getExist(userId, targetUserId);
+        if (Objects.nonNull(userAttentionDO)) {
             userAttentionMapper.deleteById(userAttentionDO.getId());
-            userFansMapper.delete(new QueryWrapper<UserFansDO>().lambda().eq(UserFansDO::getUserId,targetUserId).eq(UserFansDO::getFansId,userId));
+            userFansMapper.delete(new QueryWrapper<UserFansDO>().lambda().eq(UserFansDO::getUserId, targetUserId).eq(UserFansDO::getFansId, userId));
             redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userId)), "attentionNum", -1);
             redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(targetUserId)), "fansNum", -1);
-        }else {
-            userAttentionDO=new UserAttentionDO();
+        } else {
+            userAttentionDO = new UserAttentionDO();
             userAttentionDO.setUserId(userId);
             userAttentionDO.setAttentionId(targetUserId);
             userAttentionDO.setCreateTime(new Date());
             userAttentionMapper.insert(userAttentionDO);
-            UserFansDO userFansDO=new UserFansDO();
+            UserFansDO userFansDO = new UserFansDO();
             userFansDO.setUserId(targetUserId);
             userFansDO.setFansId(userId);
             userFansDO.setCreateTime(new Date());
             userFansMapper.insert(userFansDO);
             redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(userId)), "attentionNum", 1);
             redisCache.hincr(RedisKey.build(RedisConstant.REDIS_KEY_USER_LOGIN_INFO, String.valueOf(targetUserId)), "fansNum", 1);
+            // TODO 发送关注消息
         }
         // 更新redis
-        redisCache.del(RedisKey.build(RedisConstant.REDIS_KEY_USER_RELATION_ALLOW_SEND_MESSAGE,targetUserId+":"+userId));
+        redisCache.del(RedisKey.build(RedisConstant.REDIS_KEY_USER_RELATION_ALLOW_SEND_MESSAGE, targetUserId + ":" + userId));
         return ResultUtil.successPost(true);
     }
 
     @Override
     public Result<?> updateRemarkName(Long userId, Long targetUserId, String remarkName) {
-        if(userId == null || targetUserId == null){
+        if (userId == null || targetUserId == null) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
         }
-        UserAttentionDO userAttentionDO=userAttentionMapper.getExist(userId,targetUserId);
-        if(Objects.isNull(userAttentionDO)){
+        UserAttentionDO userAttentionDO = userAttentionMapper.getExist(userId, targetUserId);
+        if (Objects.isNull(userAttentionDO)) {
             throw new BusinessException(ExceptionMsgEnum.PARAMETER_ERROR);
         }
         userAttentionDO.setRemarkName(remarkName);
@@ -134,7 +135,7 @@ public class UserRelationServiceImpl implements UserRelationService {
 
     @Override
     public Result<List<Long>> getAttentionUserId(Long userId) {
-        List<Long> list= userAttentionMapper.getAttentionUserId(userId);
+        List<Long> list = userAttentionMapper.getAttentionUserId(userId);
         return ResultUtil.successGet(list);
     }
 }

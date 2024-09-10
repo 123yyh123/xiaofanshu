@@ -13,5 +13,9 @@ RUN chmod 777 /app/run.sh
 # 创建日志目录
 RUN mkdir /app/logs
 
+# 设置时区
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN echo "Asia/Shanghai" > /etc/timezone
+
 #执行命令
 ENTRYPOINT ["sh","/app/run.sh"]

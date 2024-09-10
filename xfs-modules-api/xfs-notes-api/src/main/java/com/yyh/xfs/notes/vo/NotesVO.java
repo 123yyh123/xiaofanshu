@@ -27,6 +27,7 @@ public class NotesVO implements Serializable {
     private Boolean isCollect;
     private Boolean isFollow;
     private List<ResourcesDTO> notesResources;
+    private String address;
     private String province;
     private Date createTime;
     private Date updateTime;

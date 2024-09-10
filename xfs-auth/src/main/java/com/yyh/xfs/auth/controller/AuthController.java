@@ -73,6 +73,8 @@ public class AuthController {
         return userService.loginByCode(phoneNumber, smsCode);
     }
 
+    // 通知栏推送，IM聊天消息，系统消息推送，短信推送，策略+组合模式
+
     /**
      * 退出登录
      * @return 退出登录结果

@@ -33,6 +33,20 @@ MVC框架：Spring MVC
 - 网关：gateway
 - 事务统一：RocketMQ的事务消息（执行周期长且实时性要求不高的场景），不必要引入Seata
 
+#### 项目部分截图
+
+#### 安装教程
+按照机器的架构选择对应的步骤
+- arm架构，可以参考[xiaofanshu-docker-arm.md](https://github.com/123yyh123/xiaofanshu/blob/master/xiaofanshu-docker-arm.md)----[xiaofanshu-arm.dockerfile](https://github.com/123yyh123/xiaofanshu/blob/master/xiaofanshu-arm.dockerfile)，适用于树莓派等arm架构的设备
+- amd64架构，可以参考[xiaofanshu-docker-amd64.md](https://github.com/123yyh123/xiaofanshu/blob/master/xiaofanshu-docker-amd.md)----[xiaofanshu-amd64.dockerfile](https://github.com/123yyh123/xiaofanshu/blob/master/xiaofanshu-amd64.dockerfile)，适用于普通的服务器
+
+
+
+
+
+
+
+
 
 
 
