@@ -35,29 +35,29 @@ MVC框架：Spring MVC
 
 #### 项目部分截图
 
-![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/Screenshot_20240910_165224.png)
+<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/Screenshot_20240910_165224.png" width="200"/>
 
-![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165649.jpg)
+<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165649.jpg" width="200"/>
 
-![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165704.jpg)
+<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165704.jpg" width="200"/>
 
-![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165709.jpg)
+<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165709.jpg" width="200"/>
 
-![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165714.jpg)
+<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165714.jpg" width="200"/>
 
-![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165718.jpg)
+<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165718.jpg" width="200"/>
 
-![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165723.jpg)
+<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165723.jpg" width="200"/>
 
-![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165728.jpg)
+<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165728.jpg" width="200"/>
 
-![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165733.jpg)
+<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165733.jpg" width="200"/>
 
-![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165738.jpg)
+<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165738.jpg" width="200"/>
 
-![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165743.jpg)
+<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165743.jpg" width="200"/>
 
-![屏幕截图](https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165942.jpg)
+<img alt="屏幕截图" src="https://github.com/123yyh123/xiaofanshu/blob/master/project-screenshot/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240910165942.jpg" width="200"/>
 
 
 #### 安装教程
