@@ -66,10 +66,8 @@ MVC框架：Spring MVC
 - amd64架构，可以参考[xiaofanshu-docker-amd64.md](https://gitee.com/yyh12345678/xiaofanshu/blob/master/xiaofanshu-docker-amd.md)----[xiaofanshu-amd.dockerfile](https://gitee.com/yyh12345678/xiaofanshu/blob/master/xiaofanshu-amd.dockerfile)，适用于普通的服务器
 
 
+
 如有疑问，请使用邮箱联系我yahaoyang929@foxmail.com
-
-
-
 
 
 
